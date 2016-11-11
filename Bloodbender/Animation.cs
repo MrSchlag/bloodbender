@@ -16,7 +16,7 @@ namespace Bloodbender
 
         protected Texture2D texture;
         public Rectangle rectangleSource; // rectangle used to get a different part of the texture at each draw
-        protected Vector2 origin = Vector2.Zero;
+        public Vector2 origin = Vector2.Zero;
         public float depth { get; set; } = 0.0f;
         public Color color = Color.White;
 
