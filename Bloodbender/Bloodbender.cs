@@ -79,6 +79,7 @@ namespace Bloodbender
             pobj.animations[0] = new Animation(textureCarre);
             pobj.animations[0].origin = new Vector2(16, 16);
             pobj.canRotate(false);
+            pobj.setLinearDamping(0);
 
             Player player = new Player(new Vector2(100, 100));
             player.animations[0] = new Animation(textureCarre);
@@ -110,7 +111,6 @@ namespace Bloodbender
         protected override void Update(GameTime gameTime)
         {
             elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
