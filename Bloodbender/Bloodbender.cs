@@ -16,12 +16,15 @@ namespace Bloodbender
 
         public Camera camera;
 
-        World world;
+        public World world;
 
         public float elapsed = 0.0f;
 
         public List<GraphicObj> listGraphicObj;
         //RenderTarget2D targetShadows;
+
+        public float meterToPixel;
+        public float pixelToMeter;
 
 
         public Bloodbender()
@@ -47,6 +50,8 @@ namespace Bloodbender
         {
             // TODO: Add your initialization logic here
             world = new World(new Vector2(0, 0));
+            meterToPixel = 32;
+            pixelToMeter = 1 / meterToPixel;
 
             base.Initialize();
         }
@@ -65,11 +70,22 @@ namespace Bloodbender
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Texture2D textureCarre = Content.Load<Texture2D>("carre");
-
+            /*
             GraphicObj gobj = new GraphicObj();
             gobj.animations[0] = new Animation(textureCarre);
+            */
+            PhysicObj pobj = new PhysicObj(BodyFactory.CreateRectangle(world, 32 * pixelToMeter, 32 * pixelToMeter, 1),
+                new Vector2(0 * pixelToMeter, 0 * pixelToMeter));
+            pobj.animations[0] = new Animation(textureCarre);
+            pobj.canRotate(false);
 
-            listGraphicObj.Add(gobj);
+            Player player = new Player(new Vector2(100, 100));
+            player.animations[0] = new Animation(textureCarre);
+            camera.requestFocus(player);
+
+            listGraphicObj.Add(player);
+            listGraphicObj.Add(pobj);
+            //listGraphicObj.Add(gobj);
             // TODO: use this.Content to load your game content here
         }
 
@@ -97,6 +113,7 @@ namespace Bloodbender
             foreach (GraphicObj obj in listGraphicObj)
                 obj.Update(elapsed);
 
+            world.Step(elapsed);
             // TODO: Add your update logic here
             camera.Update();
 
