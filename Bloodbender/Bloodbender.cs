@@ -77,10 +77,14 @@ namespace Bloodbender
             PhysicObj pobj = new PhysicObj(BodyFactory.CreateRectangle(world, 32 * pixelToMeter, 32 * pixelToMeter, 1),
                 new Vector2(0 * pixelToMeter, 0 * pixelToMeter));
             pobj.animations[0] = new Animation(textureCarre);
+            pobj.animations[0].origin = new Vector2(16, 16);
             pobj.canRotate(false);
 
             Player player = new Player(new Vector2(100, 100));
             player.animations[0] = new Animation(textureCarre);
+            player.animations[0].origin = new Vector2(16, 16);
+            player.setLinearDamping(10);
+
             camera.requestFocus(player);
 
             listGraphicObj.Add(player);
