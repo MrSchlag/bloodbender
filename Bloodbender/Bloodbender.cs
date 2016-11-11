@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using FarseerPhysics.Dynamics;
+using FarseerPhysics.Factories;
 
 namespace Bloodbender
 {
@@ -11,6 +13,7 @@ namespace Bloodbender
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        World world;
 
         public Bloodbender()
         {
