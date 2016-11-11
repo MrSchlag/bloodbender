@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using FarseerPhysics.Dynamics;
 using FarseerPhysics.Factories;
+using FarseerPhysics.Dynamics;
 
 namespace Bloodbender
 {
@@ -30,6 +30,8 @@ namespace Bloodbender
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+
+            world = new World(new Vector2(0, 0));
 
             base.Initialize();
         }

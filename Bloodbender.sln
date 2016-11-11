@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bloodbender", "Bloodbender\Bloodbender.csproj", "{DA39620F-F474-4054-9652-6A0D70AFCDDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Farseer Physics MonoGame", "..\..\..\Farseer\Farseer Physics Engine 3.5 Samples\Farseer Physics Engine 3.5\Farseer Physics MonoGame.csproj", "{0AAD36E3-51A5-4A07-AB60-5C8A66BD38B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Farseer Physics MonoGame", "Farseer Physics Engine 3.5\Farseer Physics MonoGame.csproj", "{0AAD36E3-51A5-4A07-AB60-5C8A66BD38B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
