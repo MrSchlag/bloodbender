@@ -1,24 +1,40 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 using FarseerPhysics.Factories;
 using FarseerPhysics.Dynamics;
 
 namespace Bloodbender
 {
-    /// <summary>
-    /// This is the main type for your game.
-    /// </summary>
     public class Bloodbender : Game
     {
+        public static Bloodbender ptr { get; set; }
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        public Camera camera;
+
         World world;
+
+        public float elapsed = 0.0f;
+
+        public List<GraphicObj> listGraphicObj;
+        //RenderTarget2D targetShadows;
+
 
         public Bloodbender()
         {
+            ptr = this;
+
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            listGraphicObj = new List<GraphicObj>();
+
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
         }
 
         /// <summary>
@@ -30,7 +46,6 @@ namespace Bloodbender
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
             world = new World(new Vector2(0, 0));
 
             base.Initialize();
@@ -43,8 +58,18 @@ namespace Bloodbender
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
+
+            camera = new Camera();
+            camera.zoom = new Vector2((float)GraphicsDevice.Viewport.Width / camera.width, (float)GraphicsDevice.Viewport.Height / camera.height);
+
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            Texture2D textureCarre = Content.Load<Texture2D>("carre");
+
+            GraphicObj gobj = new GraphicObj();
+            gobj.animations[0] = new Animation(textureCarre);
+
+            listGraphicObj.Add(gobj);
             // TODO: use this.Content to load your game content here
         }
 
@@ -64,10 +89,16 @@ namespace Bloodbender
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            foreach (GraphicObj obj in listGraphicObj)
+                obj.Update(elapsed);
+
             // TODO: Add your update logic here
+            camera.Update();
 
             base.Update(gameTime);
         }
@@ -81,6 +112,12 @@ namespace Bloodbender
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.get_transformation(GraphicsDevice));
+
+            foreach (GraphicObj obj in listGraphicObj)
+                obj.Draw(spriteBatch);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
