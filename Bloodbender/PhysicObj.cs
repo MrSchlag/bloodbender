@@ -23,11 +23,13 @@ namespace Bloodbender
             this.body.Position = position * Bloodbender.ptr.pixelToMeter;
             this.body.BodyType = BodyType.Dynamic;
             this.body.FixedRotation = true;
-            this.body.LinearDamping = 5;
+            this.body.LinearDamping = 1;
+            this.body.AngularDamping = 1;
         }
 
         public override bool Update(float elapsed)
         {
+
             return base.Update(elapsed);
         }
 

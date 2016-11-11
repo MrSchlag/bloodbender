@@ -74,7 +74,9 @@ namespace Bloodbender
 
         public bool Update()
         {
-            if (gameobj != null)
+            if (gameobj is PhysicObj)
+                position = ((PhysicObj) gameobj).body.Position * Bloodbender.ptr.meterToPixel + offset;
+            else if (gameobj != null)
                 position = gameobj.getCenter() + offset;
 
             return true;

@@ -118,6 +118,8 @@ namespace Bloodbender
                 obj.Update(elapsed);
 
             world.Step(elapsed);
+
+            
             // TODO: Add your update logic here
             camera.Update();
 

@@ -40,6 +40,7 @@ namespace Bloodbender
             {
                 body.LinearVelocity = new Vector2(-100 * pixelToMeter, 0);
             }
+
             return base.Update(elapsed);
         }
 
