@@ -43,6 +43,7 @@
     <Compile Include="Camera.cs" />
     <Compile Include="GraphicObj.cs" />
     <Compile Include="InputHelper.cs" />
+    <Compile Include="MapBound.cs" />
     <Compile Include="PhysicObj.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
