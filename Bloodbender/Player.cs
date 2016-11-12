@@ -26,6 +26,8 @@ namespace Bloodbender
 
         public Player(Vector2 position, uint animNbr = 1) : base(position, animNbr)
         {
+            Bloodbender.ptr.camera.TrackingBody = body;
+
             float pixelToMeter = Bloodbender.ptr.pixelToMeter;
 
             //Create rectangles shapes
