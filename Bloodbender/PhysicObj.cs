@@ -12,6 +12,18 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Bloodbender
 {
+    public class HitboxData
+    {
+        public PhysicObj physicParent;
+        public uint type;
+
+        public HitboxData(PhysicObj parent, uint type)
+        {
+            physicParent = parent;
+            this.type = type;
+        }
+    }
+    
     public class PhysicObj : GraphicObj
     {
         public Body body;
@@ -27,9 +39,18 @@ namespace Bloodbender
             this.body.AngularDamping = 1;
         }
 
+        public PhysicObj(Vector2 position, uint animNbr = 1) : base(animNbr)
+        {
+            body = BodyFactory.CreateBody(Bloodbender.ptr.world);
+            body.Position = position * Bloodbender.ptr.pixelToMeter;
+            body.BodyType = BodyType.Dynamic;
+            body.FixedRotation = true;
+            body.LinearDamping = 1;
+            body.AngularDamping = 1;
+        }
+
         public override bool Update(float elapsed)
         {
-
             return base.Update(elapsed);
         }
 

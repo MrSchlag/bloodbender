@@ -79,7 +79,7 @@ namespace Bloodbender
             pobj.animations[0] = new Animation(textureCarre);
             pobj.animations[0].origin = new Vector2(16, 16);
             pobj.canRotate(false);
-            pobj.setLinearDamping(0);
+            pobj.setLinearDamping(2);
 
             Player player = new Player(new Vector2(100, 100));
             player.animations[0] = new Animation(textureCarre);
