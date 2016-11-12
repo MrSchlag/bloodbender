@@ -71,23 +71,44 @@ namespace Bloodbender
         public override bool Update(float elapsed)
         {
             float pixelToMeter = Bloodbender.ptr.pixelToMeter;
+            int nbrArrowPressed = 0;
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Z)
+                || Keyboard.GetState().IsKeyDown(Keys.S)
+                || Keyboard.GetState().IsKeyDown(Keys.Q)
+                || Keyboard.GetState().IsKeyDown(Keys.D))
+                body.LinearVelocity = new Vector2(0, 0);
+
             if (Keyboard.GetState().IsKeyDown(Keys.Z))
             {
-                body.LinearVelocity = new Vector2(0, -100 * pixelToMeter);
+                if (!Keyboard.GetState().IsKeyDown(Keys.S))
+                {
+                    nbrArrowPressed += 1;                    
+                    body.LinearVelocity += new Vector2(0, -100 * pixelToMeter);
+                }
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                body.LinearVelocity = new Vector2(0, 100 * pixelToMeter);
+                nbrArrowPressed += 1;
+                body.LinearVelocity += new Vector2(0, 100 * pixelToMeter);
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                body.LinearVelocity = new Vector2(100 * pixelToMeter, 0);
+                if (!Keyboard.GetState().IsKeyDown(Keys.Q))
+                {
+                    nbrArrowPressed += 1;
+                    body.LinearVelocity += new Vector2(100 * pixelToMeter, 0);
+                }
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Q))
             {
-                body.LinearVelocity = new Vector2(-100 * pixelToMeter, 0);
+                nbrArrowPressed += 1;
+                body.LinearVelocity += new Vector2(-100 * pixelToMeter, 0);
             }
+
+            if (nbrArrowPressed >= 2)
+                body.LinearVelocity /= 2;
 
             return base.Update(elapsed);
         }
