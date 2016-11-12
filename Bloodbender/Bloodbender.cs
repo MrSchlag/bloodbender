@@ -26,7 +26,7 @@ namespace Bloodbender
 
         public float elapsed = 0.0f;
 
-        InputHelper inputHelper;
+        public InputHelper inputHelper;
 
         public List<GraphicObj> listGraphicObj;
         //RenderTarget2D targetShadows;
@@ -67,6 +67,7 @@ namespace Bloodbender
             debugView.LoadContent(GraphicsDevice, Content);
 
             inputHelper = new InputHelper();
+            inputHelper.ShowCursor = true;
 
             base.Initialize();
         }
@@ -196,9 +197,9 @@ namespace Bloodbender
 
             spriteBatch.End();
 
-            inputHelper.Draw();
-
             debugView.RenderDebugData(ref camera.SimProjection, ref camera.SimView);
+
+            inputHelper.Draw();
 
             base.Draw(gameTime);
         }
