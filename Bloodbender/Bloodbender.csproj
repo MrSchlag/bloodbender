@@ -42,6 +42,7 @@
     <Compile Include="Bloodbender.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="GraphicObj.cs" />
+    <Compile Include="MapBounds.cs" />
     <Compile Include="PhysicObj.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
