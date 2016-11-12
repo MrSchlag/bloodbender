@@ -35,6 +35,8 @@ namespace Bloodbender
         {
             ptr = this;
 
+            ConvertUnits.SetDisplayUnitToSimUnitRatio(32f);
+
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
@@ -78,8 +80,7 @@ namespace Bloodbender
             // Create a new SpriteBatch, which can be used to draw textures.
             inputHelper.LoadContent();
 
-            camera = new Camera();
-            camera.zoom = new Vector2((float)GraphicsDevice.Viewport.Width / camera.width, (float)GraphicsDevice.Viewport.Height / camera.height);
+            camera = new Camera(GraphicsDevice);
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -99,7 +100,6 @@ namespace Bloodbender
             player.animations[0].origin = new Vector2(16, 16);
             player.setLinearDamping(10);
 
-            camera.requestFocus(player);
 
             listGraphicObj.Add(player);
             listGraphicObj.Add(pobj);
@@ -137,7 +137,7 @@ namespace Bloodbender
 
             
             // TODO: Add your update logic here
-            camera.Update();
+            camera.Update(elapsed);
 
             if (inputHelper.IsNewKeyPress(Keys.F1))
                 debugView.EnableOrDisableFlag(DebugViewFlags.Shape);
@@ -174,7 +174,7 @@ namespace Bloodbender
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.get_transformation(GraphicsDevice));
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.View);
 
             foreach (GraphicObj obj in listGraphicObj)
                 obj.Draw(spriteBatch);
@@ -183,7 +183,7 @@ namespace Bloodbender
 
             inputHelper.Draw();
 
-            debugView.RenderDebugData(ref camera.transform);
+            debugView.RenderDebugData(ref camera.SimProjection, ref camera.SimView);
 
             base.Draw(gameTime);
         }

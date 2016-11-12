@@ -30,6 +30,7 @@ namespace Bloodbender
 
             //Create rectangles shapes
             Vertices rectangleVertices = PolygonTools.CreateRectangle(16 * pixelToMeter, 16 * pixelToMeter);
+            
             PolygonShape playerBounds = new PolygonShape(rectangleVertices, 1);
             PolygonShape playerHitUp = new PolygonShape(rectangleVertices, 1);
             PolygonShape playerHitDown = new PolygonShape(rectangleVertices, 1);

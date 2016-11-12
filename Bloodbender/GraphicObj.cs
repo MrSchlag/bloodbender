@@ -32,7 +32,7 @@ namespace Bloodbender
         }
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            if (Bloodbender.ptr.camera.isInView(this)) // Permet de draw que les elements present ds la vue
+            //if (Bloodbender.ptr.camera.isInView(this)) // Permet de draw que les elements present ds la vue
                 animations[currentAnimation].Draw(spriteBatch, new Vector2(position.X, position.Y), rotation, spriteEffect, scale, height);
         }
 
@@ -80,11 +80,12 @@ namespace Bloodbender
         {
             MouseState mouseState = Mouse.GetState();
             Vector2 centerPos = getCenter();
-            float deltaY = mouseState.Y - centerPos.Y + Bloodbender.ptr.camera.position.Y - (Bloodbender.ptr.camera.height / 2);
-            float deltaX = mouseState.X - centerPos.X + Bloodbender.ptr.camera.position.X - (Bloodbender.ptr.camera.width / 2);
-            float angle = (float)(Math.Atan2(deltaY, deltaX));
+            //float deltaY = mouseState.Y - centerPos.Y + Bloodbender.ptr.camera.Position.Y - (Bloodbender.ptr.camera.height / 2);
+            //float deltaX = mouseState.X - centerPos.X + Bloodbender.ptr.camera.P.X - (Bloodbender.ptr.camera.width / 2);
+            //float angle = (float)(Math.Atan2(deltaY, deltaX));
 
-            return angle;
+            //return angle;
+            return 0.0f;
         }
     }
 }
