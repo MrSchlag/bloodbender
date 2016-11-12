@@ -98,7 +98,7 @@ namespace Bloodbender
 
         public void LoadContent()
         {
-            //_cursorSprite = new Sprite(Bloodbender.ptr.Content.Load<Texture2D>("Common/cursor"));
+            _cursorSprite = new Sprite(Bloodbender.ptr.Content.Load<Texture2D>("cursor"));
 #if WINDOWS_PHONE
             // virtual stick content
             _phoneStick = new VirtualStick(_manager.Content.Load<Texture2D>("Common/socket"),

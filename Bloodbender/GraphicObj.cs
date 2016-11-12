@@ -76,16 +76,14 @@ namespace Bloodbender
             currentAnimation = animationNbr;
         }
 
-        public float angleWithMouse() // changer position avec les coordonné du centre du sprite
+        public float angleWithMouse()
         {
-            MouseState mouseState = Mouse.GetState();
             Vector2 centerPos = getCenter();
-            //float deltaY = mouseState.Y - centerPos.Y + Bloodbender.ptr.camera.Position.Y - (Bloodbender.ptr.camera.height / 2);
-            //float deltaX = mouseState.X - centerPos.X + Bloodbender.ptr.camera.P.X - (Bloodbender.ptr.camera.width / 2);
-            //float angle = (float)(Math.Atan2(deltaY, deltaX));
+            float deltaY = Bloodbender.ptr.inputHelper.Cursor.Y - centerPos.Y + Bloodbender.ptr.camera.Position.Y - (Bloodbender.ptr.GraphicsDevice.Viewport.Height / 2);
+            float deltaX = Bloodbender.ptr.inputHelper.Cursor.X - centerPos.X + Bloodbender.ptr.camera.Position.X - (Bloodbender.ptr.GraphicsDevice.Viewport.Width / 2);
+            float angle = (float)(Math.Atan2(deltaY, deltaX));
 
-            //return angle;
-            return 0.0f;
+            return angle;
         }
     }
 }
