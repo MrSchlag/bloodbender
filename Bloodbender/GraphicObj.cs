@@ -33,7 +33,7 @@ namespace Bloodbender
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             //if (Bloodbender.ptr.camera.isInView(this)) // Permet de draw que les elements present ds la vue
-                animations[currentAnimation].Draw(spriteBatch, new Vector2(position.X, position.Y), rotation, spriteEffect, scale, height);
+                animations[currentAnimation].Draw(spriteBatch, position, rotation, spriteEffect, scale, height);
         }
 
         /*

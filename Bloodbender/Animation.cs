@@ -80,7 +80,7 @@ namespace Bloodbender
             rectangleSource.X = frameWidth * currentFrame;
 
             if (!isDepthForce)
-                depth = ((position.Y + texture.Height * scale.Y) - (Bloodbender.ptr.camera.Position.X - (Bloodbender.ptr.camera.Position.Y / 2))) / 10000.0f; // ATTENTION A CORRIGER SI MANIPULATION SUR LE SCALE, A CORRIGER QUAND PhysicObj FINI, depth responsable du non  affichage de sprite sur les negatif
+                 depth = ((position.Y + texture.Height * scale.Y) - (Bloodbender.ptr.camera.Position.X - (Bloodbender.ptr.GraphicsDevice.Viewport.Height / 2))) / 10000.0f; // ATTENTION A CORRIGER SI MANIPULATION SUR LE SCALE, A CORRIGER QUAND PhysicObj FINI, depth responsable du non  affichage de sprite sur les negatif
 
             position.Y -= height;
 

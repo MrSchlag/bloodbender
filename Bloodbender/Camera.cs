@@ -8,7 +8,7 @@ namespace Bloodbender
 {
     public class Camera
     {
-        private static GraphicsDevice _graphics;
+        public static GraphicsDevice _graphics;
 
         private const float MinZoom = 0.02f;
         private const float MaxZoom = 20f;
