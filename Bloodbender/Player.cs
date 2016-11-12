@@ -19,10 +19,6 @@ namespace Bloodbender
 {
     public class Player : PhysicObj
     {
-        enum hitboxType {
-            BOUND = 0,
-            ATTACK = 1
-        }
 
         public Player(Vector2 position, uint animNbr = 1) : base(position, animNbr)
         {
@@ -53,11 +49,11 @@ namespace Bloodbender
             Fixture playerHitRightFix = body.CreateFixture(playerHitRight);
 
             //set the UserData fixture's members with HitboxData object (contain parent and uint)
-            playerBoundsFix.UserData = new HitboxData(this, (uint)hitboxType.BOUND);
-            playerHitUpFix.UserData = new HitboxData(this, (uint)hitboxType.ATTACK);
-            playerHitDownFix.UserData = new HitboxData(this, (uint)hitboxType.ATTACK);
-            playerHitLeftFix.UserData = new HitboxData(this, (uint)hitboxType.ATTACK);
-            playerHitRightFix.UserData = new HitboxData(this, (uint)hitboxType.ATTACK);
+            playerBoundsFix.UserData = new HitboxData(this, hitboxType.BOUND);
+            playerHitUpFix.UserData = new HitboxData(this, hitboxType.ATTACK);
+            playerHitDownFix.UserData = new HitboxData(this, hitboxType.ATTACK);
+            playerHitLeftFix.UserData = new HitboxData(this, hitboxType.ATTACK);
+            playerHitRightFix.UserData = new HitboxData(this, hitboxType.ATTACK);
 
             //add method to be called on collision, different denpending of fixture
             playerBoundsFix.OnCollision += collisionOnBounds;

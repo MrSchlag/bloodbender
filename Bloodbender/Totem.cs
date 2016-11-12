@@ -19,16 +19,12 @@ namespace Bloodbender
 {
     public class Totem : PhysicObj
     {
-        enum hitboxType
-        {
-            BOUND = 0
-        }
         public Totem(Vector2 position, uint animNbr = 1) : base(position, animNbr)
         {
             float pixelToMeter = Bloodbender.ptr.pixelToMeter;
             Vertices rectangleVertices = PolygonTools.CreateRectangle(50 * pixelToMeter, 50 * pixelToMeter);
             PolygonShape totemBounds = new PolygonShape(rectangleVertices, 1);
-            Fixture totemBoundsFix = body.CreateFixture(totemBounds, new HitboxData(this, (uint)hitboxType.BOUND));
+            Fixture totemBoundsFix = body.CreateFixture(totemBounds, new HitboxData(this, hitboxType.BOUND));
             body.BodyType = BodyType.Static;
         }
 

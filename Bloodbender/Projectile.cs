@@ -20,11 +20,6 @@ namespace Bloodbender
 
     public class Projectile : PhysicObj
     {
-        enum hitboxType
-        {
-            BOUND = 0
-        }
-
         public Projectile(Vector2 position, uint animNbr = 1) : base(position, animNbr)
         {
 

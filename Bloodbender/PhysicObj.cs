@@ -12,12 +12,18 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Bloodbender
 {
+    public enum hitboxType
+    {
+        BOUND = 0,
+        ATTACK = 1
+    }
+
     public class HitboxData
     {
         public PhysicObj physicParent;
-        public uint type;
+        public hitboxType type;
 
-        public HitboxData(PhysicObj parent, uint type)
+        public HitboxData(PhysicObj parent, hitboxType type)
         {
             physicParent = parent;
             this.type = type;
