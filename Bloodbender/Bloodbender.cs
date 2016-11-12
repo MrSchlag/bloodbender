@@ -88,8 +88,15 @@ namespace Bloodbender
             GraphicObj gobj = new GraphicObj();
             gobj.animations[0] = new Animation(textureCarre);
             */
+            MapBound mapBounds = new MapBound();
+            mapBounds.addVertex(new Vector2(0, 0));
+            mapBounds.addVertex(new Vector2(500, 0));
+            mapBounds.addVertex(new Vector2(500, 500));
+            mapBounds.addVertex(new Vector2(0, 500));
+            mapBounds.finiliezMap();
+
             PhysicObj pobj = new PhysicObj(BodyFactory.CreateRectangle(world, 32 * pixelToMeter, 32 * pixelToMeter, 1), // meterTopixel a la place de 32?
-                new Vector2(0 * pixelToMeter, 0 * pixelToMeter));
+                new Vector2(200, 200));
             pobj.animations[0] = new Animation(textureCarre);
             pobj.animations[0].origin = new Vector2(16, 16);
             pobj.canRotate(false);

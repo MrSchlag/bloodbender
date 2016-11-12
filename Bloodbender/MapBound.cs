@@ -17,7 +17,26 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Bloodbender
 {
-    class MapBound
+    public class MapBound : PhysicObj
     {
+        Vertices mapVertices;
+        public MapBound(uint animNbr = 0) : base(new Vector2(0, 0), animNbr)
+        {
+            mapVertices = new Vertices();
+            body.BodyType = BodyType.Static;
+            body.Position = new Vector2(0, 0);
+        }
+
+        public void addVertex(Vector2 vertex)
+        {
+            vertex *= Bloodbender.ptr.pixelToMeter;
+            mapVertices.Add(vertex);
+        }
+
+        public void finiliezMap()
+        {
+            ChainShape shape = new ChainShape(mapVertices, true);
+            Fixture shapeFix = body.CreateFixture(shape);
+        }
     }
 }
