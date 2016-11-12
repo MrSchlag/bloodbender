@@ -26,6 +26,8 @@ namespace Bloodbender
 
             float pixelToMeter = Bloodbender.ptr.pixelToMeter;
 
+            velocity = 200;
+
             //Create rectangles shapes
             Vertices rectangleVertices = PolygonTools.CreateRectangle(16 * pixelToMeter, 16 * pixelToMeter);
             
@@ -80,13 +82,13 @@ namespace Bloodbender
                 if (!Keyboard.GetState().IsKeyDown(Keys.S))
                 {
                     nbrArrowPressed += 1;                    
-                    body.LinearVelocity += new Vector2(0, -100 * pixelToMeter);
+                    body.LinearVelocity += new Vector2(0, -velocity * pixelToMeter);
                 }
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
                 nbrArrowPressed += 1;
-                body.LinearVelocity += new Vector2(0, 100 * pixelToMeter);
+                body.LinearVelocity += new Vector2(0, velocity * pixelToMeter);
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.D))
@@ -94,13 +96,13 @@ namespace Bloodbender
                 if (!Keyboard.GetState().IsKeyDown(Keys.Q))
                 {
                     nbrArrowPressed += 1;
-                    body.LinearVelocity += new Vector2(100 * pixelToMeter, 0);
+                    body.LinearVelocity += new Vector2(velocity * pixelToMeter, 0);
                 }
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Q))
             {
                 nbrArrowPressed += 1;
-                body.LinearVelocity += new Vector2(-100 * pixelToMeter, 0);
+                body.LinearVelocity += new Vector2(-velocity * pixelToMeter, 0);
             }
 
             if (nbrArrowPressed >= 2)

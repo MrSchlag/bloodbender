@@ -34,9 +34,11 @@ namespace Bloodbender
     {
         public Body body;
         public Body size;
+        public float velocity;
 
         public PhysicObj(Body body, Vector2 position, uint animNbr = 1) : base(animNbr)
         {
+            velocity = 0;
             this.body = body;
             this.body.Position = position * Bloodbender.ptr.pixelToMeter;
             this.body.BodyType = BodyType.Dynamic;
@@ -47,6 +49,7 @@ namespace Bloodbender
 
         public PhysicObj(Vector2 position, uint animNbr = 1) : base(animNbr)
         {
+            velocity = 0;
             body = BodyFactory.CreateBody(Bloodbender.ptr.world);
             body.Position = position * Bloodbender.ptr.pixelToMeter;
             body.BodyType = BodyType.Dynamic;
