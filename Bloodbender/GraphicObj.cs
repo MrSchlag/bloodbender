@@ -21,8 +21,6 @@ namespace Bloodbender
 
         public GraphicObj(uint animationsNumber = 1) // faire en sorte que le constructeur ne prenne pas en parametre le nombre d'animation, et juste faire une fonction addAnimation
         {
-            if (animationsNumber <= 0)
-                animationsNumber = 1;
             animations = new Animation[animationsNumber];
         }
         public virtual bool Update(float elapsed)
