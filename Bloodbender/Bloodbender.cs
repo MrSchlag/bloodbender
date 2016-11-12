@@ -85,6 +85,8 @@ namespace Bloodbender
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Texture2D textureCarre = Content.Load<Texture2D>("carre");
+            Texture2D textureTotem = Content.Load<Texture2D>("Totem");
+
             /*
             GraphicObj gobj = new GraphicObj();
             gobj.animations[0] = new Animation(textureCarre);
@@ -109,7 +111,11 @@ namespace Bloodbender
             player.animations[0].origin = new Vector2(16, 16);
             player.setLinearDamping(10);
 
+            Totem totem = new Totem(new Vector2(300, 300));
+            totem.animations[0] = new Animation(textureTotem);
+            totem.animations[0].origin = new Vector2(50, 50);
 
+            listGraphicObj.Add(totem);
             listGraphicObj.Add(player);
             listGraphicObj.Add(pobj);
             //listGraphicObj.Add(gobj);
