@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FarseerPhysics.Collision;
-using FarseerPhysics.Dynamics;
 using FarseerPhysics.Factories;
+using FarseerPhysics.Dynamics;
+using FarseerPhysics.Dynamics.Contacts;
+using FarseerPhysics.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -22,14 +24,18 @@ namespace Bloodbender
     {
         public PhysicObj physicParent;
         public hitboxType type;
+        public bool isTouching;
+        public List<Contact> contactList;
 
         public HitboxData(PhysicObj parent, hitboxType type)
         {
             physicParent = parent;
             this.type = type;
+            isTouching = false;
+            contactList = new List<Contact>();
         }
     }
-    
+
     public class PhysicObj : GraphicObj
     {
         public Body body;
@@ -54,7 +60,7 @@ namespace Bloodbender
             body.Position = position * Bloodbender.ptr.pixelToMeter;
             body.BodyType = BodyType.Dynamic;
             body.FixedRotation = true;
-            body.LinearDamping = 1;
+            body.LinearDamping = 0.02f;
             body.AngularDamping = 1;
         }
 
@@ -71,12 +77,25 @@ namespace Bloodbender
             base.Draw(spriteBatch);
         }
 
+        public bool collisionSensor(Fixture f1, Fixture f2, Contact contact)
+        {
+            ((HitboxData)f1.UserData).isTouching = true;
+            ((HitboxData)f1.UserData).contactList.Add(contact);
+            return true;
+        }
+
+        public void separationSensor(Fixture f1, Fixture f2)
+        {
+            ((HitboxData)f1.UserData).isTouching = false;
+            ((HitboxData)f1.UserData).contactList.Clear();
+        }
+
         public void setLinearDamping(float damping)
         {
             body.LinearDamping = damping;
         }
 
-        public void canRotate(bool state)
+        public void isRotationFixed(bool state)
         {
             body.FixedRotation = state;
         }

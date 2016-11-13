@@ -20,9 +20,14 @@ namespace Bloodbender
 
     public class Projectile : PhysicObj
     {
-        public Projectile(Vector2 position, uint animNbr = 1) : base(position, animNbr)
+        public Projectile(Vector2 position, float angle, float speed, uint animNbr = 1) : base(position, animNbr)
         {
-
+            float pixelToMeter = Bloodbender.ptr.pixelToMeter;
+            body = BodyFactory.CreateRectangle(Bloodbender.ptr.world, 10 * pixelToMeter, 10 * pixelToMeter, 1);
+            body.BodyType = BodyType.Dynamic;
+            body.Position = position * pixelToMeter;
+            body.LinearVelocity = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
+            body.LinearVelocity *= speed * pixelToMeter;
         }
 
         public override bool Update(float elapsed)

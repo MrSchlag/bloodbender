@@ -19,6 +19,9 @@ namespace Bloodbender
 {
     public class Player : PhysicObj
     {
+        Fixture playerBoundsFix;
+        Fixture playerHitSensorFix;
+        float attackSensorAngle; 
 
         public Player(Vector2 position, uint animNbr = 1) : base(position, animNbr)
         {
@@ -27,42 +30,31 @@ namespace Bloodbender
             float pixelToMeter = Bloodbender.ptr.pixelToMeter;
 
             velocity = 200;
+            attackSensorAngle = 0f;
 
             //Create rectangles shapes
             Vertices rectangleVertices = PolygonTools.CreateRectangle(16 * pixelToMeter, 16 * pixelToMeter);
-            
+
             PolygonShape playerBounds = new PolygonShape(rectangleVertices, 1);
-            PolygonShape playerHitUp = new PolygonShape(rectangleVertices, 1);
-            PolygonShape playerHitDown = new PolygonShape(rectangleVertices, 1);
-            PolygonShape playerHitLeft = new PolygonShape(rectangleVertices, 1);
-            PolygonShape playerHitRight = new PolygonShape(rectangleVertices, 1);
+            PolygonShape playerHitSensor = new PolygonShape(rectangleVertices, 1);
 
             //Transalte rectangles shapes to set there positions
-            playerHitUp.Vertices.Translate(new Vector2(0, -32 * pixelToMeter));
-            playerHitDown.Vertices.Translate(new Vector2(0, 32 * pixelToMeter));
-            playerHitLeft.Vertices.Translate(new Vector2(-32 * pixelToMeter, 0));
-            playerHitRight.Vertices.Translate(new Vector2(32 * pixelToMeter, 0));
+            playerHitSensor.Vertices.Translate(new Vector2(32 * pixelToMeter, 0));
 
             //Bind body to shpes (create a compound body)
-            Fixture playerBoundsFix = body.CreateFixture(playerBounds);
-            Fixture playerHitUpFix = body.CreateFixture(playerHitUp);
-            Fixture playerHitDownFix = body.CreateFixture(playerHitDown);
-            Fixture playerHitLeftFix = body.CreateFixture(playerHitLeft);
-            Fixture playerHitRightFix = body.CreateFixture(playerHitRight);
+            playerBoundsFix = body.CreateFixture(playerBounds);
+            playerHitSensorFix = body.CreateFixture(playerHitSensor);
 
             //set the UserData fixture's members with HitboxData object (contain parent and uint)
             playerBoundsFix.UserData = new HitboxData(this, hitboxType.BOUND);
-            playerHitUpFix.UserData = new HitboxData(this, hitboxType.ATTACK);
-            playerHitDownFix.UserData = new HitboxData(this, hitboxType.ATTACK);
-            playerHitLeftFix.UserData = new HitboxData(this, hitboxType.ATTACK);
-            playerHitRightFix.UserData = new HitboxData(this, hitboxType.ATTACK);
+            playerHitSensorFix.UserData = new HitboxData(this, hitboxType.ATTACK);
+
+            //set wether the fixture is a sensor or not (sensor: no response, no contact point)
+            playerHitSensorFix.IsSensor = true;
 
             //add method to be called on collision, different denpending of fixture
-            playerBoundsFix.OnCollision += collisionOnBounds;
-            playerHitUpFix.OnCollision += collisionOnAttackBox;
-            playerHitDownFix.OnCollision += collisionOnAttackBox;
-            playerHitLeftFix.OnCollision += collisionOnAttackBox;
-            playerHitRightFix.OnCollision += collisionOnAttackBox;
+            playerHitSensorFix.OnCollision += collisionSensor;
+            playerHitSensorFix.OnSeparation += separationSensor;
 
         }
 
@@ -104,9 +96,12 @@ namespace Bloodbender
                 nbrArrowPressed += 1;
                 body.LinearVelocity += new Vector2(-velocity * pixelToMeter, 0);
             }
-
             if (nbrArrowPressed >= 2)
                 body.LinearVelocity /= 2;
+
+            isSensorColliding();
+            playerHitSensorFixMousePosRotation();
+            checkSensorInteractions();
 
             return base.Update(elapsed);
         }
@@ -116,15 +111,56 @@ namespace Bloodbender
             base.Draw(spriteBatch);
         }
 
-        public bool collisionOnBounds(Fixture f1, Fixture f2, Contact test)
+        private void playerHitSensorFixMousePosRotation()
         {
-            return true;
+            float mouseAngle = angleWithMouse();
+            float pi = (float)Math.PI;
+            float piBy4 = 0.78539816339f;
+            float threePiBy4 = 2.35619449019f;
+            float newAttackSensorAngle = 0;
+
+            if (mouseAngle > -piBy4 && mouseAngle < piBy4) //trouver les angles corespondants avec des fraction de pi
+                newAttackSensorAngle = 0;
+            else if (mouseAngle > piBy4 && mouseAngle < threePiBy4)
+                newAttackSensorAngle = pi / 2f;
+            else if ((mouseAngle > threePiBy4 && mouseAngle < pi) || (mouseAngle > -pi && mouseAngle < -threePiBy4))
+                newAttackSensorAngle = pi;
+            else if (mouseAngle > -threePiBy4 && mouseAngle < -piBy4)
+                newAttackSensorAngle = -pi / 2f;
+            if (newAttackSensorAngle != attackSensorAngle)
+            {
+                ((PolygonShape)playerHitSensorFix.Shape).Vertices.Rotate(newAttackSensorAngle - attackSensorAngle);
+                attackSensorAngle = newAttackSensorAngle;
+                body.Awake = true;
+            }
+
         }
 
-        public bool collisionOnAttackBox(Fixture f1, Fixture f2, Contact test)
+        private void checkSensorInteractions()
         {
-            System.Diagnostics.Debug.WriteLine("collision with an attack hitbox"); //TO REMOVE
-            return false;
+            if (!Keyboard.GetState().IsKeyDown(Keys.Space))
+                return;
+            HitboxData contactData = null;
+            HitboxData sensorData = (HitboxData)playerHitSensorFix.UserData;
+            if (sensorData.isTouching == true)
+            {
+                foreach (Contact contact in sensorData.contactList)
+                {
+                    contactData = (HitboxData)contact.FixtureB.UserData;
+                    if (contactData == null)
+                        continue;
+                    if (contactData.physicParent is Totem)
+                        ((Totem)contactData.physicParent).generateProjectile(angleWithMouse());
+                }
+            }
+        }
+
+        private void isSensorColliding()
+        {
+            if (((HitboxData)playerHitSensorFix.UserData).isTouching == true)
+            {
+                //System.Diagnostics.Debug.WriteLine("attackSensor colliding");
+            }
         }
     }
 }

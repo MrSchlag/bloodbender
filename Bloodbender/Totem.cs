@@ -37,5 +37,15 @@ namespace Bloodbender
         {
             base.Draw(spriteBatch);
         }
+        
+        public void generateProjectile(float angle)
+        {
+            //System.Diagnostics.Debug.WriteLine("Totem touched by playerattacksensor");
+            Projectile proj = new Projectile(body.Position * Bloodbender.ptr.meterToPixel, angle, 400f);
+            proj.animations[0] = new Animation(Bloodbender.ptr.bouleRouge);
+            proj.animations[0].origin = new Vector2(15, 15);
+            body.FixtureList[0].IgnoreCollisionWith(proj.body.FixtureList[0]);
+            Bloodbender.ptr.listGraphicObj.Add(proj);
+        }
     }
 }

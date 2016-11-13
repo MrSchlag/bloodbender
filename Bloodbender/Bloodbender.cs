@@ -31,6 +31,8 @@ namespace Bloodbender
         public List<GraphicObj> listGraphicObj;
         //RenderTarget2D targetShadows;
 
+        public Texture2D bouleRouge;
+
         public Bloodbender()
         {
             ptr = this;
@@ -87,14 +89,16 @@ namespace Bloodbender
 
             Texture2D textureCarre = Content.Load<Texture2D>("carre");
             Texture2D textureTotem = Content.Load<Texture2D>("Totem");
+            bouleRouge = Content.Load<Texture2D>("bouleRouge");
 
             /*
             GraphicObj gobj = new GraphicObj();
             gobj.animations[0] = new Animation(textureCarre);
             */
-            
+
             MapBound mapBounds = new MapBound();
             mapBounds.addVertex(new Vector2(0, 0));
+            mapBounds.addVertex(new Vector2(120, -50));
             mapBounds.addVertex(new Vector2(500, 0));
             mapBounds.addVertex(new Vector2(500, 500));
             mapBounds.addVertex(new Vector2(0, 500));
@@ -105,7 +109,7 @@ namespace Bloodbender
                 new Vector2(200, 200));
             pobj.animations[0] = new Animation(textureCarre);
             pobj.animations[0].origin = new Vector2(16, 16);
-            pobj.canRotate(false);
+            pobj.isRotationFixed(true);
 
             Player player = new Player(new Vector2(100, 100));
             player.animations[0] = new Animation(textureCarre);
@@ -119,8 +123,6 @@ namespace Bloodbender
             listGraphicObj.Add(totem);
             listGraphicObj.Add(player);
             listGraphicObj.Add(pobj);
-            //listGraphicObj.Add(gobj);
-            // TODO: use this.Content to load your game content here
         }
 
         /// <summary>
@@ -146,8 +148,8 @@ namespace Bloodbender
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            foreach (GraphicObj obj in listGraphicObj)
-                obj.Update(elapsed);
+            for (int i = 0; i < listGraphicObj.Count; ++i)
+                listGraphicObj[i].Update(elapsed);
 
             world.Step(elapsed);
 
