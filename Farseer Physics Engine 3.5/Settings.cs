@@ -59,7 +59,7 @@ namespace FarseerPhysics
         /// <summary>
         /// The number of velocity iterations used in the solver.
         /// </summary>
-        public static int VelocityIterations = 8;
+        public static int VelocityIterations = 3;
 
         /// <summary>
         /// The number of position iterations used in the solver.
@@ -92,7 +92,7 @@ namespace FarseerPhysics
         /// <summary>
         /// Maximum number of sub-steps per contact in continuous physics simulation.
         /// </summary>
-        public const int MaxSubSteps = 8;
+        public const int MaxSubSteps = 3;
 
         /// <summary>
         /// Enable/Disable warmstarting

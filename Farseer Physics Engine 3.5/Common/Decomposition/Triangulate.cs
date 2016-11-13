@@ -60,7 +60,7 @@ namespace FarseerPhysics.Common.Decomposition
         /// Properties:
         /// - Creates triangles with a large interior angle.
         /// - Supports holes
-        /// - Generate a lot of garbage due to incapsulation of the Poly2Tri library.
+        /// - Generate a lot of   due to incapsulation of the Poly2Tri library.
         /// - Running time is O(n^2), n = number of vertices.
         /// - Does not care about winding order.
         /// </summary>

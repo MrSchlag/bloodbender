@@ -28,7 +28,7 @@ namespace Bloodbender
             body.Position = position * pixelToMeter;
             body.LinearVelocity = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
             body.LinearVelocity *= speed * pixelToMeter;
-            body.FixedRotation = true;
+            body.FixedRotation = false;
         }
 
         public override bool Update(float elapsed)

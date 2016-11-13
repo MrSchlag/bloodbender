@@ -140,17 +140,17 @@ namespace Bloodbender
         {
             if (!Keyboard.GetState().IsKeyDown(Keys.Space))
                 return;
-            HitboxData contactData = null;
+            HitboxData fixInContactData;
             HitboxData sensorData = (HitboxData)playerHitSensorFix.UserData;
             if (sensorData.isTouching == true)
             {
-                foreach (Contact contact in sensorData.contactList)
+                foreach (Fixture fixInContact in sensorData.fixInContactList)
                 {
-                    contactData = (HitboxData)contact.FixtureB.UserData;
-                    if (contactData == null)
+                    if (fixInContact.UserData == null)
                         continue;
-                    if (contactData.physicParent is Totem)
-                        ((Totem)contactData.physicParent).generateProjectile(angleWithMouse());
+                    fixInContactData = (HitboxData)fixInContact.UserData;
+                    if (fixInContactData.physicParent is Totem)
+                        ((Totem)fixInContactData.physicParent).generateProjectile(angleWithMouse());
                 }
             }
         }

@@ -25,14 +25,14 @@ namespace Bloodbender
         public PhysicObj physicParent;
         public hitboxType type;
         public bool isTouching;
-        public List<Contact> contactList;
+        public List<Fixture> fixInContactList;
 
         public HitboxData(PhysicObj parent, hitboxType type)
         {
             physicParent = parent;
             this.type = type;
             isTouching = false;
-            contactList = new List<Contact>();
+            fixInContactList = new List<Fixture>();
         }
     }
 
@@ -80,14 +80,31 @@ namespace Bloodbender
         public bool collisionSensor(Fixture f1, Fixture f2, Contact contact)
         {
             ((HitboxData)f1.UserData).isTouching = true;
-            ((HitboxData)f1.UserData).contactList.Add(contact);
+            ((HitboxData)f1.UserData).fixInContactList.Add(f2);
             return true;
         }
 
         public void separationSensor(Fixture f1, Fixture f2)
         {
-            ((HitboxData)f1.UserData).isTouching = false;
-            ((HitboxData)f1.UserData).contactList.Clear();
+            HitboxData f1data = (HitboxData)f1.UserData;
+            HitboxData f2data = (HitboxData)f2.UserData;
+            Fixture fixToRemove = null;
+
+            if (f1data == null || f2data == null)
+                return;
+
+            foreach (Fixture fixSearched in f1data.fixInContactList)
+            {
+                if (fixSearched == f2)
+                {
+                    fixToRemove = fixSearched;
+                    break;
+                }
+            }
+
+            f1data.fixInContactList.Remove(fixToRemove);
+            if (f1data.fixInContactList.Count == 0)
+                f1data.isTouching = false;
         }
 
         public void setLinearDamping(float damping)

@@ -71,6 +71,8 @@ namespace Bloodbender
             inputHelper = new InputHelper();
             inputHelper.ShowCursor = true;
 
+
+
             base.Initialize();
         }
 
@@ -151,9 +153,8 @@ namespace Bloodbender
             for (int i = 0; i < listGraphicObj.Count; ++i)
                 listGraphicObj[i].Update(elapsed);
 
-            world.Step(elapsed);
+            world.Step(1f / 60f);
 
-            
             // TODO: Add your update logic here
             camera.Update(elapsed);
 
