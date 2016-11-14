@@ -24,7 +24,7 @@ namespace Bloodbender
             float pixelToMeter = Bloodbender.ptr.pixelToMeter;
             Vertices rectangleVertices = PolygonTools.CreateRectangle(50 * pixelToMeter, 50 * pixelToMeter);
             PolygonShape totemBounds = new PolygonShape(rectangleVertices, 1);
-            Fixture totemBoundsFix = body.CreateFixture(totemBounds, new HitboxData(this, hitboxType.BOUND));
+            Fixture totemBoundsFix = body.CreateFixture(totemBounds, new AdditionalFixtureData(this, hitboxType.BOUND));
             body.BodyType = BodyType.Static;
         }
 

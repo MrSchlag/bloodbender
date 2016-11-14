@@ -46,8 +46,8 @@ namespace Bloodbender
             playerHitSensorFix = body.CreateFixture(playerHitSensor);
 
             //set the UserData fixture's members with HitboxData object (contain parent and uint)
-            playerBoundsFix.UserData = new HitboxData(this, hitboxType.BOUND);
-            playerHitSensorFix.UserData = new HitboxData(this, hitboxType.ATTACK);
+            playerBoundsFix.UserData = new AdditionalFixtureData(this, hitboxType.BOUND);
+            playerHitSensorFix.UserData = new AdditionalFixtureData(this, hitboxType.ATTACK);
 
             //set wether the fixture is a sensor or not (sensor: no response, no contact point)
             playerHitSensorFix.IsSensor = true;
@@ -140,15 +140,15 @@ namespace Bloodbender
         {
             if (!Keyboard.GetState().IsKeyDown(Keys.Space))
                 return;
-            HitboxData fixInContactData;
-            HitboxData sensorData = (HitboxData)playerHitSensorFix.UserData;
+            AdditionalFixtureData fixInContactData;
+            AdditionalFixtureData sensorData = (AdditionalFixtureData)playerHitSensorFix.UserData;
             if (sensorData.isTouching == true)
             {
                 foreach (Fixture fixInContact in sensorData.fixInContactList)
                 {
                     if (fixInContact.UserData == null)
                         continue;
-                    fixInContactData = (HitboxData)fixInContact.UserData;
+                    fixInContactData = (AdditionalFixtureData)fixInContact.UserData;
                     if (fixInContactData.physicParent is Totem)
                         ((Totem)fixInContactData.physicParent).generateProjectile(angleWithMouse());
                 }
@@ -157,7 +157,7 @@ namespace Bloodbender
 
         private void isSensorColliding()
         {
-            if (((HitboxData)playerHitSensorFix.UserData).isTouching == true)
+            if (((AdditionalFixtureData)playerHitSensorFix.UserData).isTouching == true)
             {
                 //System.Diagnostics.Debug.WriteLine("attackSensor colliding");
             }

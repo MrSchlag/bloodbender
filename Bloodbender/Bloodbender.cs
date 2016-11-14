@@ -101,8 +101,8 @@ namespace Bloodbender
             MapBound mapBounds = new MapBound();
             mapBounds.addVertex(new Vector2(0, 0));
             mapBounds.addVertex(new Vector2(120, -50));
-            mapBounds.addVertex(new Vector2(500, 0));
-            mapBounds.addVertex(new Vector2(500, 500));
+            mapBounds.addVertex(new Vector2(2000, 0));
+            mapBounds.addVertex(new Vector2(1900, 500));
             mapBounds.addVertex(new Vector2(0, 500));
             mapBounds.finiliezMap();
             

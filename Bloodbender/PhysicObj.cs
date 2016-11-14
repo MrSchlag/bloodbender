@@ -20,14 +20,14 @@ namespace Bloodbender
         ATTACK = 1
     }
 
-    public class HitboxData
+    public class AdditionalFixtureData
     {
         public PhysicObj physicParent;
         public hitboxType type;
         public bool isTouching;
         public List<Fixture> fixInContactList;
 
-        public HitboxData(PhysicObj parent, hitboxType type)
+        public AdditionalFixtureData(PhysicObj parent, hitboxType type)
         {
             physicParent = parent;
             this.type = type;
@@ -79,15 +79,15 @@ namespace Bloodbender
 
         public bool collisionSensor(Fixture f1, Fixture f2, Contact contact)
         {
-            ((HitboxData)f1.UserData).isTouching = true;
-            ((HitboxData)f1.UserData).fixInContactList.Add(f2);
+            ((AdditionalFixtureData)f1.UserData).isTouching = true;
+            ((AdditionalFixtureData)f1.UserData).fixInContactList.Add(f2);
             return true;
         }
 
         public void separationSensor(Fixture f1, Fixture f2)
         {
-            HitboxData f1data = (HitboxData)f1.UserData;
-            HitboxData f2data = (HitboxData)f2.UserData;
+            AdditionalFixtureData f1data = (AdditionalFixtureData)f1.UserData;
+            AdditionalFixtureData f2data = (AdditionalFixtureData)f2.UserData;
             Fixture fixToRemove = null;
 
             if (f1data == null || f2data == null)
