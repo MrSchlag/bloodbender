@@ -153,7 +153,7 @@ namespace Bloodbender
             for (int i = 0; i < listGraphicObj.Count; ++i)
                 listGraphicObj[i].Update(elapsed);
 
-            world.Step(1f / 60f);
+            world.Step(1f / 30f);
 
             // TODO: Add your update logic here
             camera.Update(elapsed);
