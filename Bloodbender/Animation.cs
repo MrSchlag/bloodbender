@@ -26,7 +26,7 @@ namespace Bloodbender
         protected int currentFrame = 0;
         protected float totalElapsed = 0.0f;
 
-        public Animation(Texture2D texture, int frameWidth = 0) : this(texture, 1, 0.0f, frameWidth) // use this constructor if their only is 1 frame in your animation
+        public Animation(Texture2D texture, int frameWidth = 0) : this(texture, 1, 0.0f, frameWidth) // use this constructor if their only is 1 frame in your so called animation
         { }
         public Animation(Texture2D texture, int framesNumber, float frameLength, int frameWidth = 0) // precise the frameWidth if the number of frame indicated does not match the witdh of the texture (ex: a texture with 3frame with a width of 100pixels each, texture width = 3 * 100 = 300, if the number of frame indicated is 2, precise the width of a frame, 100 in this case)
         {

@@ -36,6 +36,16 @@ namespace Bloodbender
                 animations[currentAnimation].Draw(spriteBatch, position, rotation, spriteEffect, scale, height);
         }
 
+        public void addAnimation(Animation animation)
+        {
+            animations.Add(animation);
+        }
+
+        public Animation getAnimation(int i)
+        {
+            return animations[i];
+        }
+
         public Vector2 getBottomCenter() // return the coordinate of the bottom center of sprite, don't take scale in parameter 
         {
             return new Vector2(position.X + (animations[currentAnimation].rectangleSource.Width / 2) * scale.X,
@@ -59,8 +69,10 @@ namespace Bloodbender
             {
                 if (currentAnimation != animationNbr || forceAnimation)
                 {
-                    foreach (Animation animation in animations)
-                        animation.reset();
+                    //foreach (Animation animation in animations)
+                      //  animation.reset();
+
+                    animations[animationNbr].reset();
                 }
 
                 currentAnimation = animationNbr;
