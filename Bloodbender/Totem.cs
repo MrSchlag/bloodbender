@@ -27,7 +27,9 @@ namespace Bloodbender
             Vertices rectangleVertices = PolygonTools.CreateRectangle(50 * pixelToMeter, 50 * pixelToMeter);
             PolygonShape totemBounds = new PolygonShape(rectangleVertices, 1);
             Fixture totemBoundsFix = body.CreateFixture(totemBounds, new AdditionalFixtureData(this, hitboxType.BOUND));
+            addFixtureToCheckedCollision(totemBoundsFix);
             body.BodyType = BodyType.Static;
+            height = 100;
         }
 
         public override bool Update(float elapsed)

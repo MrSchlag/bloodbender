@@ -54,10 +54,9 @@ namespace Bloodbender
             playerHitSensorFix.IsSensor = true;
 
             //add method to be called on collision, different denpending of fixture
-            playerHitSensorFix.OnCollision += collisionSensor;
-            playerHitSensorFix.OnSeparation += separationSensor;
-            playerBoundsFix.OnCollision += collisionBounds;
-            playerBoundsFix.OnSeparation += separationBounds;
+            addFixtureToCheckedCollision(playerHitSensorFix);
+            addFixtureToCheckedCollision(playerBoundsFix);
+            height = 100;
         }
 
         public override bool Update(float elapsed)

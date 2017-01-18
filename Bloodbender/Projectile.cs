@@ -35,6 +35,9 @@ namespace Bloodbender
             body.FixedRotation = false;
             body.FixtureList[0].CollisionGroup = -1;
             body.Restitution = 0.01f;
+            body.FixtureList[0].UserData = new AdditionalFixtureData(this, hitboxType.BOUND);
+            addFixtureToCheckedCollision(body.FixtureList[0]);
+            //height = 100f;
             //body.FixtureList[0].CollisionGroup = 0x0002;
             //body.FixtureList[0].CollidesWith = 0x0001;
         }

@@ -25,6 +25,7 @@ namespace Bloodbender
             mapVertices = new Vertices();
             body.BodyType = BodyType.Static;
             body.Position = new Vector2(0, 0);
+            lenght = 100;
         }
 
         public void addVertex(Vector2 vertex)
@@ -37,6 +38,8 @@ namespace Bloodbender
         {
             ChainShape shape = new ChainShape(mapVertices, true);
             Fixture shapeFix = body.CreateFixture(shape);
+            shapeFix.UserData = new AdditionalFixtureData(this, hitboxType.BOUND);
+            addFixtureToCheckedCollision(shapeFix);
         }
     }
 }

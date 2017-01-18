@@ -81,8 +81,11 @@ namespace Bloodbender
 
         public bool collisionBounds(Fixture f1, Fixture f2, Contact contact)
         {
-            System.Diagnostics.Debug.Print("collision bounds handler");
-            //if (() == false 
+            //System.Diagnostics.Debug.Print("collision bounds handler");
+            if (isCollisionPossibleByHeight(f1, f2) == false)
+            {
+                return false;
+            }
             addFixtureOnCollision(f1, f2);
             return true;
         }
@@ -94,6 +97,10 @@ namespace Bloodbender
 
         public bool collisionSensor(Fixture f1, Fixture f2, Contact contact)
         {
+            if (isCollisionPossibleByHeight(f1, f2) == false)
+            {
+                return false;
+            }
             addFixtureOnCollision(f1, f2);
             return true;
         }
@@ -101,6 +108,39 @@ namespace Bloodbender
         public void separationSensor(Fixture f1, Fixture f2)
         {
             removeFixtureOnSeparation(f1, f2);
+        }
+
+        /* attribut les handlers de collision en fonction du type de la fixture */
+        protected void addFixtureToCheckedCollision(Fixture fix)
+        {
+            if (fix.IsSensor == true)
+            {
+                fix.OnCollision += collisionSensor;
+                fix.OnSeparation += separationSensor;
+            }
+            else
+            {
+                fix.OnCollision += collisionBounds;
+                fix.OnSeparation += separationBounds;
+            }
+        }
+
+        private bool isCollisionPossibleByHeight(Fixture f1, Fixture f2)
+        {
+            if ((AdditionalFixtureData)f1.UserData == null || (AdditionalFixtureData)f2.UserData == null)
+                return true;
+
+            PhysicObj p1 = ((AdditionalFixtureData)f1.UserData).physicParent;
+            PhysicObj p2 = ((AdditionalFixtureData)f2.UserData).physicParent;
+
+            float p1Top = (p1.height * Bloodbender.ptr.pixelToMeter) + p1.lenght;
+            float p1Down = p1.height * Bloodbender.ptr.pixelToMeter;
+            float p2Top = (p2.height * Bloodbender.ptr.pixelToMeter) + p2.lenght;
+            float p2Down = p2.height * Bloodbender.ptr.pixelToMeter;
+
+            if (p1Top < p2Down || p2Top < p1Down)
+                return false;
+            return true;
         }
 
         private void addFixtureOnCollision(Fixture f1, Fixture f2)
