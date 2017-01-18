@@ -43,7 +43,7 @@ namespace Bloodbender
         public float velocity;
         public float lenght;
 
-        public PhysicObj(Body body, Vector2 position, uint animNbr = 1) : base(animNbr)
+        public PhysicObj(Body body, Vector2 position)
         {
             velocity = 0;
             this.body = body;
@@ -55,7 +55,7 @@ namespace Bloodbender
             this.lenght = 0;
         }
 
-        public PhysicObj(Vector2 position, uint animNbr = 1) : base(animNbr)
+        public PhysicObj(Vector2 position)
         {
             velocity = 0;
             body = BodyFactory.CreateBody(Bloodbender.ptr.world);

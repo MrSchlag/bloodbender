@@ -23,7 +23,7 @@ namespace Bloodbender
         Fixture playerHitSensorFix;
         float attackSensorAngle;
 
-        public Player(Vector2 position, uint animNbr = 1) : base(position, animNbr)
+        public Player(Vector2 position) : base(position)
         {
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
             Bloodbender.ptr.camera.TrackingBody = body;

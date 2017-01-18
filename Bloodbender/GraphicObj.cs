@@ -11,17 +11,17 @@ namespace Bloodbender
 {
     public class GraphicObj
     {
-        public Animation[] animations;
+        public List<Animation> animations;
         public Vector2 position = Vector2.Zero;
         protected float rotation = 0.0f;
-        protected uint currentAnimation = 0;
+        protected int currentAnimation = 0;
         public float height = 0.0f;
         protected SpriteEffects spriteEffect = SpriteEffects.None;
         public Vector2 scale = Vector2.One;
 
-        public GraphicObj(uint animationsNumber = 1) // faire en sorte que le constructeur ne prenne pas en parametre le nombre d'animation, et juste faire une fonction addAnimation
+        public GraphicObj()
         {
-            animations = new Animation[animationsNumber];
+            animations = new List<Animation>();
         }
         public virtual bool Update(float elapsed)
         {
@@ -35,18 +35,6 @@ namespace Bloodbender
             //if (Bloodbender.ptr.camera.isInView(this)) // Permet de draw que les elements present ds la vue
                 animations[currentAnimation].Draw(spriteBatch, position, rotation, spriteEffect, scale, height);
         }
-
-        /*
-        public void addAnimation(Animation animation)
-        {
-            Animation[] tmpAnimations = new Animation[animations.Length + 1];
-
-            for (int i = 0; i < animations.Length; ++i)
-                tmpAnimations[i] = animations[i];
-            tmpAnimations[animations.Length] = animation;
-            animations = tmpAnimations;
-        }
-        */
 
         public Vector2 getBottomCenter() // return the coordinate of the bottom center of sprite, don't take scale in parameter 
         {
@@ -65,15 +53,18 @@ namespace Bloodbender
             return new Vector2(animations[currentAnimation].rectangleSource.Width * scale.X, animations[currentAnimation].rectangleSource.Height * scale.Y);
         }
 
-        public void runAnimation(uint animationNbr, bool forceAnimation = false) // set force to true if you want an animation already running to re-run itself
+        public void runAnimation(int animationNbr, bool forceAnimation = false) // set force to true if you want an animation already running to re-run itself
         {
-            if (currentAnimation != animationNbr || forceAnimation)
+            if (animationNbr >= 0)
             {
-                foreach (Animation animation in animations)
-                    animation.reset();
-            }
+                if (currentAnimation != animationNbr || forceAnimation)
+                {
+                    foreach (Animation animation in animations)
+                        animation.reset();
+                }
 
-            currentAnimation = animationNbr;
+                currentAnimation = animationNbr;
+            }
         }
 
         public float angleWithMouse()
