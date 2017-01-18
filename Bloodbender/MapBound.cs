@@ -30,7 +30,7 @@ namespace Bloodbender
 
         public void addVertex(Vector2 vertex)
         {
-            vertex *= Bloodbender.ptr.pixelToMeter;
+            vertex *= Bloodbender.pixelToMeter;
             mapVertices.Add(vertex);
         }
 

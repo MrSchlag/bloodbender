@@ -19,18 +19,17 @@ namespace Bloodbender
         public Camera camera;
 
         public World world;
-        public float meterToPixel;
-        public float pixelToMeter;
-
+        public const float meterToPixel = 32;
+        public const float pixelToMeter = 1 / meterToPixel;
         public DebugViewXNA debugView;
 
-        public float elapsed = 0.0f;
 
         public InputHelper inputHelper;
 
         public ShadowsRendering shadowsRendering;
-
         public List<GraphicObj> listGraphicObj;
+
+        public float elapsed = 0.0f;
 
         public Texture2D bouleRouge;
 
@@ -40,10 +39,6 @@ namespace Bloodbender
 
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
-            shadowsRendering = new ShadowsRendering();
-
-            listGraphicObj = new List<GraphicObj>();
 
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
@@ -59,8 +54,6 @@ namespace Bloodbender
         {
             // TODO: Add your initialization logic here
             world = new World(new Vector2(0, 0));
-            meterToPixel = 32;
-            pixelToMeter = 1 / meterToPixel;
 
             ConvertUnits.SetDisplayUnitToSimUnitRatio(meterToPixel);
 
@@ -74,7 +67,13 @@ namespace Bloodbender
             inputHelper = new InputHelper();
             inputHelper.ShowCursor = true;
 
+            shadowsRendering = new ShadowsRendering();
 
+            listGraphicObj = new List<GraphicObj>();
+
+            camera = new Camera(GraphicsDevice);
+
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
             base.Initialize();
         }
@@ -88,20 +87,10 @@ namespace Bloodbender
             // Create a new SpriteBatch, which can be used to draw textures.
             inputHelper.LoadContent();
 
-            camera = new Camera(GraphicsDevice);
-
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            shadowsRendering.LoadContent();
-
             Texture2D textureCarre = Content.Load<Texture2D>("carre");
+            Texture2D textureCarre2 = Content.Load<Texture2D>("carre2");
             Texture2D textureTotem = Content.Load<Texture2D>("Totem");
             bouleRouge = Content.Load<Texture2D>("bouleRouge");
-
-            /*
-            GraphicObj gobj = new GraphicObj();
-            gobj.animations[0] = new Animation(textureCarre);
-            */
 
             MapBound mapBounds = new MapBound();
             mapBounds.addVertex(new Vector2(0, 0));
@@ -114,7 +103,8 @@ namespace Bloodbender
 
             PhysicObj pobj = new PhysicObj(BodyFactory.CreateRectangle(world, 32 * pixelToMeter, 32 * pixelToMeter, 1), // meterTopixel a la place de 32?
                 new Vector2(200, 200));
-            pobj.animations[0] = new Animation(textureCarre);
+            shadowsRendering.addShadow(new Shadow(pobj));
+            pobj.animations[0] = new Animation(textureCarre2);
             pobj.animations[0].origin = new Vector2(16, 16);
             pobj.isRotationFixed(true);
 

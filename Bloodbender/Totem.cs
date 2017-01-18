@@ -23,7 +23,7 @@ namespace Bloodbender
         {
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
 
-            float pixelToMeter = Bloodbender.ptr.pixelToMeter;
+            float pixelToMeter = Bloodbender.pixelToMeter;
             Vertices rectangleVertices = PolygonTools.CreateRectangle(50 * pixelToMeter, 50 * pixelToMeter);
             PolygonShape totemBounds = new PolygonShape(rectangleVertices, 1);
             Fixture totemBoundsFix = body.CreateFixture(totemBounds, new AdditionalFixtureData(this, hitboxType.BOUND));
@@ -45,7 +45,7 @@ namespace Bloodbender
         public void generateProjectile(float angle)
         {
             //System.Diagnostics.Debug.WriteLine("Totem touched by playerattacksensor");
-            Projectile proj = new Projectile(body.Position * Bloodbender.ptr.meterToPixel, angle, 400f);
+            Projectile proj = new Projectile(body.Position * Bloodbender.meterToPixel, angle, 400f);
             proj.animations[0] = new Animation(Bloodbender.ptr.bouleRouge);
             proj.animations[0].origin = new Vector2(15, 15);
             body.FixtureList[0].IgnoreCollisionWith(proj.body.FixtureList[0]);

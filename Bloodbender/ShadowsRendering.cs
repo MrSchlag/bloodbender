@@ -16,6 +16,7 @@ namespace Bloodbender
         public ShadowsRendering()
         {
             listShadows = new List<Shadow>();
+            targetShadows = new RenderTarget2D(Bloodbender.ptr.GraphicsDevice, Bloodbender.ptr.GraphicsDevice.PresentationParameters.BackBufferWidth, Bloodbender.ptr.GraphicsDevice.PresentationParameters.BackBufferHeight);
         }
 
         public void Update(float elapsed)
@@ -31,7 +32,6 @@ namespace Bloodbender
 
         public void LoadContent()
         {
-            targetShadows = new RenderTarget2D(Bloodbender.ptr.GraphicsDevice, Bloodbender.ptr.GraphicsDevice.PresentationParameters.BackBufferWidth, Bloodbender.ptr.GraphicsDevice.PresentationParameters.BackBufferHeight);
         }
         public void addShadow(Shadow shadow)
         {
@@ -86,15 +86,10 @@ namespace Bloodbender
         {
             position = graphicObj.getBottomCenter();
 
-            //Console.WriteLine("Elem: " + graphicObj.position.X + " " + graphicObj.position.Y);
-            //Console.WriteLine("Elem Bottom: " + position.X + " " + position.Y);
-
             position.X -= animations[0].rectangleSource.Width / 2 ;
             position.Y -= animations[0].rectangleSource.Height / 2 ;
 
             position -= graphicObj.animations[0].origin;
-
-            //Console.WriteLine("Shadow Position: " + position.X + " " + position.Y);
 
             base.Draw(spriteBatch);
         }

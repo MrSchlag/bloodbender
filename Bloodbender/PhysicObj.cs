@@ -47,7 +47,7 @@ namespace Bloodbender
         {
             velocity = 0;
             this.body = body;
-            this.body.Position = position * Bloodbender.ptr.pixelToMeter;
+            this.body.Position = position * Bloodbender.pixelToMeter;
             this.body.BodyType = BodyType.Dynamic;
             this.body.FixedRotation = true;
             this.body.LinearDamping = 1;
@@ -59,7 +59,7 @@ namespace Bloodbender
         {
             velocity = 0;
             body = BodyFactory.CreateBody(Bloodbender.ptr.world);
-            body.Position = position * Bloodbender.ptr.pixelToMeter;
+            body.Position = position * Bloodbender.pixelToMeter;
             body.BodyType = BodyType.Dynamic;
             body.FixedRotation = true;
             body.LinearDamping = 0.02f;
@@ -73,7 +73,7 @@ namespace Bloodbender
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            position = body.Position * Bloodbender.ptr.meterToPixel;
+            position = body.Position * Bloodbender.meterToPixel;
             rotation = body.Rotation;
 
             base.Draw(spriteBatch);
@@ -133,10 +133,10 @@ namespace Bloodbender
             PhysicObj p1 = ((AdditionalFixtureData)f1.UserData).physicParent;
             PhysicObj p2 = ((AdditionalFixtureData)f2.UserData).physicParent;
 
-            float p1Top = (p1.height * Bloodbender.ptr.pixelToMeter) + p1.lenght;
-            float p1Down = p1.height * Bloodbender.ptr.pixelToMeter;
-            float p2Top = (p2.height * Bloodbender.ptr.pixelToMeter) + p2.lenght;
-            float p2Down = p2.height * Bloodbender.ptr.pixelToMeter;
+            float p1Top = (p1.height * Bloodbender.pixelToMeter) + p1.lenght;
+            float p1Down = p1.height * Bloodbender.pixelToMeter;
+            float p2Top = (p2.height * Bloodbender.pixelToMeter) + p2.lenght;
+            float p2Down = p2.height * Bloodbender.pixelToMeter;
 
             if (p1Top < p2Down || p2Top < p1Down)
                 return false;

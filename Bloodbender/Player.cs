@@ -28,7 +28,7 @@ namespace Bloodbender
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
             Bloodbender.ptr.camera.TrackingBody = body;
 
-            float pixelToMeter = Bloodbender.ptr.pixelToMeter;
+            float pixelToMeter = Bloodbender.pixelToMeter;
 
             velocity = 200;
             attackSensorAngle = 0f;
@@ -56,12 +56,12 @@ namespace Bloodbender
             //add method to be called on collision, different denpending of fixture
             addFixtureToCheckedCollision(playerHitSensorFix);
             addFixtureToCheckedCollision(playerBoundsFix);
-            height = 100;
+            height = 50;
         }
 
         public override bool Update(float elapsed)
         {
-            float pixelToMeter = Bloodbender.ptr.pixelToMeter;
+            float pixelToMeter = Bloodbender.pixelToMeter;
             int nbrArrowPressed = 0;
 
             if (Keyboard.GetState().IsKeyDown(Keys.Z)

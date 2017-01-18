@@ -24,7 +24,7 @@ namespace Bloodbender
         {
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
 
-            float pixelToMeter = Bloodbender.ptr.pixelToMeter;
+            float pixelToMeter = Bloodbender.pixelToMeter;
             
             body = BodyFactory.CreateRectangle(Bloodbender.ptr.world, 10 * pixelToMeter, 10 * pixelToMeter, 1);
             //body = BodyFactory.CreateCircle(Bloodbender.ptr.world, 5 * pixelToMeter, 1);
