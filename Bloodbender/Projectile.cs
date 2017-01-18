@@ -31,6 +31,10 @@ namespace Bloodbender
             body.LinearVelocity = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
             body.LinearVelocity *= speed * pixelToMeter;
             body.FixedRotation = false;
+            body.FixtureList[0].CollisionGroup = -1;
+            body.Restitution = 0.01f;
+            //body.FixtureList[0].CollisionGroup = 0x0002;
+            //body.FixtureList[0].CollidesWith = 0x0001;
         }
 
         public override bool Update(float elapsed)

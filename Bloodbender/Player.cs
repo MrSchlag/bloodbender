@@ -21,7 +21,7 @@ namespace Bloodbender
     {
         Fixture playerBoundsFix;
         Fixture playerHitSensorFix;
-        float attackSensorAngle; 
+        float attackSensorAngle;
 
         public Player(Vector2 position, uint animNbr = 1) : base(position, animNbr)
         {
@@ -55,7 +55,8 @@ namespace Bloodbender
             //add method to be called on collision, different denpending of fixture
             playerHitSensorFix.OnCollision += collisionSensor;
             playerHitSensorFix.OnSeparation += separationSensor;
-
+            playerBoundsFix.OnCollision += collisionBounds;
+            playerBoundsFix.OnSeparation += separationBounds;
         }
 
         public override bool Update(float elapsed)
@@ -133,7 +134,6 @@ namespace Bloodbender
                 attackSensorAngle = newAttackSensorAngle;
                 body.Awake = true;
             }
-
         }
 
         private void checkSensorInteractions()

@@ -39,8 +39,9 @@ namespace Bloodbender
     public class PhysicObj : GraphicObj
     {
         public Body body;
-        public Body size;
+        //public Body size;
         public float velocity;
+        public float lenght;
 
         public PhysicObj(Body body, Vector2 position, uint animNbr = 1) : base(animNbr)
         {
@@ -51,6 +52,7 @@ namespace Bloodbender
             this.body.FixedRotation = true;
             this.body.LinearDamping = 1;
             this.body.AngularDamping = 1;
+            this.lenght = 0;
         }
 
         public PhysicObj(Vector2 position, uint animNbr = 1) : base(animNbr)
@@ -77,14 +79,37 @@ namespace Bloodbender
             base.Draw(spriteBatch);
         }
 
+        public bool collisionBounds(Fixture f1, Fixture f2, Contact contact)
+        {
+            System.Diagnostics.Debug.Print("collision bounds handler");
+            //if (() == false 
+            addFixtureOnCollision(f1, f2);
+            return true;
+        }
+
+        public void separationBounds(Fixture f1, Fixture f2)
+        {
+            removeFixtureOnSeparation(f1, f2);
+        }
+
         public bool collisionSensor(Fixture f1, Fixture f2, Contact contact)
         {
-            ((AdditionalFixtureData)f1.UserData).isTouching = true;
-            ((AdditionalFixtureData)f1.UserData).fixInContactList.Add(f2);
+            addFixtureOnCollision(f1, f2);
             return true;
         }
 
         public void separationSensor(Fixture f1, Fixture f2)
+        {
+            removeFixtureOnSeparation(f1, f2);
+        }
+
+        private void addFixtureOnCollision(Fixture f1, Fixture f2)
+        {
+            ((AdditionalFixtureData)f1.UserData).isTouching = true;
+            ((AdditionalFixtureData)f1.UserData).fixInContactList.Add(f2);
+        }
+
+        private void removeFixtureOnSeparation(Fixture f1, Fixture f2)
         {
             AdditionalFixtureData f1data = (AdditionalFixtureData)f1.UserData;
             AdditionalFixtureData f2data = (AdditionalFixtureData)f2.UserData;
