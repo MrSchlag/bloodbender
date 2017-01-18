@@ -3,6 +3,7 @@ using FarseerPhysics.Dynamics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using FarseerPhysics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Bloodbender
 {
@@ -30,6 +31,9 @@ namespace Bloodbender
         public Matrix SimProjection;
         public Matrix SimView;
         public Matrix View;
+
+        private int scrollWheelValue = 0;
+        private float zoomStep = 0.15f;
 
 
         /// <summary>
@@ -268,6 +272,17 @@ namespace Bloodbender
         /// </summary>
         public void Update(float elapsed)
         {
+            if (scrollWheelValue > Mouse.GetState().ScrollWheelValue)
+            {
+                Zoom -= zoomStep;
+            }
+            else if (scrollWheelValue < Mouse.GetState().ScrollWheelValue)
+            {
+                Zoom += zoomStep;
+            }
+
+            scrollWheelValue = Mouse.GetState().ScrollWheelValue;
+
             if (_trackingBody != null)
             {
                 if (_positionTracking)

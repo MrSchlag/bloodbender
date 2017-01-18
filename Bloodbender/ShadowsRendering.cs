@@ -79,6 +79,8 @@ namespace Bloodbender
 
         public override bool Update(float elapsed)
         {
+            // lire la position et le scale du graphique obj ici et non pas ds le draw
+
             return base.Update(elapsed);
         }
 

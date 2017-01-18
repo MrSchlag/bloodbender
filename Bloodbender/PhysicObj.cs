@@ -68,14 +68,13 @@ namespace Bloodbender
 
         public override bool Update(float elapsed)
         {
+            position = body.Position * Bloodbender.meterToPixel;
+            rotation = body.Rotation;
             return base.Update(elapsed);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            position = body.Position * Bloodbender.meterToPixel;
-            rotation = body.Rotation;
-
             base.Draw(spriteBatch);
         }
 

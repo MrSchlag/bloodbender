@@ -145,12 +145,11 @@ namespace Bloodbender
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            for (int i = 0; i < listGraphicObj.Count; ++i)
-                listGraphicObj[i].Update(elapsed);
 
             world.Step(1f / 30f);
 
-            // TODO: Add your update logic here
+            for (int i = 0; i < listGraphicObj.Count; ++i)
+                listGraphicObj[i].Update(elapsed);
 
             camera.Update(elapsed);
 

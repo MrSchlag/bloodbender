@@ -29,7 +29,7 @@ namespace Bloodbender
             Fixture totemBoundsFix = body.CreateFixture(totemBounds, new AdditionalFixtureData(this, hitboxType.BOUND));
             addFixtureToCheckedCollision(totemBoundsFix);
             body.BodyType = BodyType.Static;
-            height = 100;
+            height = 00;
         }
 
         public override bool Update(float elapsed)

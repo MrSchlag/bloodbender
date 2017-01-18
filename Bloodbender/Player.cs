@@ -56,7 +56,7 @@ namespace Bloodbender
             //add method to be called on collision, different denpending of fixture
             addFixtureToCheckedCollision(playerHitSensorFix);
             addFixtureToCheckedCollision(playerBoundsFix);
-            height = 50;
+            height = 0;
         }
 
         public override bool Update(float elapsed)
