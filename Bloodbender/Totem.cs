@@ -21,6 +21,8 @@ namespace Bloodbender
     {
         public Totem(Vector2 position, uint animNbr = 1) : base(position, animNbr)
         {
+            Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
+
             float pixelToMeter = Bloodbender.ptr.pixelToMeter;
             Vertices rectangleVertices = PolygonTools.CreateRectangle(50 * pixelToMeter, 50 * pixelToMeter);
             PolygonShape totemBounds = new PolygonShape(rectangleVertices, 1);

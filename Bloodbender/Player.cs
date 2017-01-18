@@ -25,6 +25,7 @@ namespace Bloodbender
 
         public Player(Vector2 position, uint animNbr = 1) : base(position, animNbr)
         {
+            Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
             Bloodbender.ptr.camera.TrackingBody = body;
 
             float pixelToMeter = Bloodbender.ptr.pixelToMeter;
