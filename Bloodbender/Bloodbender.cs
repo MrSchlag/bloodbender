@@ -104,17 +104,17 @@ namespace Bloodbender
             PhysicObj pobj = new PhysicObj(BodyFactory.CreateRectangle(world, 32 * pixelToMeter, 32 * pixelToMeter, 1), // meterTopixel a la place de 32?
                 new Vector2(200, 200));
             shadowsRendering.addShadow(new Shadow(pobj));
-            pobj.animations[0] = new Animation(textureCarre2);
+            pobj.animations.Add(new Animation(textureCarre2));
             pobj.animations[0].origin = new Vector2(16, 16);
             pobj.isRotationFixed(true);
 
             Player player = new Player(new Vector2(100, 100));
-            player.animations[0] = new Animation(textureCarre);
+            player.animations.Add(new Animation(textureCarre));
             player.animations[0].origin = new Vector2(16, 16);
             player.setLinearDamping(10);
 
             Totem totem = new Totem(new Vector2(300, 300));
-            totem.animations[0] = new Animation(textureTotem);
+            totem.animations.Add(new Animation(textureTotem));
             totem.animations[0].origin = new Vector2(50, 50);
 
             listGraphicObj.Add(totem);

@@ -20,7 +20,7 @@ namespace Bloodbender
 
     public class Projectile : PhysicObj
     {
-        public Projectile(Vector2 position, float angle, float speed, uint animNbr = 1) : base(position, animNbr)
+        public Projectile(Vector2 position, float angle, float speed) : base(position)
         {
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
 

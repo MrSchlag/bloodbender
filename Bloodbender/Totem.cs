@@ -19,7 +19,7 @@ namespace Bloodbender
 {
     public class Totem : PhysicObj
     {
-        public Totem(Vector2 position, uint animNbr = 1) : base(position, animNbr)
+        public Totem(Vector2 position) : base(position)
         {
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
 
@@ -46,7 +46,7 @@ namespace Bloodbender
         {
             //System.Diagnostics.Debug.WriteLine("Totem touched by playerattacksensor");
             Projectile proj = new Projectile(body.Position * Bloodbender.meterToPixel, angle, 400f);
-            proj.animations[0] = new Animation(Bloodbender.ptr.bouleRouge);
+            proj.animations.Add(new Animation(Bloodbender.ptr.bouleRouge));
             proj.animations[0].origin = new Vector2(15, 15);
             body.FixtureList[0].IgnoreCollisionWith(proj.body.FixtureList[0]);
             Bloodbender.ptr.listGraphicObj.Add(proj);

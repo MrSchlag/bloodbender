@@ -20,7 +20,7 @@ namespace Bloodbender
     public class MapBound : PhysicObj
     {
         Vertices mapVertices;
-        public MapBound(uint animNbr = 0) : base(new Vector2(0, 0), animNbr)
+        public MapBound() : base(new Vector2(0, 0))
         {
             mapVertices = new Vertices();
             body.BodyType = BodyType.Static;
