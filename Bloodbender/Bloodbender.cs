@@ -28,8 +28,9 @@ namespace Bloodbender
 
         public InputHelper inputHelper;
 
+        public ShadowsRendering shadowsRendering;
+
         public List<GraphicObj> listGraphicObj;
-        //RenderTarget2D targetShadows;
 
         public Texture2D bouleRouge;
 
@@ -39,6 +40,8 @@ namespace Bloodbender
 
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            shadowsRendering = new ShadowsRendering();
 
             listGraphicObj = new List<GraphicObj>();
 
@@ -88,6 +91,8 @@ namespace Bloodbender
             camera = new Camera(GraphicsDevice);
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            shadowsRendering.LoadContent();
 
             Texture2D textureCarre = Content.Load<Texture2D>("carre");
             Texture2D textureTotem = Content.Load<Texture2D>("Totem");
@@ -156,7 +161,10 @@ namespace Bloodbender
             world.Step(1f / 30f);
 
             // TODO: Add your update logic here
+
             camera.Update(elapsed);
+
+
 
             if (inputHelper.IsNewKeyPress(Keys.F1))
                 debugView.EnableOrDisableFlag(DebugViewFlags.Shape);
@@ -190,8 +198,13 @@ namespace Bloodbender
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            shadowsRendering.renderShadowsOnTarget();
+
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+            spriteBatch.Draw(shadowsRendering.getTarget(), Vector2.Zero, null, new Color(255, 255, 255, 100), 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.00001f);
+            spriteBatch.End();
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.View);
 
@@ -200,9 +213,11 @@ namespace Bloodbender
 
             spriteBatch.End();
 
+
             debugView.RenderDebugData(ref camera.SimProjection, ref camera.SimView);
 
             inputHelper.Draw();
+
 
             base.Draw(gameTime);
         }

@@ -22,6 +22,8 @@ namespace Bloodbender
     {
         public Projectile(Vector2 position, float angle, float speed, uint animNbr = 1) : base(position, animNbr)
         {
+            Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
+
             float pixelToMeter = Bloodbender.ptr.pixelToMeter;
             
             body = BodyFactory.CreateRectangle(Bloodbender.ptr.world, 10 * pixelToMeter, 10 * pixelToMeter, 1);
