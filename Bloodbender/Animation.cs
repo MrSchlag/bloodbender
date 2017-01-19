@@ -14,8 +14,8 @@ namespace Bloodbender
         public bool isRunning { get; set; } = true; // bool to know if the animation is running
         public bool isDepthForce = false;
 
-        protected Texture2D texture;
-        public Rectangle rectangleSource; // rectangle used to get a different part of the texture at each draw
+        private Texture2D texture;
+        private Rectangle rectangleSource; // rectangle used to get a different part of the texture at each draw
         public Vector2 origin = Vector2.Zero;
         public float depth { get; set; } = 0.0f;
         public Color color = Color.White;
@@ -101,6 +101,10 @@ namespace Bloodbender
             isDepthForce = true;
         }
 
+        public Vector2 getFrameDimensions()
+        {
+            return new Vector2(frameWidth, texture.Height);
+        }
         public Texture2D getTexture() // methode à supprimer car fausse
         {
             return texture;

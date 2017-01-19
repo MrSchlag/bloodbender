@@ -38,7 +38,7 @@ namespace Bloodbender
         {
             ChainShape shape = new ChainShape(mapVertices, true);
             Fixture shapeFix = body.CreateFixture(shape);
-            shapeFix.UserData = new AdditionalFixtureData(this, hitboxType.BOUND);
+            shapeFix.UserData = new AdditionalFixtureData(this, HitboxType.BOUND);
             addFixtureToCheckedCollision(shapeFix);
         }
     }

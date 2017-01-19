@@ -40,6 +40,12 @@ namespace Bloodbender
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
+            /*
+            graphics.PreferredBackBufferWidth = 1920;
+            graphics.PreferredBackBufferHeight = 1080;
+            graphics.IsFullScreen = true;
+            */
+
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
         }
@@ -104,18 +110,15 @@ namespace Bloodbender
             PhysicObj pobj = new PhysicObj(BodyFactory.CreateRectangle(world, 32 * pixelToMeter, 32 * pixelToMeter, 1), // meterTopixel a la place de 32?
                 new Vector2(200, 200));
             shadowsRendering.addShadow(new Shadow(pobj));
-            pobj.animations.Add(new Animation(textureCarre2));
-            pobj.animations[0].origin = new Vector2(16, 16);
+            pobj.addAnimation(new Animation(textureCarre2));
             pobj.isRotationFixed(true);
 
             Player player = new Player(new Vector2(100, 100));
-            player.animations.Add(new Animation(textureCarre));
-            player.animations[0].origin = new Vector2(16, 16);
+            player.addAnimation(new Animation(textureCarre));
             player.setLinearDamping(10);
 
             Totem totem = new Totem(new Vector2(300, 300));
-            totem.animations.Add(new Animation(textureTotem));
-            totem.animations[0].origin = new Vector2(50, 50);
+            totem.addAnimation(new Animation(textureTotem));
 
             listGraphicObj.Add(totem);
             listGraphicObj.Add(player);

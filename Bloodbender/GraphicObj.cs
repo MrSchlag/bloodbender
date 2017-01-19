@@ -11,17 +11,20 @@ namespace Bloodbender
 {
     public class GraphicObj
     {
-        public List<Animation> animations;
+        private List<Animation> animations;
         public Vector2 position = Vector2.Zero;
         protected float rotation = 0.0f;
         protected int currentAnimation = 0;
         public float height = 0.0f;
         protected SpriteEffects spriteEffect = SpriteEffects.None;
         public Vector2 scale = Vector2.One;
+        private OffSet offSet;
+        public enum OffSet { BottomCenterHorizontal, None };
 
-        public GraphicObj()
+        public GraphicObj(OffSet offSet = OffSet.None)
         {
             animations = new List<Animation>();
+            this.offSet = offSet;
         }
         public virtual bool Update(float elapsed)
         {
@@ -38,6 +41,11 @@ namespace Bloodbender
 
         public void addAnimation(Animation animation)
         {
+            if (offSet == OffSet.BottomCenterHorizontal)
+            {
+                animation.origin = animation.getFrameDimensions();
+                animation.origin.X /= 2;
+            }
             animations.Add(animation);
         }
 
@@ -48,19 +56,19 @@ namespace Bloodbender
 
         public Vector2 getBottomCenter() // return the coordinate of the bottom center of sprite, don't take scale in parameter 
         {
-            return new Vector2(position.X + (animations[currentAnimation].rectangleSource.Width / 2) * scale.X,
-                                position.Y + animations[currentAnimation].rectangleSource.Height * scale.Y);
+            return new Vector2(position.X + (animations[currentAnimation].getFrameDimensions().X / 2) * scale.X,
+                                position.Y + animations[currentAnimation].getFrameDimensions().Y * scale.Y);
         }
 
         public Vector2 getCenter() // return the center of current sprite
         {
-            return new Vector2(position.X + (animations[currentAnimation].rectangleSource.Width / 2) * scale.X,
-                                position.Y + (animations[currentAnimation].rectangleSource.Height / 2) * scale.Y);
+            return new Vector2(position.X + (animations[currentAnimation].getFrameDimensions().X / 2) * scale.X,
+                                position.Y + (animations[currentAnimation].getFrameDimensions().Y / 2) * scale.Y);
         }
 
         public Vector2 getSize()
         {
-            return new Vector2(animations[currentAnimation].rectangleSource.Width * scale.X, animations[currentAnimation].rectangleSource.Height * scale.Y);
+            return new Vector2(animations[currentAnimation].getFrameDimensions().X * scale.X, animations[currentAnimation].getFrameDimensions().Y * scale.Y);
         }
 
         public void runAnimation(int animationNbr, bool forceAnimation = false) // set force to true if you want an animation already running to re-run itself

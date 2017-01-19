@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Bloodbender
 {
-    public enum hitboxType
+    public enum HitboxType
     {
         BOUND = 0,
         ATTACK = 1
@@ -23,11 +23,11 @@ namespace Bloodbender
     public class AdditionalFixtureData
     {
         public PhysicObj physicParent;
-        public hitboxType type;
+        public HitboxType type;
         public bool isTouching;
         public List<Fixture> fixInContactList;
 
-        public AdditionalFixtureData(PhysicObj parent, hitboxType type)
+        public AdditionalFixtureData(PhysicObj parent, HitboxType type)
         {
             physicParent = parent;
             this.type = type;
@@ -43,7 +43,7 @@ namespace Bloodbender
         public float velocity;
         public float lenght;
 
-        public PhysicObj(Body body, Vector2 position)
+        public PhysicObj(Body body, Vector2 position) : base(OffSet.BottomCenterHorizontal)
         {
             velocity = 0;
             this.body = body;
@@ -55,7 +55,7 @@ namespace Bloodbender
             this.lenght = 0;
         }
 
-        public PhysicObj(Vector2 position)
+        public PhysicObj(Vector2 position) : base(OffSet.BottomCenterHorizontal)
         {
             velocity = 0;
             body = BodyFactory.CreateBody(Bloodbender.ptr.world);
@@ -69,7 +69,6 @@ namespace Bloodbender
         public override bool Update(float elapsed)
         {
             position = body.Position * Bloodbender.meterToPixel;
-            rotation = body.Rotation;
             return base.Update(elapsed);
         }
 

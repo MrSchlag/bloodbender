@@ -73,7 +73,7 @@ namespace Bloodbender
         {
             this.graphicObj = graphicObj;
 
-            animations.Add(new Animation(Bloodbender.ptr.Content.Load<Texture2D>("shadow")));
+            addAnimation(new Animation(Bloodbender.ptr.Content.Load<Texture2D>("shadow")));
             //animations[0].forceDepth(0.00001f);
         }
 
@@ -88,10 +88,10 @@ namespace Bloodbender
         {
             position = graphicObj.getBottomCenter();
 
-            position.X -= animations[currentAnimation].rectangleSource.Width / 2 ;
-            position.Y -= animations[currentAnimation].rectangleSource.Height / 2 ;
+            position.X -= getAnimation(currentAnimation).getFrameDimensions().X / 2 ;
+            position.Y -= getAnimation(currentAnimation).getFrameDimensions().Y / 2 ;
 
-            position -= graphicObj.animations[0].origin;
+            position -= graphicObj.getAnimation(0).origin;
 
             base.Draw(spriteBatch);
         }

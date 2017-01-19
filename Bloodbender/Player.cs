@@ -26,6 +26,7 @@ namespace Bloodbender
         public Player(Vector2 position) : base(position)
         {
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
+
             Bloodbender.ptr.camera.TrackingBody = body;
 
             float pixelToMeter = Bloodbender.pixelToMeter;
@@ -47,8 +48,8 @@ namespace Bloodbender
             playerHitSensorFix = body.CreateFixture(playerHitSensor);
 
             //set the UserData fixture's members with HitboxData object (contain parent and uint)
-            playerBoundsFix.UserData = new AdditionalFixtureData(this, hitboxType.BOUND);
-            playerHitSensorFix.UserData = new AdditionalFixtureData(this, hitboxType.ATTACK);
+            playerBoundsFix.UserData = new AdditionalFixtureData(this, HitboxType.BOUND);
+            playerHitSensorFix.UserData = new AdditionalFixtureData(this, HitboxType.ATTACK);
 
             //set wether the fixture is a sensor or not (sensor: no response, no contact point)
             playerHitSensorFix.IsSensor = true;

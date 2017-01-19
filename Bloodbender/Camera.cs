@@ -337,6 +337,8 @@ namespace Bloodbender
             _currentPosition += 100f * delta * inertia * elapsed;
             _currentRotation += 80f * rotDelta * rotInertia * elapsed;
 
+            //_currentPosition = _targetPosition;
+
             SetView();
         }
 
