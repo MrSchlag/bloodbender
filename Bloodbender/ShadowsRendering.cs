@@ -86,12 +86,10 @@ namespace Bloodbender
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            position = graphicObj.getBottomCenter();
+            position = graphicObj.position;
 
             position.X -= getAnimation(currentAnimation).getFrameDimensions().X / 2 ;
             position.Y -= getAnimation(currentAnimation).getFrameDimensions().Y / 2 ;
-
-            position -= graphicObj.getAnimation(0).origin;
 
             base.Draw(spriteBatch);
         }

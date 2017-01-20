@@ -105,6 +105,7 @@ namespace Bloodbender
         {
             return new Vector2(frameWidth, texture.Height);
         }
+
         public Texture2D getTexture() // methode à supprimer car fausse
         {
             return texture;

@@ -35,19 +35,22 @@ namespace Bloodbender
         private int scrollWheelValue = 0;
         private float zoomStep = 0.15f;
 
-
+        ResolutionIndependentRenderer resolutionIndependence;
         /// <summary>
         /// The constructor for the Camera2D class.
         /// </summary>
         /// <param name="graphics"></param>
-        public Camera(GraphicsDevice graphics)
+        public Camera(GraphicsDevice graphics, ResolutionIndependentRenderer resolutionIndependence)
         {
             _graphics = graphics;
+
+            this.resolutionIndependence = resolutionIndependence;
+
             SimProjection = Matrix.CreateOrthographicOffCenter(0f, ConvertUnits.ToSimUnits(_graphics.Viewport.Width), ConvertUnits.ToSimUnits(_graphics.Viewport.Height), 0f, 0f, 1f);
             SimView = Matrix.Identity;
             View = Matrix.Identity;
 
-            _translateCenter = new Vector2(ConvertUnits.ToSimUnits(_graphics.Viewport.Width / 2f), ConvertUnits.ToSimUnits(_graphics.Viewport.Height / 2f));
+            _translateCenter = new Vector2(ConvertUnits.ToSimUnits(resolutionIndependence.VirtualWidth / 2f), ConvertUnits.ToSimUnits(resolutionIndependence.VirtualHeight / 2f));
 
             ResetCamera();
         }
@@ -252,19 +255,26 @@ namespace Bloodbender
             SetView();
         }
 
-        private void SetView()
+        public void SetView()
         {
             Matrix matRotation = Matrix.CreateRotationZ(_currentRotation);
             Matrix matZoom = Matrix.CreateScale(_currentZoom);
             Vector3 translateCenter = new Vector3(_translateCenter, 0f);
             Vector3 translateBody = new Vector3(-_currentPosition, 0f);
 
-            SimView = Matrix.CreateTranslation(translateBody) * matRotation * matZoom * Matrix.CreateTranslation(translateCenter);
+            SimView = Matrix.CreateTranslation(translateBody) * matRotation * matZoom * Matrix.CreateTranslation(translateCenter) * resolutionIndependence.GetTransformationMatrix();
 
             translateCenter = ConvertUnits.ToDisplayUnits(translateCenter);
             translateBody = ConvertUnits.ToDisplayUnits(translateBody);
 
-            View = Matrix.CreateTranslation(translateBody) * matRotation * matZoom * Matrix.CreateTranslation(translateCenter);
+            Vector3 resTranslationVec = new Vector3();
+            resTranslationVec.X = resolutionIndependence.VirtualWidth*0.5f;
+            resTranslationVec.Y = resolutionIndependence.VirtualHeight*0.5f;
+            resTranslationVec.Z = 0;
+
+            //translateCenter -= resTranslationVec;
+
+            View = Matrix.CreateTranslation(translateBody) * matRotation * matZoom * Matrix.CreateTranslation(translateCenter) * resolutionIndependence.GetTransformationMatrix();
         }
 
         /// <summary>
@@ -336,8 +346,6 @@ namespace Bloodbender
 
             _currentPosition += 100f * delta * inertia * elapsed;
             _currentRotation += 80f * rotDelta * rotInertia * elapsed;
-
-            //_currentPosition = _targetPosition;
 
             SetView();
         }

@@ -19,7 +19,7 @@ namespace Bloodbender
         protected SpriteEffects spriteEffect = SpriteEffects.None;
         public Vector2 scale = Vector2.One;
         private OffSet offSet;
-        public enum OffSet { BottomCenterHorizontal, None };
+        public enum OffSet { Center, BottomCenterHorizontal, None };
 
         public GraphicObj(OffSet offSet = OffSet.None)
         {
@@ -41,34 +41,24 @@ namespace Bloodbender
 
         public void addAnimation(Animation animation)
         {
+
             if (offSet == OffSet.BottomCenterHorizontal)
             {
                 animation.origin = animation.getFrameDimensions();
                 animation.origin.X /= 2;
             }
+            else if (offSet == OffSet.Center)
+            {
+                animation.origin = animation.getFrameDimensions();
+                animation.origin /= 2;
+            }
+
             animations.Add(animation);
         }
 
         public Animation getAnimation(int i)
         {
             return animations[i];
-        }
-
-        public Vector2 getBottomCenter() // return the coordinate of the bottom center of sprite, don't take scale in parameter 
-        {
-            return new Vector2(position.X + (animations[currentAnimation].getFrameDimensions().X / 2) * scale.X,
-                                position.Y + animations[currentAnimation].getFrameDimensions().Y * scale.Y);
-        }
-
-        public Vector2 getCenter() // return the center of current sprite
-        {
-            return new Vector2(position.X + (animations[currentAnimation].getFrameDimensions().X / 2) * scale.X,
-                                position.Y + (animations[currentAnimation].getFrameDimensions().Y / 2) * scale.Y);
-        }
-
-        public Vector2 getSize()
-        {
-            return new Vector2(animations[currentAnimation].getFrameDimensions().X * scale.X, animations[currentAnimation].getFrameDimensions().Y * scale.Y);
         }
 
         public void runAnimation(int animationNbr, bool forceAnimation = false) // set force to true if you want an animation already running to re-run itself
@@ -89,9 +79,10 @@ namespace Bloodbender
 
         public float angleWithMouse()
         {
-            Vector2 centerPos = getCenter();
-            float deltaY = Bloodbender.ptr.inputHelper.Cursor.Y - centerPos.Y + Bloodbender.ptr.camera.Position.Y - (Bloodbender.ptr.GraphicsDevice.Viewport.Height / 2);
-            float deltaX = Bloodbender.ptr.inputHelper.Cursor.X - centerPos.X + Bloodbender.ptr.camera.Position.X - (Bloodbender.ptr.GraphicsDevice.Viewport.Width / 2);
+            Vector2 vec = Bloodbender.ptr.resolutionIndependence.ScaleMouseToScreenCoordinates(Bloodbender.ptr.inputHelper.Cursor);
+
+            float deltaY = vec.Y - position.Y + Bloodbender.ptr.camera.Position.Y - (Bloodbender.ptr.resolutionIndependence.VirtualHeight / 2);
+            float deltaX = vec.X - position.X + Bloodbender.ptr.camera.Position.X - (Bloodbender.ptr.resolutionIndependence.VirtualWidth / 2);
             float angle = (float)(Math.Atan2(deltaY, deltaX));
 
             return angle;

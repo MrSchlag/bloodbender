@@ -6,6 +6,7 @@ using FarseerPhysics.DebugView;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Factories;
 using FarseerPhysics;
+using System;
 
 namespace Bloodbender
 {
@@ -16,6 +17,7 @@ namespace Bloodbender
         GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
 
+        public ResolutionIndependentRenderer resolutionIndependence;
         public Camera camera;
 
         public World world;
@@ -40,14 +42,13 @@ namespace Bloodbender
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            /*
-            graphics.PreferredBackBufferWidth = 1920;
-            graphics.PreferredBackBufferHeight = 1080;
-            graphics.IsFullScreen = true;
-            */
-
+          
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
+            //graphics.IsFullScreen = true;
+   
+
+            resolutionIndependence = new ResolutionIndependentRenderer(this);            
         }
 
         /// <summary>
@@ -77,9 +78,12 @@ namespace Bloodbender
 
             listGraphicObj = new List<GraphicObj>();
 
-            camera = new Camera(GraphicsDevice);
+            InitializeResolutionIndependence(graphics.GraphicsDevice.Viewport.Width, graphics.GraphicsDevice.Viewport.Height);
+
+            camera = new Camera(GraphicsDevice, resolutionIndependence);
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
 
             base.Initialize();
         }
@@ -90,6 +94,7 @@ namespace Bloodbender
         /// </summary>
         protected override void LoadContent()
         {
+
             // Create a new SpriteBatch, which can be used to draw textures.
             inputHelper.LoadContent();
 
@@ -98,6 +103,7 @@ namespace Bloodbender
             Texture2D textureTotem = Content.Load<Texture2D>("Totem");
             bouleRouge = Content.Load<Texture2D>("bouleRouge");
 
+            
             MapBound mapBounds = new MapBound();
             mapBounds.addVertex(new Vector2(0, 0));
             mapBounds.addVertex(new Vector2(120, -50));
@@ -125,6 +131,14 @@ namespace Bloodbender
             listGraphicObj.Add(pobj);
         }
 
+        private void InitializeResolutionIndependence(int realScreenWidth, int realScreenHeight)
+        {
+            resolutionIndependence.VirtualWidth = 1280;
+            resolutionIndependence.VirtualHeight = 720;
+            resolutionIndependence.ScreenWidth = realScreenWidth;
+            resolutionIndependence.ScreenHeight = realScreenHeight;
+            resolutionIndependence.Initialize();
+        }
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
         /// game-specific content.
@@ -151,8 +165,11 @@ namespace Bloodbender
 
             world.Step(1f / 30f);
 
+
             for (int i = 0; i < listGraphicObj.Count; ++i)
                 listGraphicObj[i].Update(elapsed);
+
+            shadowsRendering.Update(elapsed);
 
             camera.Update(elapsed);
 
@@ -192,19 +209,20 @@ namespace Bloodbender
         {
             shadowsRendering.renderShadowsOnTarget();
 
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            resolutionIndependence.BeginDraw();
+            //camera.SetView();
+            
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             spriteBatch.Draw(shadowsRendering.getTarget(), Vector2.Zero, null, new Color(255, 255, 255, 100), 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.00001f);
             spriteBatch.End();
-            // TODO: Add your drawing code here
-            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.View);
 
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.View);
+                        
             foreach (GraphicObj obj in listGraphicObj)
                 obj.Draw(spriteBatch);
 
             spriteBatch.End();
-
+   
 
             debugView.RenderDebugData(ref camera.SimProjection, ref camera.SimView);
 
