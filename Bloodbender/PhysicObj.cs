@@ -7,6 +7,7 @@ using FarseerPhysics.Collision;
 using FarseerPhysics.Factories;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Dynamics.Contacts;
+using FarseerPhysics.Collision.Shapes;
 using FarseerPhysics.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -183,6 +184,17 @@ namespace Bloodbender
         public void setBodyType(BodyType type)
         {
             body.BodyType = type;
+        }
+
+        public Fixture createRectangleFixture(float width, float height, Vector2 transalationVector, AdditionalFixtureData userData = null)
+        {
+            //Create rectangles shapes
+            Vertices rectangleVertices = PolygonTools.CreateRectangle((width / 2) * Bloodbender.pixelToMeter, (height / 2) * Bloodbender.pixelToMeter);
+            PolygonShape rectangleShape = new PolygonShape(rectangleVertices, 1);
+            //Transalte rectangles shapes to set there positions
+            rectangleShape.Vertices.Translate(transalationVector * Bloodbender.pixelToMeter);
+            //Bind body to shpes (create a compound body) and return
+            return (body.CreateFixture(rectangleShape, userData));
         }
     }
 }

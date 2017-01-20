@@ -23,10 +23,7 @@ namespace Bloodbender
         {
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
 
-            float pixelToMeter = Bloodbender.pixelToMeter;
-            Vertices rectangleVertices = PolygonTools.CreateRectangle(50 * pixelToMeter, 50 * pixelToMeter);
-            PolygonShape totemBounds = new PolygonShape(rectangleVertices, 1);
-            Fixture totemBoundsFix = body.CreateFixture(totemBounds, new AdditionalFixtureData(this, HitboxType.BOUND));
+            Fixture totemBoundsFix = createRectangleFixture(100, 100, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
             addFixtureToCheckedCollision(totemBoundsFix);
             body.BodyType = BodyType.Static;
             height = 00;

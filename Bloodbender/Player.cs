@@ -26,36 +26,19 @@ namespace Bloodbender
         public Player(Vector2 position) : base(position)
         {
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
-
             Bloodbender.ptr.camera.TrackingBody = body;
-
-            float pixelToMeter = Bloodbender.pixelToMeter;
 
             velocity = 200;
             attackSensorAngle = 0f;
-
-            //Create rectangles shapes
-            Vertices rectangleVertices = PolygonTools.CreateRectangle(16 * pixelToMeter, 16 * pixelToMeter);
-
-            PolygonShape playerBounds = new PolygonShape(rectangleVertices, 1);
-            PolygonShape playerHitSensor = new PolygonShape(rectangleVertices, 1);
-
-            //Transalte rectangles shapes to set there positions
-            playerHitSensor.Vertices.Translate(new Vector2(32 * pixelToMeter, 0));
-
-            //Bind body to shpes (create a compound body)
-            playerBoundsFix = body.CreateFixture(playerBounds);
-            playerHitSensorFix = body.CreateFixture(playerHitSensor);
-
-            //set the UserData fixture's members with HitboxData object (contain parent and uint)
-            playerBoundsFix.UserData = new AdditionalFixtureData(this, HitboxType.BOUND);
-            playerHitSensorFix.UserData = new AdditionalFixtureData(this, HitboxType.ATTACK);
+            
+            playerBoundsFix = createRectangleFixture(32.0f, 32.0f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
+            playerHitSensorFix = createRectangleFixture(32.0f, 32.0f, new Vector2(32.0f, 0), new AdditionalFixtureData(this, HitboxType.ATTACK));
 
             //set wether the fixture is a sensor or not (sensor: no response, no contact point)
             playerHitSensorFix.IsSensor = true;
 
             //add method to be called on collision, different denpending of fixture
-            addFixtureToCheckedCollision(playerHitSensorFix);
+            addFixtureToCheckedCollision(playerHitSensorFix); 
             addFixtureToCheckedCollision(playerBoundsFix);
             height = 0;
         }
