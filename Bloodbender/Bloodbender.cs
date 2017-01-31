@@ -53,8 +53,11 @@ namespace Bloodbender
           
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
+
+            //graphics.SynchronizeWithVerticalRetrace = false;
+            //IsFixedTimeStep = false;
             //graphics.IsFullScreen = true;
-            
+
 
             resolutionIndependence = new ResolutionIndependentRenderer(this);            
         }
