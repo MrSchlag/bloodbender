@@ -41,6 +41,8 @@ namespace Bloodbender
 
         SpriteFont font;
 
+        FrameRateCounter frameRateCounter;
+
         public Bloodbender()
         {
             ptr = this;
@@ -137,6 +139,8 @@ namespace Bloodbender
             listGraphicObj.Add(totem);
             listGraphicObj.Add(player);
             listGraphicObj.Add(pobj);
+
+            frameRateCounter = new FrameRateCounter(font);
         }
 
         
@@ -230,6 +234,8 @@ namespace Bloodbender
                 graphics.ToggleFullScreen();
             }
 
+            frameRateCounter.Update(elapsed);
+
             base.Update(gameTime);
         }
 
@@ -260,9 +266,7 @@ namespace Bloodbender
             debugView.RenderDebugData(ref camera.SimProjection, ref camera.SimView);
 
             resolutionIndependence.SetupFullViewport();
-            spriteBatch.Begin();
-            spriteBatch.DrawString(font, "" + (1000 / gameTime.ElapsedGameTime.Milliseconds), new Vector2(10, 10), Color.White);
-            spriteBatch.End();
+            frameRateCounter.Draw(spriteBatch);
 
             base.Draw(gameTime);
         }
