@@ -33,10 +33,13 @@ namespace Bloodbender
 
         public float elapsed = 0.0f;
 
+        public Color BackgroundColor = Color.CornflowerBlue;
+
         public Texture2D bouleRouge;
 
         private bool WindowSizeIsBeingChanged = false;
 
+        SpriteFont font;
 
         public Bloodbender()
         {
@@ -46,8 +49,8 @@ namespace Bloodbender
             Content.RootDirectory = "Content";
 
           
-            graphics.PreferredBackBufferWidth = 720;
-            graphics.PreferredBackBufferHeight = 450;
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
             //graphics.IsFullScreen = true;
             
 
@@ -100,6 +103,8 @@ namespace Bloodbender
         protected override void LoadContent()
         {
             inputHelper.LoadContent();
+
+            font = Content.Load<SpriteFont>("pixelSpriteFont");
 
             Texture2D textureCarre = Content.Load<Texture2D>("carre");
             Texture2D textureCarre2 = Content.Load<Texture2D>("carre2");
@@ -239,7 +244,6 @@ namespace Bloodbender
             resolutionIndependence.BeginDraw();
             //camera.SetView();
 
-            
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             spriteBatch.Draw(shadowsRendering.getTarget(), Vector2.Zero, null, new Color(255, 255, 255, 100), 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.00001f);
             spriteBatch.End();
@@ -249,14 +253,16 @@ namespace Bloodbender
             foreach (GraphicObj obj in listGraphicObj)
                 obj.Draw(spriteBatch);
 
-
             spriteBatch.End();
 
             inputHelper.Draw();
 
             debugView.RenderDebugData(ref camera.SimProjection, ref camera.SimView);
 
-
+            resolutionIndependence.SetupFullViewport();
+            spriteBatch.Begin();
+            spriteBatch.DrawString(font, "" + (1000 / gameTime.ElapsedGameTime.Milliseconds), new Vector2(10, 10), Color.White);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

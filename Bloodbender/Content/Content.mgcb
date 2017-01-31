@@ -85,3 +85,9 @@
 /processorParam:TextureFormat=Color
 /build:carre2.png
 
+#begin pixelSpriteFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:pixelSpriteFont.spritefont
+
