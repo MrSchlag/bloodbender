@@ -80,9 +80,9 @@ namespace Bloodbender
             rectangleSource.X = frameWidth * currentFrame;
 
             if (!isDepthForce)
-                 depth = ((position.Y + texture.Height * scale.Y) - (Bloodbender.ptr.camera.Position.Y - (Bloodbender.ptr.GraphicsDevice.Viewport.Height / 2))) / 10000.0f; // ATTENTION A CORRIGER SI MANIPULATION SUR LE SCALE, A CORRIGER QUAND PhysicObj FINI, depth responsable du non  affichage de sprite sur les negatif
+                depth = ((Bloodbender.ptr.camera.ConvertWorldToScreen(position * Bloodbender.pixelToMeter).Y) / 10000.0f) + 0.005f;
 
-            position.Y -= height;
+            position.Y -= height;// peut pose des problemes?
 
             spriteBatch.Draw(texture, position, rectangleSource, color,
                 rotation, origin, scale, spriteEffect, depth);

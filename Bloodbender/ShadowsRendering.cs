@@ -11,12 +11,12 @@ namespace Bloodbender
     public class ShadowsRendering
     {
         private List<Shadow> listShadows;
-        private RenderTarget2D targetShadows = null;
+        public RenderTarget2D targetShadows = null;
 
         public ShadowsRendering()
         {
             listShadows = new List<Shadow>();
-            targetShadows = new RenderTarget2D(Bloodbender.ptr.GraphicsDevice, Bloodbender.ptr.GraphicsDevice.PresentationParameters.BackBufferWidth, Bloodbender.ptr.GraphicsDevice.PresentationParameters.BackBufferHeight);
+            targetShadows = new RenderTarget2D(Bloodbender.ptr.GraphicsDevice, Bloodbender.ptr.graphics.PreferredBackBufferWidth, Bloodbender.ptr.graphics.PreferredBackBufferHeight);
         }
 
         public void Update(float elapsed)
@@ -65,16 +65,14 @@ namespace Bloodbender
     public class Shadow : GraphicObj
     {
         protected GraphicObj graphicObj;
-        //Vector2 offSet;
 
         public Shadow(GraphicObj graphicObj) : this(graphicObj, Vector2.One) // il faudrait pouvoir parametre avec la texture que l'on veut, et faire en sorte que la largeur/hauteur tend vers 0
         { }
-        public Shadow(GraphicObj graphicObj, Vector2 scale)
+        public Shadow(GraphicObj graphicObj, Vector2 scale) : base(OffSet.Center)
         {
             this.graphicObj = graphicObj;
 
             addAnimation(new Animation(Bloodbender.ptr.Content.Load<Texture2D>("shadow")));
-            //animations[0].forceDepth(0.00001f);
         }
 
         public override bool Update(float elapsed)
@@ -87,9 +85,6 @@ namespace Bloodbender
         public override void Draw(SpriteBatch spriteBatch)
         {
             position = graphicObj.position;
-
-            position.X -= getAnimation(currentAnimation).getFrameDimensions().X / 2 ;
-            position.Y -= getAnimation(currentAnimation).getFrameDimensions().Y / 2 ;
 
             base.Draw(spriteBatch);
         }

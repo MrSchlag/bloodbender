@@ -14,7 +14,7 @@ namespace Bloodbender
     {
         public static Bloodbender ptr { get; set; }
 
-        GraphicsDeviceManager graphics;
+        public GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
 
         public ResolutionIndependentRenderer resolutionIndependence;
@@ -35,6 +35,9 @@ namespace Bloodbender
 
         public Texture2D bouleRouge;
 
+        private bool WindowSizeIsBeingChanged = false;
+
+
         public Bloodbender()
         {
             ptr = this;
@@ -43,10 +46,10 @@ namespace Bloodbender
             Content.RootDirectory = "Content";
 
           
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
+            graphics.PreferredBackBufferWidth = 720;
+            graphics.PreferredBackBufferHeight = 450;
             //graphics.IsFullScreen = true;
-   
+            
 
             resolutionIndependence = new ResolutionIndependentRenderer(this);            
         }
@@ -71,7 +74,7 @@ namespace Bloodbender
             debugView.SleepingShapeColor = Color.LightGray;
             debugView.LoadContent(GraphicsDevice, Content);
 
-            inputHelper = new InputHelper();
+            inputHelper = new InputHelper(resolutionIndependence);
             inputHelper.ShowCursor = true;
 
             shadowsRendering = new ShadowsRendering();
@@ -84,6 +87,8 @@ namespace Bloodbender
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            this.Window.AllowUserResizing = true;
+            this.Window.ClientSizeChanged += new EventHandler<EventArgs>(Window_ClientSizeChanged);
 
             base.Initialize();
         }
@@ -94,8 +99,6 @@ namespace Bloodbender
         /// </summary>
         protected override void LoadContent()
         {
-
-            // Create a new SpriteBatch, which can be used to draw textures.
             inputHelper.LoadContent();
 
             Texture2D textureCarre = Content.Load<Texture2D>("carre");
@@ -114,7 +117,7 @@ namespace Bloodbender
             
 
             PhysicObj pobj = new PhysicObj(BodyFactory.CreateRectangle(world, 32 * pixelToMeter, 32 * pixelToMeter, 1), // meterTopixel a la place de 32?
-                new Vector2(200, 200));
+                new Vector2(1280, 200));
             shadowsRendering.addShadow(new Shadow(pobj));
             pobj.addAnimation(new Animation(textureCarre2));
             pobj.isRotationFixed(true);
@@ -131,14 +134,7 @@ namespace Bloodbender
             listGraphicObj.Add(pobj);
         }
 
-        private void InitializeResolutionIndependence(int realScreenWidth, int realScreenHeight)
-        {
-            resolutionIndependence.VirtualWidth = 1280;
-            resolutionIndependence.VirtualHeight = 720;
-            resolutionIndependence.ScreenWidth = realScreenWidth;
-            resolutionIndependence.ScreenHeight = realScreenHeight;
-            resolutionIndependence.Initialize();
-        }
+        
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
         /// game-specific content.
@@ -146,6 +142,32 @@ namespace Bloodbender
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
+        }
+
+        private void InitializeResolutionIndependence(int realScreenWidth, int realScreenHeight)
+        {
+            resolutionIndependence.ScreenWidth = realScreenWidth;
+            resolutionIndependence.ScreenHeight = realScreenHeight;
+            resolutionIndependence.Initialize();
+
+        }
+        void Window_ClientSizeChanged(object sender, EventArgs e)
+        {
+            WindowSizeIsBeingChanged = !WindowSizeIsBeingChanged;
+            if (WindowSizeIsBeingChanged)
+            {
+                graphics.PreferredBackBufferWidth = Window.ClientBounds.Width;
+                graphics.PreferredBackBufferHeight = Window.ClientBounds.Height;
+                graphics.ApplyChanges();
+
+                InitializeResolutionIndependence(Window.ClientBounds.Width, Window.ClientBounds.Height);
+
+                camera.ResetMatrice();
+
+                inputHelper._viewport = graphics.GraphicsDevice.Viewport;
+
+                shadowsRendering.targetShadows = new RenderTarget2D(graphics.GraphicsDevice, Window.ClientBounds.Width, Window.ClientBounds.Height);
+            }
         }
 
         /// <summary>
@@ -198,6 +220,11 @@ namespace Bloodbender
             if (inputHelper.IsNewKeyPress(Keys.F8))
                 debugView.EnableOrDisableFlag(DebugViewFlags.AABB);
 
+            if (inputHelper.IsNewKeyPress(Keys.F12))
+            {
+                graphics.ToggleFullScreen();
+            }
+
             base.Update(gameTime);
         }
 
@@ -211,22 +238,24 @@ namespace Bloodbender
 
             resolutionIndependence.BeginDraw();
             //camera.SetView();
+
             
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             spriteBatch.Draw(shadowsRendering.getTarget(), Vector2.Zero, null, new Color(255, 255, 255, 100), 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.00001f);
             spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.View);
-                        
+
             foreach (GraphicObj obj in listGraphicObj)
                 obj.Draw(spriteBatch);
 
+
             spriteBatch.End();
-   
+
+            inputHelper.Draw();
 
             debugView.RenderDebugData(ref camera.SimProjection, ref camera.SimView);
 
-            inputHelper.Draw();
 
 
             base.Draw(gameTime);

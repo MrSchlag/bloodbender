@@ -18,11 +18,13 @@ namespace Bloodbender
 
         public Color BackgroundColor = Color.CornflowerBlue;
 
+        private double _scale;
+
         public ResolutionIndependentRenderer(Game game)
         {
             _game = game;
-            VirtualWidth = 800;
-            VirtualHeight = 600;
+            VirtualWidth = 1280;
+            VirtualHeight = 720;
 
             ScreenWidth = 1280;
             ScreenHeight = 720;
@@ -47,7 +49,7 @@ namespace Bloodbender
 
         public void SetupFullViewport()
         {
-            var vp = new Viewport();
+            Viewport vp = new Viewport();
             vp.X = vp.Y = 0;
             vp.Width = ScreenWidth;
             vp.Height = ScreenHeight;
@@ -57,15 +59,11 @@ namespace Bloodbender
 
         public void BeginDraw()
         {
-            // Start by reseting viewport to (0,0,1,1)
             SetupFullViewport();
-            // Clear to Black
+
             _game.GraphicsDevice.Clear(BackgroundColor);
-            // Calculate Proper Viewport according to Aspect Ratio
+
             SetupVirtualScreenViewport();
-            // and clear that
-            // This way we are gonna have black bars if aspect ratio requires it and
-            // the clear color on the rest
         }
 
         public bool RenderingToScreenIsFinished;
@@ -82,40 +80,38 @@ namespace Bloodbender
 
         private void RecreateScaleMatrix()
         {
-            Matrix.CreateScale((float)ScreenWidth / VirtualWidth, (float)ScreenWidth / VirtualWidth, 1f, out _scaleMatrix);
+            Matrix.CreateScale((float)_scale, (float)_scale, 1f, out _scaleMatrix);
+
             _dirtyMatrix = false;
         }
 
         public Vector2 ScaleMouseToScreenCoordinates(Vector2 screenPosition)
         {
-            var realX = screenPosition.X - _viewport.X;
-            var realY = screenPosition.Y - _viewport.Y;
+            float realX = screenPosition.X - _viewport.X;
+            float realY = screenPosition.Y - _viewport.Y;
 
-            _virtualMousePosition.X = realX / _ratioX;
-            _virtualMousePosition.Y = realY / _ratioY;
+            _virtualMousePosition.X = realX;// / _ratioX;
+            _virtualMousePosition.Y = realY;// / _ratioY;
 
             return _virtualMousePosition;
         }
 
         public void SetupVirtualScreenViewport()
         {
-            var targetAspectRatio = VirtualWidth / (float)VirtualHeight;
-            // figure out the largest area that fits in this resolution at the desired aspect ratio
-            var width = ScreenWidth;
-            var height = (int)(width / targetAspectRatio + .5f);
+            int height, width;
+            double widthScale = 0, heightScale = 0;
+            widthScale = (double)ScreenWidth / (double)VirtualWidth;
+            heightScale = (double)ScreenHeight / (double)VirtualHeight;
 
-            if (height > ScreenHeight)
-            {
-                height = ScreenHeight;
-                // PillarBox
-                width = (int)(height * targetAspectRatio + .5f);
-            }
+            _scale = Math.Min(widthScale, heightScale);
 
-            // set up the new viewport centered in the backbuffer
+            width = (int)(VirtualWidth * _scale);
+            height = (int)(VirtualHeight * _scale);
+
             _viewport = new Viewport
             {
-                X = (ScreenWidth / 2) - (width / 2),
-                Y = (ScreenHeight / 2) - (height / 2),
+                X = (ScreenWidth - width) / 2,
+                Y = (ScreenHeight - height) / 2,
                 Width = width,
                 Height = height
             };

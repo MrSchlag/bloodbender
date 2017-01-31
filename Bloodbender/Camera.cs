@@ -46,15 +46,19 @@ namespace Bloodbender
 
             this.resolutionIndependence = resolutionIndependence;
 
+            ResetMatrice();
+
+            ResetCamera();
+        }
+
+        public void ResetMatrice()
+        {
             SimProjection = Matrix.CreateOrthographicOffCenter(0f, ConvertUnits.ToSimUnits(_graphics.Viewport.Width), ConvertUnits.ToSimUnits(_graphics.Viewport.Height), 0f, 0f, 1f);
             SimView = Matrix.Identity;
             View = Matrix.Identity;
 
             _translateCenter = new Vector2(ConvertUnits.ToSimUnits(resolutionIndependence.VirtualWidth / 2f), ConvertUnits.ToSimUnits(resolutionIndependence.VirtualHeight / 2f));
-
-            ResetCamera();
         }
-
         /// <summary>
         /// The current position of the camera.
         /// </summary>
@@ -267,13 +271,6 @@ namespace Bloodbender
             translateCenter = ConvertUnits.ToDisplayUnits(translateCenter);
             translateBody = ConvertUnits.ToDisplayUnits(translateBody);
 
-            Vector3 resTranslationVec = new Vector3();
-            resTranslationVec.X = resolutionIndependence.VirtualWidth*0.5f;
-            resTranslationVec.Y = resolutionIndependence.VirtualHeight*0.5f;
-            resTranslationVec.Z = 0;
-
-            //translateCenter -= resTranslationVec;
-
             View = Matrix.CreateTranslation(translateBody) * matRotation * matZoom * Matrix.CreateTranslation(translateCenter) * resolutionIndependence.GetTransformationMatrix();
         }
 
@@ -362,6 +359,20 @@ namespace Bloodbender
             Vector3 t = new Vector3(location, 0);
             t = _graphics.Viewport.Project(t, SimProjection, SimView, Matrix.Identity);
             return new Vector2(t.X, t.Y);
+        }
+
+        public bool isInView(Vector2 position)
+        {
+            int margin = 200;
+
+            position = ConvertWorldToScreen(position * Bloodbender.pixelToMeter);
+
+            if (position.X >= -margin && position.X <= Bloodbender.ptr.graphics.PreferredBackBufferWidth + margin
+                &&
+                position.Y >= -margin && position.Y <= Bloodbender.ptr.graphics.PreferredBackBufferHeight + margin)
+                return true;
+
+            return false;
         }
     }
 }

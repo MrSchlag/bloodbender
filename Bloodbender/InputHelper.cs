@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
+using System;
 
 namespace Bloodbender
 {
@@ -33,13 +34,17 @@ namespace Bloodbender
         private VirtualButton _phoneB;
 #endif
 
-        private Viewport _viewport;
+        public Viewport _viewport;
+
+        ResolutionIndependentRenderer resolutionIndRend;
 
         /// <summary>
         ///   Constructs a new input state.
         /// </summary>
-        public InputHelper()
+        public InputHelper(ResolutionIndependentRenderer resolutionIndRend)
         {
+            this.resolutionIndRend = resolutionIndRend;
+
             KeyboardState = new KeyboardState();
             GamePadState = new GamePadState();
             MouseState = new MouseState();
@@ -154,10 +159,11 @@ namespace Bloodbender
             }
             else
             {
-                Cursor = new Vector2(MouseState.X, MouseState.Y);
+                Cursor = resolutionIndRend.ScaleMouseToScreenCoordinates(new Vector2(MouseState.X, MouseState.Y));
+                //Cursor = new Vector2(MouseState.X, MouseState.Y);
             }
 
-            Cursor = new Vector2(MathHelper.Clamp(Cursor.X, 0f, _viewport.Width), MathHelper.Clamp(Cursor.Y, 0f, _viewport.Height));
+            //Cursor = new Vector2(MathHelper.Clamp(Cursor.X, 0f, _viewport.Width), MathHelper.Clamp(Cursor.Y, 0f, _viewport.Height));
 
             if (IsCursorValid && oldCursor != Cursor)
                 IsCursorMoved = true;
