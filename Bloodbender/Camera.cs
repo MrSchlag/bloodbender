@@ -262,7 +262,7 @@ namespace Bloodbender
         public void SetView()
         {
             Matrix matRotation = Matrix.CreateRotationZ(_currentRotation);
-            Matrix matZoom = Matrix.CreateScale(_currentZoom);
+            Matrix matZoom = Matrix.CreateScale(_currentZoom, _currentZoom, 1.0f);
             Vector3 translateCenter = new Vector3(_translateCenter, 0f);
             Vector3 translateBody = new Vector3(-_currentPosition, 0f);
 
