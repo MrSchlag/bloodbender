@@ -46,7 +46,7 @@
     <Compile Include="GraphicObj.cs" />
     <Compile Include="InputHelper.cs" />
     <Compile Include="MapBound.cs" />
-    <Compile Include="components\IPhysicComponent.cs" />
+    <Compile Include="components\IComponent.cs" />
     <Compile Include="PhysicObj.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />

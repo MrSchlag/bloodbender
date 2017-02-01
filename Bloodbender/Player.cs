@@ -41,8 +41,8 @@ namespace Bloodbender
             addFixtureToCheckedCollision(playerHitSensorFix); 
             addFixtureToCheckedCollision(playerBoundsFix);
             height = 0;
-            IPhysicComponent comp = new GenerateProjectileComponent();
-            comp.Initialize(this);
+
+            IComponent comp = new GenerateProjectileComponent(this);
             addComponent(comp);
         }
 

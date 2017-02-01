@@ -27,8 +27,7 @@ namespace Bloodbender
             addFixtureToCheckedCollision(totemBoundsFix);
             body.BodyType = BodyType.Static;
             height = 0;
-            IPhysicComponent comp = new GenerateProjectileComponent();
-            comp.Initialize(this);
+            IComponent comp = new GenerateProjectileComponent(this);
             addComponent(comp);
         }
 

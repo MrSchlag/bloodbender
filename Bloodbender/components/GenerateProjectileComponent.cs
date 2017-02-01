@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace Bloodbender
 {
-    public class GenerateProjectileComponent : IPhysicComponent
+    public class GenerateProjectileComponent : IComponent
     {
-        PhysicObj physicOwner;
+        GraphicObj owner;
         float incTimer = 0.0f;
         float frequency = 1.0f;
         float shootAngle = (float)Math.PI / 2.0f;
 
-        void IPhysicComponent.Initialize(PhysicObj obj)
+        public GenerateProjectileComponent(GraphicObj obj)
         {
-            physicOwner = obj;    
+            owner = obj;
         }
 
-        void IPhysicComponent.Update(float elapsed)
+        void IComponent.Update(float elapsed)
         {
             incTimer += elapsed;
             if (incTimer > frequency)
@@ -30,7 +30,7 @@ namespace Bloodbender
 
         void GenerateProjectile()
         {
-            Projectile proj = new Projectile(physicOwner.body.Position * Bloodbender.meterToPixel, shootAngle, 400f);
+            Projectile proj = new Projectile(owner.position, shootAngle, 400f);
             proj.addAnimation(new Animation(Bloodbender.ptr.bouleRouge));
             Bloodbender.ptr.listGraphicObj.Add(proj);
         }

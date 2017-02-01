@@ -43,7 +43,6 @@ namespace Bloodbender
         //public Body size;
         public float velocity;
         public float lenght;
-        private List<IPhysicComponent> components;
 
         public PhysicObj(Body body, Vector2 position) : base(OffSet.BottomCenterHorizontal)
         {
@@ -55,7 +54,6 @@ namespace Bloodbender
             this.body.LinearDamping = 1;
             this.body.AngularDamping = 1;
             this.lenght = 0;
-            components = new List<IPhysicComponent>();
         }
 
         public PhysicObj(Vector2 position) : base(OffSet.BottomCenterHorizontal)
@@ -67,22 +65,15 @@ namespace Bloodbender
             body.FixedRotation = true;
             body.LinearDamping = 0.02f;
             body.AngularDamping = 1;
-            components = new List<IPhysicComponent>();
         }
 
-        public void addComponent(IPhysicComponent component)
-        {
-            components.Add(component); //TODO : Faire la vérification des composants
-        } 
+       
 
         public override bool Update(float elapsed)
         {
             position = body.Position * Bloodbender.meterToPixel;
 
-            foreach (IPhysicComponent component in components)
-            {
-                component.Update(elapsed);
-            }
+            
 
             return base.Update(elapsed);
         }

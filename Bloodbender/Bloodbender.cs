@@ -219,7 +219,6 @@ namespace Bloodbender
             camera.Update(elapsed);
 
 
-
             if (inputHelper.IsNewKeyPress(Keys.F1))
                 debugView.EnableOrDisableFlag(DebugViewFlags.Shape);
             if (inputHelper.IsNewKeyPress(Keys.F2))
@@ -294,9 +293,10 @@ namespace Bloodbender
             foreach (GraphicObj obj in listGraphicObj)
                 obj.Draw(spriteBatch);
 
+            inputHelper.Draw();
+
             spriteBatch.End();
 
-            inputHelper.Draw();
 
             debugView.RenderDebugData(ref camera.SimProjection, ref camera.SimView);
 

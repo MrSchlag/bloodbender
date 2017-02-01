@@ -181,9 +181,17 @@ namespace Bloodbender
         {
             if (_cursorIsVisible && IsCursorValid)
             {
-                Bloodbender.ptr.spriteBatch.Begin();
-                Bloodbender.ptr.spriteBatch.Draw(_cursorSprite.Texture, Cursor, null, Color.White, 0f, _cursorSprite.Origin, 1f, SpriteEffects.None, 0f);
-                Bloodbender.ptr.spriteBatch.End();
+                MouseState mouse = Mouse.GetState();
+
+
+                //Console.WriteLine(Bloodbender.pixelToMeter);
+                //Console.WriteLine(Bloodbender.ptr.camera.ConvertScreenToWorld(new Vector2(100, 100) * Bloodbender.meterToPixel));
+
+                //Bloodbender.ptr.spriteBatch.Draw(_cursorSprite.Texture, , null, Color.White, 0f, _cursorSprite.Origin, 1f, SpriteEffects.None, 0f);
+
+                //Bloodbender.ptr.spriteBatch.Begin();
+                //Bloodbender.ptr.spriteBatch.Draw(_cursorSprite.Texture, Cursor, null, Color.White, 0f, _cursorSprite.Origin, 1f, SpriteEffects.None, 0f);
+                //Bloodbender.ptr.spriteBatch.End();
             }
 #if WINDOWS_PHONE
             if (_handleVirtualStick)

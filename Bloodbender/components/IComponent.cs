@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Bloodbender
 {
-    public interface IPhysicComponent
+    public interface IComponent
     {
-       void Initialize(PhysicObj obj);
        void Update(float elapsed);
     }
 }

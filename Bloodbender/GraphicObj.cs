@@ -21,9 +21,12 @@ namespace Bloodbender
         private OffSet offSet;
         public enum OffSet { Center, BottomCenterHorizontal, None };
 
+        private List<IComponent> components;
+
         public GraphicObj(OffSet offSet = OffSet.None)
         {
             animations = new List<Animation>();
+            components = new List<IComponent>();
             this.offSet = offSet;
         }
         public virtual bool Update(float elapsed)
@@ -32,12 +35,21 @@ namespace Bloodbender
                 if (!animations[currentAnimation].Update(elapsed))
                     return false;
 
+            foreach (IComponent component in components)
+                component.Update(elapsed);
+            
+
             return true;
         }
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (Bloodbender.ptr.camera.isInView(position) && animations.Count > 0) // Permet de draw que les elements present ds la vue
                 animations[currentAnimation].Draw(spriteBatch, position, rotation, spriteEffect, scale, height);
+        }
+
+        public void addComponent(IComponent component)
+        {
+            components.Add(component); //TODO : Faire la vérification des composants
         }
 
         public void addAnimation(Animation animation)
