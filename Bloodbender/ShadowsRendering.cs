@@ -66,13 +66,14 @@ namespace Bloodbender
     {
         protected GraphicObj graphicObj;
 
-        public Shadow(GraphicObj graphicObj) : this(graphicObj, Vector2.One) // il faudrait pouvoir parametre avec la texture que l'on veut, et faire en sorte que la largeur/hauteur tend vers 0
-        { }
-        public Shadow(GraphicObj graphicObj, Vector2 scale) : base(OffSet.Center)
+        public Shadow(GraphicObj graphicObj, Texture2D texture = null) : base(OffSet.Center)
         {
             this.graphicObj = graphicObj;
 
-            addAnimation(new Animation(Bloodbender.ptr.Content.Load<Texture2D>("shadow")));
+            if (texture == null)
+                addAnimation(new Animation(Bloodbender.ptr.Content.Load<Texture2D>("shadow")));
+            else
+                addAnimation(new Animation(texture));
         }
 
         public override bool Update(float elapsed)
@@ -85,6 +86,11 @@ namespace Bloodbender
         public override void Draw(SpriteBatch spriteBatch)
         {
             position = graphicObj.position;
+
+            scale = graphicObj.scale;
+
+            scale -= new Vector2(graphicObj.height / 100, graphicObj.height / 100);
+
 
             base.Draw(spriteBatch);
         }

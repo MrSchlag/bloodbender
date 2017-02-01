@@ -45,7 +45,7 @@ namespace Bloodbender
 
         EventHandler<EventArgs> eventResize;
 
-        int width = 1280, height = 720;
+        int width = 1280, height = 720, savedWidth = 0, savedHeight = 0;
 
         public Bloodbender()
         {
@@ -57,10 +57,12 @@ namespace Bloodbender
           
             graphics.PreferredBackBufferWidth = width;
             graphics.PreferredBackBufferHeight = height;
-            graphics.HardwareModeSwitch = false;
+
+            //graphics.HardwareModeSwitch = false;
 
             //graphics.SynchronizeWithVerticalRetrace = false;
             //IsFixedTimeStep = false;
+
             //graphics.IsFullScreen = true;
 
 
@@ -167,7 +169,6 @@ namespace Bloodbender
             resolutionIndependence.ScreenWidth = realScreenWidth;
             resolutionIndependence.ScreenHeight = realScreenHeight;
             resolutionIndependence.Initialize();
-
         }
         void Window_ClientSizeChanged(object sender, EventArgs e)
         {
@@ -184,15 +185,13 @@ namespace Bloodbender
 
         void setAllOnResize()
         {
-            Console.WriteLine(Window.ClientBounds);
-
             InitializeResolutionIndependence(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
             camera.ResetMatrice();
 
             inputHelper._viewport = graphics.GraphicsDevice.Viewport;
 
-            shadowsRendering.targetShadows = new RenderTarget2D(graphics.GraphicsDevice, Window.ClientBounds.Width, Window.ClientBounds.Height);
+            shadowsRendering.targetShadows = new RenderTarget2D(graphics.GraphicsDevice, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
         }
         /// <summary>
         /// Allows the game to run logic such as updating the world,
@@ -244,12 +243,24 @@ namespace Bloodbender
             if (inputHelper.IsNewKeyPress(Keys.F8))
                 debugView.EnableOrDisableFlag(DebugViewFlags.AABB);
 
+            
             if (inputHelper.IsNewKeyPress(Keys.F12))
             {
                 this.Window.ClientSizeChanged -= eventResize;
 
-                graphics.PreferredBackBufferWidth = width;
-                graphics.PreferredBackBufferHeight = height;
+                if (!graphics.IsFullScreen)
+                {
+                    savedWidth = graphics.PreferredBackBufferWidth;
+                    savedHeight = graphics.PreferredBackBufferHeight;
+
+                    graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+                    graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+                }
+                else
+                {
+                    graphics.PreferredBackBufferWidth = savedWidth;
+                    graphics.PreferredBackBufferHeight = savedHeight;
+                }
 
                 graphics.ToggleFullScreen();
 

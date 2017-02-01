@@ -28,14 +28,15 @@ namespace Bloodbender
         }
         public virtual bool Update(float elapsed)
         {
-            if (!animations[currentAnimation].Update(elapsed))
-                return false;
+            if (animations.Count > 0)
+                if (!animations[currentAnimation].Update(elapsed))
+                    return false;
 
             return true;
         }
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            if (Bloodbender.ptr.camera.isInView(position)) // Permet de draw que les elements present ds la vue
+            if (Bloodbender.ptr.camera.isInView(position) && animations.Count > 0) // Permet de draw que les elements present ds la vue
                 animations[currentAnimation].Draw(spriteBatch, position, rotation, spriteEffect, scale, height);
         }
 
@@ -66,12 +67,7 @@ namespace Bloodbender
             if (animationNbr >= 0)
             {
                 if (currentAnimation != animationNbr || forceAnimation)
-                {
-                    //foreach (Animation animation in animations)
-                      //  animation.reset();
-
                     animations[animationNbr].reset();
-                }
 
                 currentAnimation = animationNbr;
             }

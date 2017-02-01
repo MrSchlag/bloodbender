@@ -22,15 +22,23 @@ namespace Bloodbender
 
         protected int framesNumber; // nombre de frame dans l'animation
         public float[] framesLength { get; set; } // array to represent the lenght in second of each frame
-        public int frameWidth { get; set; } // largeur d'une frame
+        public int frameWidth { get; set; } = 0;// largeur d'une frame
+        public int frameHeight { get; set; } = 0;
+
         protected int currentFrame = 0;
         protected float totalElapsed = 0.0f;
 
-        public Animation(Texture2D texture, int frameWidth = 0) : this(texture, 1, 0.0f, frameWidth) // use this constructor if their only is 1 frame in your so called animation
+        private int row = 0, column = 0;
+
+        public Animation(Texture2D texture, int frameWidth = 0, int frameHeight = 0, int row = 0, int column = 0) : this(texture, 1, 0.0f, frameWidth, frameHeight, row, column)
         { }
-        public Animation(Texture2D texture, int framesNumber, float frameLength, int frameWidth = 0) // precise the frameWidth if the number of frame indicated does not match the witdh of the texture (ex: a texture with 3frame with a width of 100pixels each, texture width = 3 * 100 = 300, if the number of frame indicated is 2, precise the width of a frame, 100 in this case)
+        
+        public Animation(Texture2D texture, int framesNumber, float frameLength, int frameWidth, int frameHeight, int row, int column) // precise the frameWidth if the number of frame indicated does not match the witdh of the texture (ex: a texture with 3frame with a width of 100pixels each, texture width = 3 * 100 = 300, if the number of frame indicated is 2, precise the width of a frame, 100 in this case)
         {
             this.texture = texture;
+
+            this.row = row;
+            this.column = column;
 
             if (framesNumber <= 0)
                 framesNumber = 1;
@@ -47,7 +55,12 @@ namespace Bloodbender
             else
                 this.frameWidth = texture.Width / framesNumber;
 
-            rectangleSource = new Rectangle(0, 0, this.frameWidth, texture.Height);
+            if (frameHeight != 0)
+                this.frameHeight = frameHeight;
+            else
+                this.frameHeight = texture.Height;
+
+            rectangleSource = new Rectangle(column * this.frameWidth, row * this.frameHeight, this.frameWidth, this.frameHeight);
         }
 
         public bool Update(float elapsed)
@@ -77,12 +90,16 @@ namespace Bloodbender
 
         public void Draw(SpriteBatch spriteBatch, Vector2 position, float rotation, SpriteEffects spriteEffect, Vector2 scale, float height = 0.0f)
         {
-            rectangleSource.X = frameWidth * currentFrame;
+            rectangleSource.X = frameWidth * currentFrame + frameWidth * column;
 
             if (!isDepthForce)
-                depth = ((Bloodbender.ptr.camera.ConvertWorldToScreen(position * Bloodbender.pixelToMeter).Y) / 10000.0f) + 0.005f;
+                depth = ((Bloodbender.ptr.camera.ConvertWorldToScreen(position * Bloodbender.pixelToMeter).Y) / 10000.0f) + 0.1f;
 
             position.Y -= height;// peut pose des problemes?
+
+            // permet d'évite l'effet escalier sur les sprites
+            position.X = (int)(position.X);
+            position.Y = (int)(position.Y);
 
             spriteBatch.Draw(texture, position, rectangleSource, color,
                 rotation, origin, scale, spriteEffect, depth);
@@ -104,11 +121,6 @@ namespace Bloodbender
         public Vector2 getFrameDimensions()
         {
             return new Vector2(frameWidth, texture.Height);
-        }
-
-        public Texture2D getTexture() // methode à supprimer car fausse
-        {
-            return texture;
         }
     }
 }
