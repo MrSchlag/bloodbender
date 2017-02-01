@@ -80,7 +80,7 @@ namespace Bloodbender
             rectangleSource.X = frameWidth * currentFrame;
 
             if (!isDepthForce)
-                depth = ((Bloodbender.ptr.camera.ConvertWorldToScreen(position * Bloodbender.pixelToMeter).Y) / 10000.0f) + 0.005f;
+                depth = ((Bloodbender.ptr.camera.ConvertWorldToScreen(position * Bloodbender.pixelToMeter).Y) / 10000.0f) + 0.1f;
 
             position.Y -= height;// peut pose des problemes?
 
@@ -104,11 +104,6 @@ namespace Bloodbender
         public Vector2 getFrameDimensions()
         {
             return new Vector2(frameWidth, texture.Height);
-        }
-
-        public Texture2D getTexture() // methode à supprimer car fausse
-        {
-            return texture;
         }
     }
 }
