@@ -311,11 +311,14 @@ namespace Bloodbender
             }
             Vector2 delta = _targetPosition - _currentPosition;
             float distance = delta.Length();
+
             if (distance > 0f)
             {
                 delta /= distance;
             }
+
             float inertia;
+
             if (distance < 10f)
             {
                 inertia = (float)Math.Pow(distance / 10.0, 2.0);
@@ -341,8 +344,24 @@ namespace Bloodbender
                 rotDelta /= Math.Abs(rotDelta);
             }
 
+
+            // permet d'évite l'effet escalier sur les sprite, à paufiner
+            /*
+            Vector2 dep;
+
+            dep.X = (int)Math.Ceiling(100f * delta.X * inertia * elapsed * Bloodbender.meterToPixel);
+            dep.Y = (int)Math.Ceiling(100f * delta.Y * inertia * elapsed * Bloodbender.meterToPixel);
+
+            Console.WriteLine(dep);
+
+            dep /= Bloodbender.meterToPixel;
+
+            _currentPosition += dep;
+            */
+
             _currentPosition += 100f * delta * inertia * elapsed;
             _currentRotation += 80f * rotDelta * rotInertia * elapsed;
+
 
             SetView();
         }
