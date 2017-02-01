@@ -293,12 +293,13 @@ namespace Bloodbender
             foreach (GraphicObj obj in listGraphicObj)
                 obj.Draw(spriteBatch);
 
-            inputHelper.Draw();
 
             spriteBatch.End();
 
 
             debugView.RenderDebugData(ref camera.SimProjection, ref camera.SimView);
+
+            inputHelper.Draw();
 
             resolutionIndependence.SetupFullViewport();
             frameRateCounter.Draw(spriteBatch);

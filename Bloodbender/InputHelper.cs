@@ -189,9 +189,9 @@ namespace Bloodbender
 
                 //Bloodbender.ptr.spriteBatch.Draw(_cursorSprite.Texture, , null, Color.White, 0f, _cursorSprite.Origin, 1f, SpriteEffects.None, 0f);
 
-                //Bloodbender.ptr.spriteBatch.Begin();
-                //Bloodbender.ptr.spriteBatch.Draw(_cursorSprite.Texture, Cursor, null, Color.White, 0f, _cursorSprite.Origin, 1f, SpriteEffects.None, 0f);
-                //Bloodbender.ptr.spriteBatch.End();
+                Bloodbender.ptr.spriteBatch.Begin();
+                Bloodbender.ptr.spriteBatch.Draw(_cursorSprite.Texture, Cursor, null, Color.White, 0f, _cursorSprite.Origin, 1f, SpriteEffects.None, 0f);
+                Bloodbender.ptr.spriteBatch.End();
             }
 #if WINDOWS_PHONE
             if (_handleVirtualStick)
