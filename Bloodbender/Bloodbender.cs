@@ -43,6 +43,10 @@ namespace Bloodbender
 
         FrameRateCounter frameRateCounter;
 
+        EventHandler<EventArgs> eventResize;
+
+        int width = 1280, height = 720;
+
         public Bloodbender()
         {
             ptr = this;
@@ -51,8 +55,9 @@ namespace Bloodbender
             Content.RootDirectory = "Content";
 
           
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
+            graphics.PreferredBackBufferWidth = width;
+            graphics.PreferredBackBufferHeight = height;
+            graphics.HardwareModeSwitch = false;
 
             //graphics.SynchronizeWithVerticalRetrace = false;
             //IsFixedTimeStep = false;
@@ -96,7 +101,8 @@ namespace Bloodbender
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             this.Window.AllowUserResizing = true;
-            this.Window.ClientSizeChanged += new EventHandler<EventArgs>(Window_ClientSizeChanged);
+            eventResize = new EventHandler<EventArgs>(Window_ClientSizeChanged);
+            this.Window.ClientSizeChanged += eventResize;
 
             base.Initialize();
         }
@@ -166,22 +172,28 @@ namespace Bloodbender
         void Window_ClientSizeChanged(object sender, EventArgs e)
         {
             WindowSizeIsBeingChanged = !WindowSizeIsBeingChanged;
-            if (WindowSizeIsBeingChanged)
+            if (WindowSizeIsBeingChanged && Window.ClientBounds.Width > 0 && Window.ClientBounds.Height > 0)
             {
                 graphics.PreferredBackBufferWidth = Window.ClientBounds.Width;
                 graphics.PreferredBackBufferHeight = Window.ClientBounds.Height;
                 graphics.ApplyChanges();
 
-                InitializeResolutionIndependence(Window.ClientBounds.Width, Window.ClientBounds.Height);
-
-                camera.ResetMatrice();
-
-                inputHelper._viewport = graphics.GraphicsDevice.Viewport;
-
-                shadowsRendering.targetShadows = new RenderTarget2D(graphics.GraphicsDevice, Window.ClientBounds.Width, Window.ClientBounds.Height);
+                setAllOnResize();
             }
         }
 
+        void setAllOnResize()
+        {
+            Console.WriteLine(Window.ClientBounds);
+
+            InitializeResolutionIndependence(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+
+            camera.ResetMatrice();
+
+            inputHelper._viewport = graphics.GraphicsDevice.Viewport;
+
+            shadowsRendering.targetShadows = new RenderTarget2D(graphics.GraphicsDevice, Window.ClientBounds.Width, Window.ClientBounds.Height);
+        }
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -234,7 +246,16 @@ namespace Bloodbender
 
             if (inputHelper.IsNewKeyPress(Keys.F12))
             {
+                this.Window.ClientSizeChanged -= eventResize;
+
+                graphics.PreferredBackBufferWidth = width;
+                graphics.PreferredBackBufferHeight = height;
+
                 graphics.ToggleFullScreen();
+
+                setAllOnResize();
+
+                this.Window.ClientSizeChanged += eventResize;
             }
 
             frameRateCounter.Update(elapsed);
