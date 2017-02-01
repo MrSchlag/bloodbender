@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Bloodbender
 {
-    public class ShadowsRendering
+    public class ShadowsRenderer
     {
         private List<Shadow> listShadows;
         public RenderTarget2D targetShadows = null;
 
-        public ShadowsRendering()
+        public ShadowsRenderer()
         {
             listShadows = new List<Shadow>();
             targetShadows = new RenderTarget2D(Bloodbender.ptr.GraphicsDevice, Bloodbender.ptr.graphics.PreferredBackBufferWidth, Bloodbender.ptr.graphics.PreferredBackBufferHeight);
@@ -89,7 +89,7 @@ namespace Bloodbender
 
             scale = graphicObj.scale;
 
-            scale -= new Vector2(graphicObj.height / 100, graphicObj.height / 100);
+            scale -= new Vector2(graphicObj.height / 300, graphicObj.height / 300);
 
 
             base.Draw(spriteBatch);
