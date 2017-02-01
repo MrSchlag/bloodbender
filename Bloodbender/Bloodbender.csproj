@@ -42,9 +42,11 @@
     <Compile Include="Bloodbender.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="FrameRateCounter.cs" />
+    <Compile Include="components\GenerateProjectileComponent.cs" />
     <Compile Include="GraphicObj.cs" />
     <Compile Include="InputHelper.cs" />
     <Compile Include="MapBound.cs" />
+    <Compile Include="components\IPhysicComponent.cs" />
     <Compile Include="PhysicObj.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
@@ -52,6 +54,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResolutionIndependentRenderer.cs" />
     <Compile Include="ShadowsRendering.cs" />
+    <Compile Include="Sprinkler.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Totem.cs" />
   </ItemGroup>

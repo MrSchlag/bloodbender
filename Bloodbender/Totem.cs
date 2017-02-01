@@ -26,7 +26,10 @@ namespace Bloodbender
             Fixture totemBoundsFix = createRectangleFixture(100, 100, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
             addFixtureToCheckedCollision(totemBoundsFix);
             body.BodyType = BodyType.Static;
-            height = 00;
+            height = 0;
+            IPhysicComponent comp = new GenerateProjectileComponent();
+            comp.Initialize(this);
+            addComponent(comp);
         }
 
         public override bool Update(float elapsed)
