@@ -53,6 +53,7 @@ namespace Bloodbender
             vp.X = vp.Y = 0;
             vp.Width = ScreenWidth;
             vp.Height = ScreenHeight;
+            vp.MaxDepth = 1.0f;
             _game.GraphicsDevice.Viewport = vp;
             _dirtyMatrix = true;
         }
@@ -113,8 +114,10 @@ namespace Bloodbender
                 X = (ScreenWidth - width) / 2,
                 Y = (ScreenHeight - height) / 2,
                 Width = width,
-                Height = height
+                Height = height,
             };
+
+            _viewport.MaxDepth = 1.0f;
 
             _game.GraphicsDevice.Viewport = _viewport;
         }

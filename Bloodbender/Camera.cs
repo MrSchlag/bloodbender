@@ -369,7 +369,8 @@ namespace Bloodbender
         public Vector2 ConvertScreenToWorld(Vector2 location)
         {
             Vector3 t = new Vector3(location, 0);
-            t = _graphics.Viewport.Unproject(t, SimProjection, SimView, Matrix.Identity);
+            t = Bloodbender.ptr.graphics.GraphicsDevice.Viewport.Unproject(t, SimProjection, SimView, Matrix.Identity);
+
             return new Vector2(t.X, t.Y);
         }
 
@@ -377,6 +378,7 @@ namespace Bloodbender
         {
             Vector3 t = new Vector3(location, 0);
             t = _graphics.Viewport.Project(t, SimProjection, SimView, Matrix.Identity);
+
             return new Vector2(t.X, t.Y);
         }
 
