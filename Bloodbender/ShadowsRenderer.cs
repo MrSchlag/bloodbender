@@ -48,7 +48,7 @@ namespace Bloodbender
             Bloodbender.ptr.GraphicsDevice.SetRenderTarget(targetShadows);
             Bloodbender.ptr.GraphicsDevice.Clear(Color.Transparent);
 
-            Bloodbender.ptr.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, Bloodbender.ptr.camera.View);
+            Bloodbender.ptr.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, Bloodbender.ptr.camera.GetView());
             foreach (GraphicObj obj in listShadows)
                 obj.Draw(Bloodbender.ptr.spriteBatch);
             Bloodbender.ptr.spriteBatch.End();

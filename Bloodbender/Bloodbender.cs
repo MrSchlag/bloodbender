@@ -210,13 +210,13 @@ namespace Bloodbender
 
             world.Step(1f / 30f);
 
+            camera.Update(elapsed);
 
             for (int i = 0; i < listGraphicObj.Count; ++i)
                 listGraphicObj[i].Update(elapsed);
 
             shadowsRendering.Update(elapsed);
 
-            camera.Update(elapsed);
 
 
             if (inputHelper.IsNewKeyPress(Keys.F1))
@@ -282,23 +282,27 @@ namespace Bloodbender
             shadowsRendering.renderShadowsOnTarget();
 
             resolutionIndependence.BeginDraw();
-            //camera.SetView();
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             spriteBatch.Draw(shadowsRendering.getTarget(), Vector2.Zero, null, new Color(255, 255, 255, 100), 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.00001f);
             spriteBatch.End();
 
-            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.View);
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.GetView());
 
             foreach (GraphicObj obj in listGraphicObj)
                 obj.Draw(spriteBatch);
-
-            inputHelper.Draw();
 
             spriteBatch.End();
 
 
             debugView.RenderDebugData(ref camera.SimProjection, ref camera.SimView);
+
+
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.GetViewWithoutZoom());
+
+            inputHelper.Draw();
+
+            spriteBatch.End();
 
 
             resolutionIndependence.SetupFullViewport();
