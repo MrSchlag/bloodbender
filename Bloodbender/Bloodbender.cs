@@ -28,7 +28,7 @@ namespace Bloodbender
 
         public InputHelper inputHelper;
 
-        public ShadowsRendering shadowsRendering;
+        public ShadowsRenderer shadowsRendering;
         public List<GraphicObj> listGraphicObj;
 
         public float elapsed = 0.0f;
@@ -97,7 +97,7 @@ namespace Bloodbender
             inputHelper = new InputHelper(resolutionIndependence);
             inputHelper.ShowCursor = true;
 
-            shadowsRendering = new ShadowsRendering();
+            shadowsRendering = new ShadowsRenderer();
 
             listGraphicObj = new List<GraphicObj>();
 
@@ -303,13 +303,13 @@ namespace Bloodbender
             foreach (GraphicObj obj in listGraphicObj)
                 obj.Draw(spriteBatch);
 
+            inputHelper.Draw();
 
             spriteBatch.End();
 
 
             debugView.RenderDebugData(ref camera.SimProjection, ref camera.SimView);
 
-            inputHelper.Draw();
 
             resolutionIndependence.SetupFullViewport();
             frameRateCounter.Draw(spriteBatch);

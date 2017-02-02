@@ -25,7 +25,7 @@ namespace Bloodbender
             mapVertices = new Vertices();
             body.BodyType = BodyType.Static;
             body.Position = new Vector2(0, 0);
-            lenght = 100;
+            length = 100;
         }
 
         public void addVertex(Vector2 vertex)

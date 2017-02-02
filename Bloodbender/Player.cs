@@ -38,9 +38,13 @@ namespace Bloodbender
             playerHitSensorFix.IsSensor = true;
 
             //add method to be called on collision, different denpending of fixture
-            addFixtureToCheckedCollision(playerHitSensorFix);
+            addFixtureToCheckedCollision(playerHitSensorFix); 
             addFixtureToCheckedCollision(playerBoundsFix);
-            height = 0;
+
+            IComponent comp = new GenerateProjectileComponent(this);
+            //addComponent(comp);
+
+            //height = 10;
         }
 
         public override bool Update(float elapsed)
@@ -83,6 +87,14 @@ namespace Bloodbender
             }
             if (nbrArrowPressed >= 2)
                 body.LinearVelocity /= 2;
+
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                height += 50 * elapsed;
+            else if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                height -= 50 * elapsed;
+
+            height = MathHelper.Clamp(height, 0.0f, 10000.0f);
 
             isSensorColliding();
             playerHitSensorFixMousePosRotation();

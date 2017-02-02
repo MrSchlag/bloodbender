@@ -42,7 +42,7 @@ namespace Bloodbender
         public Body body;
         //public Body size;
         public float velocity;
-        public float lenght;
+        public float length;
 
         public PhysicObj(Body body, Vector2 position) : base(OffSet.BottomCenterHorizontal)
         {
@@ -53,7 +53,7 @@ namespace Bloodbender
             this.body.FixedRotation = true;
             this.body.LinearDamping = 1;
             this.body.AngularDamping = 1;
-            this.lenght = 0;
+            this.length = 0;
         }
 
         public PhysicObj(Vector2 position) : base(OffSet.BottomCenterHorizontal)
@@ -137,10 +137,10 @@ namespace Bloodbender
             PhysicObj p1 = ((AdditionalFixtureData)f1.UserData).physicParent;
             PhysicObj p2 = ((AdditionalFixtureData)f2.UserData).physicParent;
 
-            float p1Top = (p1.height * Bloodbender.pixelToMeter) + p1.lenght;
-            float p1Down = p1.height * Bloodbender.pixelToMeter;
-            float p2Top = (p2.height * Bloodbender.pixelToMeter) + p2.lenght;
-            float p2Down = p2.height * Bloodbender.pixelToMeter;
+            float p1Top = p1.height + p1.length;
+            float p1Down = p1.height;
+            float p2Top = p2.height + p2.length;
+            float p2Down = p2.height;
 
             if (p1Top < p2Down || p2Top < p1Down)
                 return false;
