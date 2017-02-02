@@ -22,7 +22,7 @@ namespace Bloodbender
     {
         public Projectile(Vector2 position, float angle, float speed) : base(position)
         {
-            Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
+            //Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
 
             float pixelToMeter = Bloodbender.pixelToMeter;
             
@@ -37,9 +37,6 @@ namespace Bloodbender
             body.Restitution = 0.01f;
             body.FixtureList[0].UserData = new AdditionalFixtureData(this, HitboxType.BOUND);
             addFixtureToCheckedCollision(body.FixtureList[0]);
-            //height = 100f;
-            //body.FixtureList[0].CollisionGroup = 0x0002;
-            //body.FixtureList[0].CollidesWith = 0x0001;
         }
 
         public override bool Update(float elapsed)

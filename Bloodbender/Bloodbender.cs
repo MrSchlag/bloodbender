@@ -36,6 +36,11 @@ namespace Bloodbender
         public Color BackgroundColor = Color.CornflowerBlue;
 
         public Texture2D bouleRouge;
+        public Texture2D blood1;
+        public Texture2D blood2;
+        public Texture2D blood3;
+
+
 
         private bool WindowSizeIsBeingChanged = false;
 
@@ -123,8 +128,10 @@ namespace Bloodbender
             Texture2D textureCarre2 = Content.Load<Texture2D>("carre2");
             Texture2D textureTotem = Content.Load<Texture2D>("Totem");
             bouleRouge = Content.Load<Texture2D>("bouleRouge");
+            blood1 = Content.Load<Texture2D>("blood1");
+            blood2 = Content.Load<Texture2D>("blood2");
+            blood3 = Content.Load<Texture2D>("blood3");
 
-            
             MapBound mapBounds = new MapBound();
             mapBounds.addVertex(new Vector2(0, 0));
             mapBounds.addVertex(new Vector2(120, -50));
@@ -147,6 +154,9 @@ namespace Bloodbender
             Totem totem = new Totem(new Vector2(300, 300));
             totem.addAnimation(new Animation(textureTotem));
 
+            Sprinkler sprinkler = new Sprinkler(new Vector2(500, 300));
+
+            listGraphicObj.Add(sprinkler);
             listGraphicObj.Add(totem);
             listGraphicObj.Add(player);
             listGraphicObj.Add(pobj);

@@ -8,13 +8,16 @@ namespace Bloodbender
 {
     public class GenerateProjectileComponent : IComponent
     {
-        GraphicObj owner;
+        PhysicObj owner;
+
+        Random rnd;
         float incTimer = 0.0f;
-        float frequency = 1.0f;
+        float frequency = 0.05f;
         float shootAngle = (float)Math.PI / 2.0f;
 
-        public GenerateProjectileComponent(GraphicObj obj)
+        public GenerateProjectileComponent(PhysicObj obj)
         {
+            rnd = new Random();
             owner = obj;
         }
 
@@ -30,8 +33,19 @@ namespace Bloodbender
 
         void GenerateProjectile()
         {
-            Projectile proj = new Projectile(owner.position, shootAngle, 400f);
-            proj.addAnimation(new Animation(Bloodbender.ptr.bouleRouge));
+            float precisionOffset = rnd.Next(-300, 301) / 1000.0f;
+
+            Projectile proj = new Projectile(owner.position, shootAngle + precisionOffset, 60f);
+            int bloodRand = rnd.Next(0, 3);
+            if (bloodRand == 0)
+                proj.addAnimation(new Animation(Bloodbender.ptr.blood1));
+            else if (bloodRand == 1)
+                proj.addAnimation(new Animation(Bloodbender.ptr.blood2));
+            else
+                proj.addAnimation(new Animation(Bloodbender.ptr.blood3));
+
+            proj.setRotation(shootAngle + precisionOffset + (float)Math.PI / 2.0f);
+
             Bloodbender.ptr.listGraphicObj.Add(proj);
         }
     }
