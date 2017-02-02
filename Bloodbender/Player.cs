@@ -38,12 +38,9 @@ namespace Bloodbender
             playerHitSensorFix.IsSensor = true;
 
             //add method to be called on collision, different denpending of fixture
-            addFixtureToCheckedCollision(playerHitSensorFix); 
+            addFixtureToCheckedCollision(playerHitSensorFix);
             addFixtureToCheckedCollision(playerBoundsFix);
             height = 0;
-
-            IComponent comp = new GenerateProjectileComponent(this);
-            addComponent(comp);
         }
 
         public override bool Update(float elapsed)

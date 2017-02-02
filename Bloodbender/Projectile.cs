@@ -22,7 +22,7 @@ namespace Bloodbender
     {
         public Projectile(Vector2 position, float angle, float speed) : base(position)
         {
-            Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
+            //Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
 
             float pixelToMeter = Bloodbender.pixelToMeter;
             

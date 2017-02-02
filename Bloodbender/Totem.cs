@@ -27,8 +27,6 @@ namespace Bloodbender
             addFixtureToCheckedCollision(totemBoundsFix);
             body.BodyType = BodyType.Static;
             height = 0;
-            IComponent comp = new GenerateProjectileComponent(this);
-            addComponent(comp);
         }
 
         public override bool Update(float elapsed)

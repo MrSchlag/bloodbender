@@ -97,5 +97,10 @@ namespace Bloodbender
 
             return angle;
         }
+
+        public void setRotation(float rotation)
+        {
+            this.rotation = rotation;
+        }
     }
 }

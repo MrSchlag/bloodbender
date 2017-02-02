@@ -21,7 +21,7 @@ namespace Bloodbender
     {
         public Sprinkler(Vector2 position) : base(position)
         {
-
+            addComponent(new GenerateProjectileComponent(this));
         }
 
         public override bool Update(float elapsed)
