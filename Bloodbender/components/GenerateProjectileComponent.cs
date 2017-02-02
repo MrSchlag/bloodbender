@@ -33,9 +33,9 @@ namespace Bloodbender
 
         void GenerateProjectile()
         {
-            float precisionOffset = rnd.Next(-500, 501) / 1000.0f;
+            float precisionOffset = rnd.Next(-300, 301) / 1000.0f;
 
-            Projectile proj = new Projectile(owner.position, shootAngle + precisionOffset, 400f);
+            Projectile proj = new Projectile(owner.position, shootAngle + precisionOffset, 60f);
             int bloodRand = rnd.Next(0, 3);
             if (bloodRand == 0)
                 proj.addAnimation(new Animation(Bloodbender.ptr.blood1));
@@ -44,8 +44,7 @@ namespace Bloodbender
             else
                 proj.addAnimation(new Animation(Bloodbender.ptr.blood3));
 
-            float direction = (float)Math.Atan2(owner.body.LinearVelocity.X, owner.body.LinearVelocity.Y);
-            proj.setRotation(direction);
+            proj.setRotation(shootAngle + precisionOffset + (float)Math.PI / 2.0f);
 
             Bloodbender.ptr.listGraphicObj.Add(proj);
         }
