@@ -274,6 +274,30 @@ namespace Bloodbender
             View = Matrix.CreateTranslation(translateBody) * matRotation * matZoom * Matrix.CreateTranslation(translateCenter) * resolutionIndependence.GetTransformationMatrix();
         }
 
+        public Matrix GetView()
+        {
+            SetView();
+
+            return View;
+        }
+
+        public Matrix GetViewWithoutZoom()
+        {
+            Matrix matRotation = Matrix.CreateRotationZ(_currentRotation);
+
+            Vector3 translateCenter = new Vector3(_translateCenter, 0f);
+            Vector3 translateBody = new Vector3(-_currentPosition, 0f);
+
+            SimView = Matrix.CreateTranslation(translateBody) * matRotation * Matrix.CreateTranslation(translateCenter) * resolutionIndependence.GetTransformationMatrix();
+
+            translateCenter = ConvertUnits.ToDisplayUnits(translateCenter);
+            translateBody = ConvertUnits.ToDisplayUnits(translateBody);
+
+            View = Matrix.CreateTranslation(translateBody) * matRotation * Matrix.CreateTranslation(translateCenter) * resolutionIndependence.GetTransformationMatrix();
+
+            return View;
+        }
+
         /// <summary>
         /// Moves the camera forward one timestep.
         /// </summary>
