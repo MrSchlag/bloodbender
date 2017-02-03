@@ -21,6 +21,8 @@ namespace Bloodbender
         private OffSet offSet;
         public enum OffSet { Center, BottomCenterHorizontal, None };
 
+        public bool shouldDie = false;
+
         private List<IComponent> components;
 
         public GraphicObj(OffSet offSet = OffSet.None)
@@ -37,7 +39,6 @@ namespace Bloodbender
 
             foreach (IComponent component in components)
                 component.Update(elapsed);
-            
 
             return true;
         }

@@ -223,15 +223,9 @@ namespace Bloodbender
             camera.Update(elapsed);
 
             for (int i = 0; i < listGraphicObj.Count; ++i)
-            {
-                if (listGraphicObj[i].Update(elapsed) == false)
-                {
-                    if (listGraphicObj[i] is PhysicObj)
-                        world.RemoveBody(((PhysicObj)listGraphicObj[i]).body);
-                    listGraphicObj.RemoveAt(i);
-                    --i;
-                }
-            }
+                listGraphicObj[i].Update(elapsed);
+
+            listGraphicObj.RemoveAll(item => item.shouldDie == true);
 
             shadowsRendering.Update(elapsed);
 
