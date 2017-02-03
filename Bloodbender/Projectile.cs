@@ -49,7 +49,7 @@ namespace Bloodbender
             float pixelToMeter = Bloodbender.pixelToMeter;
             body = BodyFactory.CreateCircle(Bloodbender.ptr.world, radius * pixelToMeter, 1);
             body.BodyType = BodyType.Dynamic;
-            body.IsBullet = true;
+            body.IsBullet = false;
             body.Position = position * pixelToMeter;
             body.LinearVelocity = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
             body.LinearVelocity *= speed * pixelToMeter;
