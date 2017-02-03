@@ -226,7 +226,7 @@ namespace Bloodbender
             {
                 if (listGraphicObj[i].Update(elapsed) == false)
                 {
-                    listGraphicObj.Remove(i);
+                    listGraphicObj.RemoveAt(i);
                     --i;
                 }
             }
