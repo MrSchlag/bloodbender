@@ -53,7 +53,7 @@ namespace Bloodbender
             body.Position = position * pixelToMeter;
             body.LinearVelocity = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
             body.LinearVelocity *= speed * pixelToMeter;
-            body.LinearDamping = 0.05f;
+            body.LinearDamping = 0.4f;
             body.FixedRotation = true;
             body.FixtureList[0].CollisionGroup = -1;
             body.Restitution = 0.1f;

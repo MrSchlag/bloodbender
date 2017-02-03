@@ -28,7 +28,7 @@ namespace Bloodbender
         /* fréquence de tire des rafales */
         float frequency = 2f;
         /* angle de tire */
-        float shootAngle = (float)Math.PI / 2;
+        float shootAngle = (float)Math.PI / -2;
         /* définit le décalage par rapport à la position de owner */
         Vector2 spawnPositionOffset;
         float mainProjRadius;
@@ -40,7 +40,7 @@ namespace Bloodbender
             spawnPositionOffset = new Vector2(50, 0);
             mainProjRadius = 16f;
             decorationProjRadius = 3f;
-            projSpeed = 10f;
+            projSpeed = 200f;
             rnd = new Random();
             owner = obj;
         }
@@ -72,7 +72,7 @@ namespace Bloodbender
                 int bloodTexRand = rnd.Next(0, 3);
                 int spawnPositionInLineRand = rnd.Next(-20, 21);
 
-                Vector2 decorationProjPositionOffset = new Vector2(0 + spawnPositionOffset.X - mainProjRadius, spawnPositionInLineRand + spawnPositionOffset.Y);
+                Vector2 decorationProjPositionOffset = new Vector2(0 + spawnPositionOffset.X - mainProjRadius + rnd.Next(-15, 6), spawnPositionInLineRand + spawnPositionOffset.Y);
                 Vector2 decorationProjPosition = decorationProjPositionOffset.Rotate(shootAngle) + owner.position;
 
                 Projectile decorationProj = new Projectile(decorationProjPosition, decorationProjRadius, shootAngle, projSpeed);
