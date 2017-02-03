@@ -202,6 +202,31 @@ namespace Bloodbender
             return (body.CreateFixture(rectangleShape, userData));
         }
 
+        public Fixture createOctogoneFixture(float width, float height, Vector2 translationVector, AdditionalFixtureData userData = null)
+        {
+            float dh = height / 3f;
+            float dw = width / 3f;
+
+            /* Création des vertices correspondant à un octogone inscrit dans le rectangle passé en param */
+            Vertices octogonVertices = new Vertices();
+            octogonVertices.Add(new Vector2(0, dh) * Bloodbender.pixelToMeter);
+            octogonVertices.Add(new Vector2(0, dh * 2f) * Bloodbender.pixelToMeter);
+            octogonVertices.Add(new Vector2(dw, 0) * Bloodbender.pixelToMeter);
+            octogonVertices.Add(new Vector2(dw * 2, 0) * Bloodbender.pixelToMeter);
+            octogonVertices.Add(new Vector2(dw, height) * Bloodbender.pixelToMeter);
+            octogonVertices.Add(new Vector2(dw * 2, height) * Bloodbender.pixelToMeter);
+            octogonVertices.Add(new Vector2(width, dh) * Bloodbender.pixelToMeter);
+            octogonVertices.Add(new Vector2(width, dh * 2) * Bloodbender.pixelToMeter);
+
+            /* création de la shape et transaltion pour prendre en compte la position définie par le centre du body */
+            PolygonShape octogonShape = new PolygonShape(octogonVertices, 20);
+            octogonShape.Vertices.Translate(new Vector2(-width / 2f, -height / 2f) * Bloodbender.pixelToMeter);
+            octogonShape.Vertices.Translate(translationVector);
+
+            Fixture octogonFix = body.CreateFixture(octogonShape, userData);
+            return (octogonFix);
+        }
+
         public override void Dispose()
         {
             Bloodbender.ptr.world.RemoveBody(body);
