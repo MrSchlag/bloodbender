@@ -65,9 +65,7 @@ namespace Bloodbender
         {
             lifeTime += elapsed;
             if (lifeTime > lifeTimeMax)
-            {
-                return false;
-            }
+                shouldDie = true;
             return base.Update(elapsed);
         }
 

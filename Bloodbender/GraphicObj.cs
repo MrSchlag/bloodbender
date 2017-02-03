@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Bloodbender
 {
-    public class GraphicObj
+    public class GraphicObj : IDisposable
     {
         private List<Animation> animations;
         public Vector2 position = Vector2.Zero;
@@ -103,5 +103,11 @@ namespace Bloodbender
         {
             this.rotation = rotation;
         }
+
+        public virtual void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
+
     }
 }

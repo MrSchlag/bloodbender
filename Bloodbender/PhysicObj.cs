@@ -202,5 +202,10 @@ namespace Bloodbender
             return (body.CreateFixture(rectangleShape, userData));
         }
 
+        public override void Dispose()
+        {
+            Bloodbender.ptr.world.RemoveBody(body);
+            base.Dispose();
+        }
     }
 }
