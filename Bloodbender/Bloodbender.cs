@@ -226,6 +226,8 @@ namespace Bloodbender
             {
                 if (listGraphicObj[i].Update(elapsed) == false)
                 {
+                    if (listGraphicObj[i] is PhysicObj)
+                        world.RemoveBody(((PhysicObj)listGraphicObj[i]).body);
                     listGraphicObj.RemoveAt(i);
                     --i;
                 }
