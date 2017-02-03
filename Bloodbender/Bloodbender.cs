@@ -223,11 +223,15 @@ namespace Bloodbender
             camera.Update(elapsed);
 
             for (int i = 0; i < listGraphicObj.Count; ++i)
-                listGraphicObj[i].Update(elapsed);
+            {
+                if (listGraphicObj[i].Update(elapsed) == false)
+                {
+                    listGraphicObj.Remove(i);
+                    --i;
+                }
+            }
 
             shadowsRendering.Update(elapsed);
-
-
 
             if (inputHelper.IsNewKeyPress(Keys.F1))
                 debugView.EnableOrDisableFlag(DebugViewFlags.Shape);
