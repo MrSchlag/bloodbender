@@ -41,6 +41,7 @@
     <Compile Include="Animation.cs" />
     <Compile Include="Bloodbender.cs" />
     <Compile Include="Camera.cs" />
+    <Compile Include="components\DirectionalBlastComponent.cs" />
     <Compile Include="FrameRateCounter.cs" />
     <Compile Include="components\GenerateProjectileComponent.cs" />
     <Compile Include="GraphicObj.cs" />
