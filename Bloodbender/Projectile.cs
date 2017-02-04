@@ -41,7 +41,6 @@ namespace Bloodbender
             body.Restitution = 0.01f;
             body.FixtureList[0].UserData = new AdditionalFixtureData(this, HitboxType.BOUND);
             addFixtureToCheckedCollision(body.FixtureList[0]);
-                
         }
 
         public Projectile(Vector2 position, float radius, float angle, float speed) : base(position)
@@ -49,7 +48,7 @@ namespace Bloodbender
             float pixelToMeter = Bloodbender.pixelToMeter;
             body = BodyFactory.CreateCircle(Bloodbender.ptr.world, radius * pixelToMeter, 1);
             body.BodyType = BodyType.Dynamic;
-            body.IsBullet = false;
+            body.IsBullet = true;
             body.Position = position * pixelToMeter;
             body.LinearVelocity = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
             body.LinearVelocity *= speed * pixelToMeter;
@@ -63,6 +62,9 @@ namespace Bloodbender
 
         public override bool Update(float elapsed)
         {
+            float angleLinearVelocityVector = (float)Math.Atan(body.LinearVelocity.Y / body.LinearVelocity.X);
+            rotation = angleLinearVelocityVector + (float)Math.PI / 2;
+
             lifeTime += elapsed;
             if (lifeTime > lifeTimeMax)
                 shouldDie = true;

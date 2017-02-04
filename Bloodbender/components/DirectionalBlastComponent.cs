@@ -28,7 +28,7 @@ namespace Bloodbender
         /* fréquence de tire des rafales */
         float frequency = 2f;
         /* angle de tire */
-        float shootAngle = (float)Math.PI / -2;
+        float shootAngle = (float)-0.349066 - (float)Math.PI / 2;
         /* définit le décalage par rapport à la position de owner */
         Vector2 spawnPositionOffset;
         float mainProjRadius;
@@ -40,7 +40,7 @@ namespace Bloodbender
             spawnPositionOffset = new Vector2(50, 0);
             mainProjRadius = 16f;
             decorationProjRadius = 3f;
-            projSpeed = 200f;
+            projSpeed = 300f;
             rnd = new Random();
             owner = obj;
         }
