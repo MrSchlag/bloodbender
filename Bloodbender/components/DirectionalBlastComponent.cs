@@ -24,34 +24,41 @@ namespace Bloodbender
         PhysicObj owner;
 
         Random rnd;
-        float incTimer = 0.0f;
+        private float incTimer = 0.0f;
         /* fréquence de tire des rafales */
-        float frequency = 2f;
+        private float frequency;
         /* angle de tire */
-        float shootAngle = (float)-0.349066 - (float)Math.PI / 2;
+        private float shootAngle; //(float)-0.349066 - (float)Math.PI / 2;
         /* définit le décalage par rapport à la position de owner */
-        Vector2 spawnPositionOffset;
-        float mainProjRadius;
+        private Vector2 spawnPositionOffset;
+        private float mainProjRadius;
         float decorationProjRadius;
         float projSpeed;
 
-        public DirectionalBlastComponent(PhysicObj obj)
+        public DirectionalBlastComponent(PhysicObj obj, float projSpeed, float shootAngle, 
+            float mainProjRadius, float decorationProjRadius, Vector2 spawnPositionOffset, float frequency = 0.0f)
         {
-            spawnPositionOffset = new Vector2(50, 0);
-            mainProjRadius = 16f;
-            decorationProjRadius = 3f;
-            projSpeed = 300f;
+            this.spawnPositionOffset = spawnPositionOffset;// new Vector2(50, 0);
+            this.mainProjRadius = mainProjRadius;
+            this.decorationProjRadius = decorationProjRadius;
+            this.projSpeed = projSpeed;
+            this.shootAngle = shootAngle;
+            this.frequency = frequency;
+
             rnd = new Random();
             owner = obj;
         }
 
         void IComponent.Update(float elapsed)
         {
-            incTimer += elapsed;
-            if (incTimer > frequency)
+            if (frequency != 0.0f)
             {
-                GenerateDirectionalBlast();
-                incTimer = 0.0f;
+                incTimer += elapsed;
+                if (incTimer > frequency)
+                {
+                    GenerateDirectionalBlast();
+                    incTimer = 0.0f;
+                }
             }
         }
 

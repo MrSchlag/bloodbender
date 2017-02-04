@@ -21,7 +21,9 @@ namespace Bloodbender
     {
         public Sprinkler(Vector2 position) : base(position)
         {
-            addComponent(new DirectionalBlastComponent(this));
+            DirectionalBlastComponent blastComp = new DirectionalBlastComponent(this, 300,
+                -0.349066f - (float)Math.PI / 2, 16, 3, new Vector2(50, 0), 2);
+            addComponent(blastComp);
         }
 
         public override bool Update(float elapsed)
