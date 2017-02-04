@@ -22,7 +22,6 @@ namespace Bloodbender
     {
         private float lifeTimeMax = 4.0f;
         private float lifeTime = 0.0f;
-        public bool texRotationFixed = false;
 
         public Projectile(Vector2 position, float angle, float speed) : base(position)
         {
@@ -63,11 +62,6 @@ namespace Bloodbender
 
         public override bool Update(float elapsed)
         {
-            if (texRotationFixed == false)
-            {
-                float angleLinearVelocityVector = (float)Math.Atan(body.LinearVelocity.Y / body.LinearVelocity.X);
-                rotation = angleLinearVelocityVector + (float)Math.PI / 2;
-            }
             lifeTime += elapsed;
             if (lifeTime > lifeTimeMax)
                 shouldDie = true;

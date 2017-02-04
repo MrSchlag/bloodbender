@@ -60,7 +60,6 @@ namespace Bloodbender
             Vector2 mainProjPosition = spawnPositionOffset.Rotate(shootAngle) + owner.position;
 
             Projectile mainProj = new Projectile(mainProjPosition, mainProjRadius, shootAngle, projSpeed);
-            mainProj.texRotationFixed = true;
             mainProj.addAnimation(new Animation(Bloodbender.ptr.bouleRouge));
             mainProj.body.IgnoreCollisionWith(owner.body);
             Bloodbender.ptr.listGraphicObj.Add(mainProj);
@@ -85,6 +84,7 @@ namespace Bloodbender
                     decorationProj.addAnimation(new Animation(Bloodbender.ptr.blood3));
                 decorationProj.setRotation(shootAngle + (float)Math.PI / 2.0f);
                 decorationProj.body.IgnoreCollisionWith(owner.body);
+                decorationProj.addComponent(new TextureHeadingToDirectionComponent(decorationProj));
                 Bloodbender.ptr.listGraphicObj.Add(decorationProj);
             }
         }
