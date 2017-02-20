@@ -38,11 +38,11 @@ namespace Bloodbender
 
             foreach (PathFinderNode n in listNodes)
             {
-                DrawCircle(n.position, 0.05f, Color.White);
+                DrawSolidCircle(n.position, 0.1f, new Vector2(0,0), Color.White);
 
                 foreach (PathFinderNode nl in n.neighbors)
                 {
-                    DrawSegment(n.position, nl.position, Color.White);
+                    DrawSegment(n.position, nl.position, Color.Gray);
                 }
             }
 
