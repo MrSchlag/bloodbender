@@ -219,9 +219,11 @@ namespace Bloodbender
             octogonVertices.Add(new Vector2(width, dh * 2) * Bloodbender.pixelToMeter);
 
             /* création de la shape et transaltion pour prendre en compte la position définie par le centre du body */
+            octogonVertices.Translate(new Vector2(-width / 2f, -height / 2f) * Bloodbender.pixelToMeter);
+            octogonVertices.Translate(translationVector);
             PolygonShape octogonShape = new PolygonShape(octogonVertices, 20);
-            octogonShape.Vertices.Translate(new Vector2(-width / 2f, -height / 2f) * Bloodbender.pixelToMeter);
-            octogonShape.Vertices.Translate(translationVector);
+            //octogonShape.Vertices.Translate(new Vector2(-width / 2f, -height / 2f) * Bloodbender.pixelToMeter);
+            //octogonShape.Vertices.Translate(translationVector);
 
             Fixture octogonFix = body.CreateFixture(octogonShape, userData);
             return (octogonFix);

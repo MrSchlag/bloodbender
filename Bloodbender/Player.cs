@@ -22,16 +22,23 @@ namespace Bloodbender
         Fixture playerBoundsFix;
         Fixture playerHitSensorFix;
         float attackSensorAngle;
+        float askPathFrq;
+        float askPathFrqCounter;
 
         public Player(Vector2 position) : base(position)
         {
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
             Bloodbender.ptr.camera.TrackingBody = body;
 
+            askPathFrq = 4f;
+            askPathFrqCounter = 0f;
+
             velocity = 200;
             attackSensorAngle = 0f;
 
             Fixture playerBoundsFix = createOctogoneFixture(32f, 32f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
+            //Fixture playerBoundsFix = createRectangleFixture(32.0f, 32.0f, new Vector2(0f, 0), new AdditionalFixtureData(this, HitboxType.BOUND));
+
 
             playerHitSensorFix = createRectangleFixture(32.0f, 32.0f, new Vector2(32.0f, 0), new AdditionalFixtureData(this, HitboxType.ATTACK));
 
@@ -52,6 +59,13 @@ namespace Bloodbender
         {
             float pixelToMeter = Bloodbender.pixelToMeter;
             int nbrArrowPressed = 0;
+
+            askPathFrqCounter += elapsed;
+            if (askPathFrqCounter > askPathFrq)
+            {
+                //Bloodbender.ptr.pathFinder.pathRequest(this);
+                askPathFrqCounter = 0f;
+            }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Z)
                 || Keyboard.GetState().IsKeyDown(Keys.S)

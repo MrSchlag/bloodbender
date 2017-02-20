@@ -31,6 +31,8 @@ namespace Bloodbender
         public ShadowsRenderer shadowsRendering;
         public List<GraphicObj> listGraphicObj;
 
+        public PathFinder pathFinder;
+
         public float elapsed = 0.0f;
 
         public Color BackgroundColor = Color.CornflowerBlue;
@@ -39,7 +41,8 @@ namespace Bloodbender
         public Texture2D blood1;
         public Texture2D blood2;
         public Texture2D blood3;
-
+        public Texture2D debugNodeFree;
+        public Texture2D debugNodeBusy;
 
 
         private bool WindowSizeIsBeingChanged = false;
@@ -131,6 +134,8 @@ namespace Bloodbender
             blood1 = Content.Load<Texture2D>("blood1");
             blood2 = Content.Load<Texture2D>("blood2");
             blood3 = Content.Load<Texture2D>("blood3");
+            debugNodeBusy = Content.Load<Texture2D>("debugPathFinderNode");
+            debugNodeFree = Content.Load<Texture2D>("debugPathFinderNode2");
 
             MapBound mapBounds = new MapBound();
             mapBounds.addVertex(new Vector2(0, 0));
@@ -139,7 +144,8 @@ namespace Bloodbender
             mapBounds.addVertex(new Vector2(1900, 500));
             mapBounds.addVertex(new Vector2(0, 500));
             mapBounds.finiliezMap();
-            
+
+            pathFinder = new PathFinder(20, mapBounds);
 
             PhysicObj pobj = new PhysicObj(BodyFactory.CreateRectangle(world, 32 * pixelToMeter, 32 * pixelToMeter, 1), // meterTopixel a la place de 32?
                 new Vector2(1280, 200));
@@ -162,6 +168,8 @@ namespace Bloodbender
             listGraphicObj.Add(pobj);
 
             frameRateCounter = new FrameRateCounter(font);
+
+            pathFinder.pathRequest(new Vector2(41, 42), new Vector2(300, 300));
         }
 
         
