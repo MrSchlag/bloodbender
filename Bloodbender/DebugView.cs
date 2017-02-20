@@ -39,6 +39,11 @@ namespace Bloodbender
             foreach (PathFinderNode n in listNodes)
             {
                 DrawCircle(n.position, 0.05f, Color.White);
+
+                foreach (PathFinderNode nl in n.neighbors)
+                {
+                    DrawSegment(n.position, nl.position, Color.White);
+                }
             }
 
             _primitiveBatch.End();
