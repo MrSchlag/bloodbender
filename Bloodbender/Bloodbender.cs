@@ -23,7 +23,7 @@ namespace Bloodbender
         public World world;
         public const float meterToPixel = 32;
         public const float pixelToMeter = 1 / meterToPixel;
-        public DebugViewXNA debugView;
+        public DebugView debugView;
 
 
         public InputHelper inputHelper;
@@ -90,11 +90,7 @@ namespace Bloodbender
 
             ConvertUnits.SetDisplayUnitToSimUnitRatio(meterToPixel);
 
-            debugView = new DebugViewXNA(world);
-            debugView.RemoveFlags(DebugViewFlags.Shape);
-            debugView.RemoveFlags(DebugViewFlags.Joint);
-            debugView.DefaultShapeColor = Color.White;
-            debugView.SleepingShapeColor = Color.LightGray;
+            debugView = new DebugView();
             debugView.LoadContent(GraphicsDevice, Content);
 
             inputHelper = new InputHelper(resolutionIndependence);

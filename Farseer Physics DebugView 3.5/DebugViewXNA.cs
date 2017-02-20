@@ -23,15 +23,15 @@ namespace FarseerPhysics.DebugView
     public class DebugViewXNA : DebugViewBase, IDisposable
     {
         //Drawing
-        private PrimitiveBatch _primitiveBatch;
-        private SpriteBatch _batch;
-        private SpriteFont _font;
-        private GraphicsDevice _device;
+        protected PrimitiveBatch _primitiveBatch;
+        protected SpriteBatch _batch;
+        protected SpriteFont _font;
+        protected GraphicsDevice _device;
         private Vector2[] _tempVertices = new Vector2[Settings.MaxPolygonVertices];
-        private List<StringData> _stringData;
+        protected List<StringData> _stringData;
 
-        private Matrix _localProjection;
-        private Matrix _localView;
+        protected Matrix _localProjection;
+        protected Matrix _localView;
 
         //Shapes
         public Color DefaultShapeColor = new Color(0.9f, 0.7f, 0.7f);
@@ -75,9 +75,14 @@ namespace FarseerPhysics.DebugView
             world.ContactManager.PreSolve += PreSolve;
 
             //Default flags
-            AppendFlags(DebugViewFlags.Shape);
+
             AppendFlags(DebugViewFlags.Controllers);
-            AppendFlags(DebugViewFlags.Joint);
+
+            //AppendFlags(DebugViewFlags.Shape);
+            //AppendFlags(DebugViewFlags.Joint);
+
+            DefaultShapeColor = Color.White;
+            SleepingShapeColor = Color.LightGray;
         }
 
         #region IDisposable Members
@@ -132,7 +137,7 @@ namespace FarseerPhysics.DebugView
         /// <summary>
         /// Call this to draw shapes and other debug draw data.
         /// </summary>
-        private void DrawDebugData()
+        protected void DrawDebugData()
         {
             if ((Flags & DebugViewFlags.Shape) == DebugViewFlags.Shape)
             {
@@ -264,7 +269,7 @@ namespace FarseerPhysics.DebugView
                 DrawDebugPanel();
         }
 
-        private void DrawPerformanceGraph()
+        protected void DrawPerformanceGraph()
         {
             _graphValues.Add(World.UpdateTime / TimeSpan.TicksPerMillisecond);
 
@@ -736,7 +741,7 @@ namespace FarseerPhysics.DebugView
             RenderDebugData(ref projection, ref view);
         }
 
-        public void RenderDebugData(ref Matrix projection, ref Matrix view)
+        public virtual void RenderDebugData(ref Matrix projection, ref Matrix view)
         {
             if (!Enabled)
                 return;
@@ -809,7 +814,7 @@ namespace FarseerPhysics.DebugView
 
         #region Nested type: StringData
 
-        private struct StringData
+        protected struct StringData
         {
             public Color Color;
             public string Text;
