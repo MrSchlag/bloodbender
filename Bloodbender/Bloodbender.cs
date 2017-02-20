@@ -133,6 +133,8 @@ namespace Bloodbender
             debugNodeBusy = Content.Load<Texture2D>("debugPathFinderNode");
             debugNodeFree = Content.Load<Texture2D>("debugPathFinderNode2");
 
+            pathFinder = new PathFinder(20);
+
             MapBound mapBounds = new MapBound();
             mapBounds.addVertex(new Vector2(0, 0));
             mapBounds.addVertex(new Vector2(120, -50));
@@ -140,8 +142,6 @@ namespace Bloodbender
             mapBounds.addVertex(new Vector2(1900, 500));
             mapBounds.addVertex(new Vector2(0, 500));
             mapBounds.finiliezMap();
-
-            pathFinder = new PathFinder(20, mapBounds);
 
             PhysicObj pobj = new PhysicObj(BodyFactory.CreateRectangle(world, 32 * pixelToMeter, 32 * pixelToMeter, 1), // meterTopixel a la place de 32?
                 new Vector2(1280, 200));
@@ -165,7 +165,7 @@ namespace Bloodbender
 
             frameRateCounter = new FrameRateCounter(font);
 
-            pathFinder.pathRequest(new Vector2(41, 42), new Vector2(300, 300));
+            //pathFinder.pathRequest(new Vector2(41, 42), new Vector2(300, 300));
         }
 
         

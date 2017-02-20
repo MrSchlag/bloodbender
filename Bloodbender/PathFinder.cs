@@ -34,6 +34,11 @@ namespace Bloodbender
             score = 0;
 
             this.position = position * Bloodbender.pixelToMeter;
+
+            GraphicObj debug = new GraphicObj();
+            debug.position = position;
+            debug.addAnimation(new Animation(Bloodbender.ptr.debugNodeFree));
+            Bloodbender.ptr.listGraphicObj.Add(debug);
         }
 
         public void reset()
@@ -47,6 +52,9 @@ namespace Bloodbender
     { //TODO : mettre a jour les nodes dans un autre thread
         MapBound mapBounds;
         List<List<PathFinderNode>> allNodes;
+
+        List<PathFinderNode> nodes;
+
         List<PathFinderNode> openList;
         List<PathFinderNode> closedList;
 
@@ -54,7 +62,7 @@ namespace Bloodbender
         List<Fixture> mapShapeFixtures;
         Body body;
 
-        public PathFinder(int pathStep, MapBound mapBounds)
+        public PathFinder(int pathStep)
         {
             body = BodyFactory.CreateBody(Bloodbender.ptr.world);
             body.BodyType = BodyType.Static;
@@ -62,64 +70,18 @@ namespace Bloodbender
             openList = new List<PathFinderNode>();
             closedList = new List<PathFinderNode>();
             mapShapeFixtures = new List<Fixture>();
+            nodes = new List<PathFinderNode>();
             this.pathStep = pathStep;
-            this.mapBounds = mapBounds;
 
-            createMapShape();
-            createGridOverlay();
-            destroyMapShape();
-            createNodeLinks();
+            //createMapShape();
+            //createGridOverlay();
+            //destroyMapShape();
+            //createNodeLinks();
         }
 
-        private void createMapShape()
+        public void addNode(PathFinderNode node)
         {
-            List<Vertices> listVertice = Triangulate.ConvexPartition(mapBounds.mapVertices, TriangulationAlgorithm.Delauny);
-
-            foreach (Vertices vertice in listVertice)
-            {
-                PolygonShape pathFinderShape = new PolygonShape(vertice, 1);
-                Fixture pahtFinderFix = body.CreateFixture(pathFinderShape);
-                mapShapeFixtures.Add(pahtFinderFix);
-            }
-        }
-
-        private void destroyMapShape()
-        {
-            Bloodbender.ptr.world.RemoveBody(body);
-            mapShapeFixtures.Clear();
-        }
-
-        private void createGridOverlay()
-        {
-            int testCount = 0;
-            int testCountInternal = 0;
-            for (int x = (int)mapBounds.minX; x <= mapBounds.maxX; x += pathStep)
-            {
-                List<PathFinderNode> newNodeList = new List<PathFinderNode>();
-                for (int y = (int)mapBounds.minY; y <= mapBounds.maxY; y += pathStep)
-                {
-                    Vector2 posVec = new Vector2(x, y);
-                    Vector2 posVecMeters = posVec * Bloodbender.pixelToMeter;
-                    PathFinderNode newNode = new PathFinderNode(posVec);
-
-                    foreach (Fixture mapFix in mapShapeFixtures)
-                    {
-                        if (mapFix.TestPoint(ref posVecMeters))
-                        {
-                            testCountInternal++;
-                            newNode.free = true;
-                            break;
-                        }
-                    }
-                    if (newNode.free == false)
-                        testCount++;
-                    newNodeList.Add(newNode);
-                }
-                allNodes.Add(newNodeList);
-            }
-            System.Diagnostics.Debug.WriteLine("[PathFinder] point count external : " + testCount + " internal : " + testCountInternal);
-            createNodeLinks();
-            resetAllNodes();
+            nodes.Add(node);
         }
 
         private void createNodeLinks()
