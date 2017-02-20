@@ -34,12 +34,6 @@ namespace Bloodbender
             score = 0;
 
             this.position = position * Bloodbender.pixelToMeter;
-
-            //debug
-            GraphicObj debug = new GraphicObj();
-            debug.position = position;
-            debug.addAnimation(new Animation(Bloodbender.ptr.debugNodeFree));
-            Bloodbender.ptr.listGraphicObj.Add(debug);
         }
 
         public void reset()
