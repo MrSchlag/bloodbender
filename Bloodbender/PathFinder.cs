@@ -35,10 +35,11 @@ namespace Bloodbender
 
             this.position = position * Bloodbender.pixelToMeter;
 
-            GraphicObj debug = new GraphicObj();
+           /* GraphicObj debug = new GraphicObj();
             debug.position = position;
             debug.addAnimation(new Animation(Bloodbender.ptr.debugNodeFree));
             Bloodbender.ptr.listGraphicObj.Add(debug);
+    */    
         }
 
         public void reset()
@@ -58,7 +59,7 @@ namespace Bloodbender
         List<PathFinderNode> openList;
         List<PathFinderNode> closedList;
 
-        int pathStep;
+        public int pathStep;
         List<Fixture> mapShapeFixtures;
         Body body;
 
@@ -250,14 +251,15 @@ namespace Bloodbender
 
         public List<PathFinderNode> getPathFinderNodes()
         {
-            List<PathFinderNode> straightListNode = new List<PathFinderNode>();
+            /*List<PathFinderNode> straightListNode = new List<PathFinderNode>();
 
             foreach (List<PathFinderNode> nodeList in allNodes)
             {
                 straightListNode.AddRange(nodeList);
             }
 
-            return straightListNode;
+            return straightListNode; */
+            return nodes;
         }
 
     }

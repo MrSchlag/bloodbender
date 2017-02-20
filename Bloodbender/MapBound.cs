@@ -66,7 +66,7 @@ namespace Bloodbender
         }
         public void createPathFinderNodes()
         {
-            float pathNodeOffset = 20;
+            float pathNodeOffset = (float)Bloodbender.ptr.pathFinder.pathStep;
             int verticePos = 0;
 
             foreach (Vector2 vertex in mapVertices)
@@ -78,7 +78,6 @@ namespace Bloodbender
                 cornerSquare1.Add(new Vector2(0, 0));
                 Vertices cornerSquare2 = new Vertices();
                 cornerSquare2.Add(new Vector2(0, 0));
-
 
                 /* récupération des vertex suivant et précédents pour la création des vecteur */
                 Vector2 nextVertex = getNextVertex(verticePos, true) * Bloodbender.meterToPixel;

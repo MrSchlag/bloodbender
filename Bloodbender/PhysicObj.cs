@@ -44,6 +44,8 @@ namespace Bloodbender
         public float velocity;
         public float length;
 
+        List<PathFinderNode> pathFinderNodes;
+
         public PhysicObj(Body body, Vector2 position) : base(OffSet.BottomCenterHorizontal)
         {
             velocity = 0;
@@ -54,9 +56,12 @@ namespace Bloodbender
             this.body.LinearDamping = 1;
             this.body.AngularDamping = 1;
             this.length = 0;
+
+            pathFinderNodes = new List<PathFinderNode>();
+
         }
 
-        public PhysicObj(Vector2 position) : base(OffSet.BottomCenterHorizontal)
+        public PhysicObj(Vector2 position, bool externalPathNode = false) : base(OffSet.BottomCenterHorizontal)
         {
             velocity = 0;
             body = BodyFactory.CreateBody(Bloodbender.ptr.world);
@@ -65,15 +70,20 @@ namespace Bloodbender
             body.FixedRotation = true;
             body.LinearDamping = 0.02f;
             body.AngularDamping = 1;
-        }
 
-       
+            pathFinderNodes = new List<PathFinderNode>();
+            if (externalPathNode == false)
+                pathFinderNodes.Add(new PathFinderNode(position));
+            //TODO : ajouter le truc pour faire les noeud extern
+            foreach (PathFinderNode node in pathFinderNodes)
+                Bloodbender.ptr.pathFinder.addNode(node);
+        }
 
         public override bool Update(float elapsed)
         {
             position = body.Position * Bloodbender.meterToPixel;
-
-            
+            foreach (PathFinderNode node in pathFinderNodes)
+                node.position = body.Position;
 
             return base.Update(elapsed);
         }
