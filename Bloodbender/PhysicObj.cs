@@ -21,6 +21,13 @@ namespace Bloodbender
         ATTACK = 1
     }
 
+    public enum PathFinderNodeType
+    {
+        EMPTY = 0,
+        CENTER = 1,
+        OUTLINE = 2
+    }
+
     public class AdditionalFixtureData
     {
         public PhysicObj physicParent;
@@ -43,6 +50,7 @@ namespace Bloodbender
         //public Body size;
         public float velocity;
         public float length;
+        PathFinderNodeType pathNodeType;
 
         List<PathFinderNode> pathFinderNodes;
 
@@ -57,11 +65,12 @@ namespace Bloodbender
             this.body.AngularDamping = 1;
             this.length = 0;
 
+            pathNodeType = PathFinderNodeType.EMPTY;
             pathFinderNodes = new List<PathFinderNode>();
 
         }
 
-        public PhysicObj(Vector2 position, bool externalPathNode = false) : base(OffSet.BottomCenterHorizontal)
+        public PhysicObj(Vector2 position, PathFinderNodeType nodeType = PathFinderNodeType.EMPTY) : base(OffSet.BottomCenterHorizontal)
         {
             velocity = 0;
             body = BodyFactory.CreateBody(Bloodbender.ptr.world);
@@ -72,9 +81,11 @@ namespace Bloodbender
             body.AngularDamping = 1;
 
             pathFinderNodes = new List<PathFinderNode>();
-            if (externalPathNode == false)
+            pathNodeType = nodeType;
+            if (nodeType == PathFinderNodeType.CENTER)
                 pathFinderNodes.Add(new PathFinderNode(position));
-            //TODO : ajouter le truc pour faire les noeud extern
+            else if (nodeType == PathFinderNodeType.OUTLINE) { }
+            //TODO : ajouter le truc pour faire les noeud outline
             foreach (PathFinderNode node in pathFinderNodes)
                 Bloodbender.ptr.pathFinder.addNode(node);
         }
@@ -82,9 +93,11 @@ namespace Bloodbender
         public override bool Update(float elapsed)
         {
             position = body.Position * Bloodbender.meterToPixel;
-            foreach (PathFinderNode node in pathFinderNodes)
-                node.position = body.Position;
-
+            if (pathNodeType != PathFinderNodeType.EMPTY)
+            {
+                foreach (PathFinderNode node in pathFinderNodes)
+                    node.setPosition(body.Position);
+            }
             return base.Update(elapsed);
         }
 

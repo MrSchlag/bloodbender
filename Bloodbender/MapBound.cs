@@ -64,6 +64,7 @@ namespace Bloodbender
             addFixtureToCheckedCollision(chainShapeFix);
             createPathFinderNodes();
         }
+
         public void createPathFinderNodes()
         {
             float pathNodeOffset = (float)Bloodbender.ptr.pathFinder.pathStep;

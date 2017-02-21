@@ -24,6 +24,7 @@ namespace Bloodbender
         public List<PathFinderNode> neighbors;
         public PathFinderNode parent;
         public Vector2 position; //position en metre (Farseer Units)
+        public Vector2 offset;
         public bool free;
         public int score;
 
@@ -35,17 +36,61 @@ namespace Bloodbender
 
             this.position = position * Bloodbender.pixelToMeter;
 
-           /* GraphicObj debug = new GraphicObj();
-            debug.position = position;
-            debug.addAnimation(new Animation(Bloodbender.ptr.debugNodeFree));
-            Bloodbender.ptr.listGraphicObj.Add(debug);
-    */    
+            findNeighbors();
         }
 
         public void reset()
         {
             score = 0;
             parent = null;
+        }
+
+        public void setPosition(Vector2 position)
+        {
+            this.position = position;
+            foreach (PathFinderNode neighbour in neighbors)
+            {
+                neighbour.neighbors.Remove(this);
+            }
+            neighbors.Clear();
+            findNeighbors();
+        }
+
+        private void findNeighbors()
+        {
+            List<PathFinderNode> allNodes = Bloodbender.ptr.pathFinder.getPathFinderNodes();
+            bool isVisible;
+
+            foreach (PathFinderNode node in allNodes)
+            {
+                isVisible = true;
+                if (!node.Equals(this))
+                {
+                    Bloodbender.ptr.world.RayCast((fixture, point, normal, fraction) =>
+                    {
+                        isVisible = false;
+                        return 0;
+                    }, position, node.position);
+                    
+                    if (isVisible == true)
+                    {
+                        if (!neighbors.Contains(node))
+                            neighbors.Add(node);
+                        if (!node.neighbors.Contains(node))
+                            node.neighbors.Add(this);
+                    }
+                }
+            }
+        }
+
+        private float pathNodeRayCastCallback(Fixture arg1, Vector2 arg2, Vector2 arg3, float arg4)
+        {
+            throw new NotImplementedException();
+        }
+
+        private int pathNodeRayCastCallback(Fixture fix, Vector2 vec1, Vector2 vec2, float fl1, float fl2)
+        {
+            return 0;
         }
     }
 
