@@ -267,8 +267,10 @@ namespace Bloodbender
                 debugView.EnableOrDisableFlag(DebugViewFlags.CenterOfMass);
             if (inputHelper.IsNewKeyPress(Keys.F8))
                 debugView.EnableOrDisableFlag(DebugViewFlags.AABB);
+            if (inputHelper.IsNewKeyPress(Keys.F9))
+                debugView.EnableOrDisableFlag(DebugViewFlags.PathFinding);
 
-            
+
             if (inputHelper.IsNewKeyPress(Keys.F12))
             {
                 this.Window.ClientSizeChanged -= eventResize;

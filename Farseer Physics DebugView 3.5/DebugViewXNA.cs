@@ -137,7 +137,7 @@ namespace FarseerPhysics.DebugView
         /// <summary>
         /// Call this to draw shapes and other debug draw data.
         /// </summary>
-        protected void DrawDebugData()
+        protected virtual void DrawDebugData()
         {
             if ((Flags & DebugViewFlags.Shape) == DebugViewFlags.Shape)
             {
