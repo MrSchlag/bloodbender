@@ -68,6 +68,8 @@ namespace Bloodbender
                 {
                     Bloodbender.ptr.world.RayCast((fixture, point, normal, fraction) =>
                     {
+                        if (fixture.IsSensor)
+                            return -1;
                         isVisible = false;
                         return 0;
                     }, position, node.position);
