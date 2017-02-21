@@ -25,7 +25,7 @@ namespace Bloodbender
         float askPathFrq;
         float askPathFrqCounter;
 
-        public Player(Vector2 position) : base(position)
+        public Player(Vector2 position) : base(position, PathFinderNodeType.CENTER)
         {
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
             Bloodbender.ptr.camera.TrackingBody = body;
