@@ -395,12 +395,12 @@ namespace Bloodbender
             Vector3 t = new Vector3(location, 0);
             t = Bloodbender.ptr.graphics.GraphicsDevice.Viewport.Unproject(t, SimProjection, SimView, Matrix.Identity);
 
-            return new Vector2(t.X, t.Y);
+            return new Vector2(t.X, t.Y) * Bloodbender.meterToPixel;
         }
 
         public Vector2 ConvertWorldToScreen(Vector2 location)
         {
-            Vector3 t = new Vector3(location, 0);
+            Vector3 t = new Vector3(location * Bloodbender.pixelToMeter, 0);
             t = _graphics.Viewport.Project(t, SimProjection, SimView, Matrix.Identity);
 
             return new Vector2(t.X, t.Y);
@@ -410,7 +410,7 @@ namespace Bloodbender
         {
             int margin = 200;
 
-            position = ConvertWorldToScreen(position * Bloodbender.pixelToMeter);
+            position = ConvertWorldToScreen(position);
 
             if (position.X >= -margin && position.X <= Bloodbender.ptr.graphics.PreferredBackBufferWidth + margin
                 &&

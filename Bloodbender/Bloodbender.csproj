@@ -72,6 +72,10 @@
     <Compile Include="InputHelper.cs" />
     <Compile Include="MapBound.cs" />
     <Compile Include="components\IComponent.cs" />
+    <Compile Include="ParticuleSystem\Particule.cs" />
+    <Compile Include="ParticuleSystem\ParticuleSpawner.cs" />
+    <Compile Include="ParticuleSystem\ParticuleSystem.cs" />
+    <Compile Include="ParticuleSystem\Particules\GreenCercle.cs" />
     <Compile Include="PathFinder.cs" />
     <Compile Include="PhysicObj.cs" />
     <Compile Include="Player.cs" />
