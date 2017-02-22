@@ -19,7 +19,7 @@ namespace Bloodbender
 {
     public class Totem : PhysicObj
     {
-        public Totem(Vector2 position) : base(position)
+        public Totem(Vector2 position) : base(position, PathFinderNodeType.OUTLINE)
         {
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
 
@@ -30,6 +30,7 @@ namespace Bloodbender
             IComponent comp = new GenerateProjectileComponent(this);
             //addComponent(comp);
             length = 10;
+            createOutlinePathNodes();
         }
 
         public override bool Update(float elapsed)

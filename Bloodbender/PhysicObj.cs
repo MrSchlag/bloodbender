@@ -23,7 +23,7 @@ namespace Bloodbender
 
     public enum PathFinderNodeType
     {
-        EMPTY = 0,
+        OTHER = 0,
         CENTER = 1,
         OUTLINE = 2
     }
@@ -50,9 +50,9 @@ namespace Bloodbender
         //public Body size;
         public float velocity;
         public float length;
-        PathFinderNodeType pathNodeType;
+        public PathFinderNodeType pathNodeType;
 
-        List<PathFinderNode> pathFinderNodes;
+        protected List<PathFinderNode> pathFinderNodes;
 
         public PhysicObj(Body body, Vector2 position) : base(OffSet.BottomCenterHorizontal)
         {
@@ -65,12 +65,12 @@ namespace Bloodbender
             this.body.AngularDamping = 1;
             this.length = 0;
 
-            pathNodeType = PathFinderNodeType.EMPTY;
+            pathNodeType = PathFinderNodeType.OTHER;
             pathFinderNodes = new List<PathFinderNode>();
 
         }
 
-        public PhysicObj(Vector2 position, PathFinderNodeType nodeType = PathFinderNodeType.EMPTY) : base(OffSet.BottomCenterHorizontal)
+        public PhysicObj(Vector2 position, PathFinderNodeType nodeType = PathFinderNodeType.OTHER) : base(OffSet.BottomCenterHorizontal)
         {
             velocity = 0;
             body = BodyFactory.CreateBody(Bloodbender.ptr.world);
@@ -84,8 +84,6 @@ namespace Bloodbender
             pathNodeType = nodeType;
             if (nodeType == PathFinderNodeType.CENTER)
                 pathFinderNodes.Add(new PathFinderNode(position));
-            else if (nodeType == PathFinderNodeType.OUTLINE) { }
-            //TODO : ajouter le truc pour faire les noeud outline
             foreach (PathFinderNode node in pathFinderNodes)
                 Bloodbender.ptr.pathFinder.addNode(node);
         }
@@ -93,11 +91,8 @@ namespace Bloodbender
         public override bool Update(float elapsed)
         {
             position = body.Position * Bloodbender.meterToPixel;
-            if (pathNodeType != PathFinderNodeType.EMPTY)
-            {
-                foreach (PathFinderNode node in pathFinderNodes)
-                    node.setPosition(body.Position);
-            }
+            foreach (PathFinderNode node in pathFinderNodes)
+                node.setPosition(body.Position);
             return base.Update(elapsed);
         }
 
@@ -254,8 +249,43 @@ namespace Bloodbender
 
         public override void Dispose()
         {
+            foreach (PathFinderNode node in pathFinderNodes)
+            {
+                node.remove();
+            }
             Bloodbender.ptr.world.RemoveBody(body);
             base.Dispose();
+        }
+
+        protected void createOutlinePathNodes()
+        {
+            PolygonShape polyShape;
+            HitboxType hitboxType;
+
+            foreach (Fixture fix in body.FixtureList)
+            {
+                hitboxType = HitboxType.BOUND;
+                if (fix.UserData != null)
+                    hitboxType = ((AdditionalFixtureData)fix.UserData).type;
+                if (hitboxType == HitboxType.BOUND && fix.Shape is PolygonShape)
+                {
+                    Console.WriteLine("[PathFinder] one fixture");
+                    polyShape = (PolygonShape)fix.Shape;
+                    foreach (Vector2 vertex in polyShape.Vertices)
+                    {
+                        Vertices node = new Vertices();
+                        node.Add(new Vector2(vertex.X, vertex.Y));
+
+                        Vector2 centroid = polyShape.MassData.Centroid;
+                        Vector2 centerToVertex = new Vector2(vertex.X - centroid.X, vertex.Y - centroid.Y);
+                        centerToVertex *= new Vector2(1) + new Vector2((Bloodbender.ptr.pathFinder.pathStep * Bloodbender.pixelToMeter) / centerToVertex.Length());
+
+                        PathFinderNode node1 = new PathFinderNode(body.Position * Bloodbender.meterToPixel, centerToVertex);
+                        Bloodbender.ptr.pathFinder.addNode(node1);
+                        pathFinderNodes.Add(node1);
+                    }
+                }
+            }
         }
     }
 }

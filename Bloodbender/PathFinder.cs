@@ -33,8 +33,20 @@ namespace Bloodbender
             neighbors = new List<PathFinderNode>();
             free = false;
             score = 0;
-
+            this.offset = new Vector2(0);
             this.position = position * Bloodbender.pixelToMeter;
+
+            findNeighbors();
+        }
+
+        public PathFinderNode(Vector2 position, Vector2 offset)
+        {
+            neighbors = new List<PathFinderNode>();
+            free = false;
+            score = 0;
+            this.offset = offset;
+            this.position = position * Bloodbender.pixelToMeter;
+            this.position += offset;
 
             findNeighbors();
         }
@@ -48,6 +60,7 @@ namespace Bloodbender
         public void setPosition(Vector2 position)
         {
             this.position = position;
+            this.position += offset;
             foreach (PathFinderNode neighbour in neighbors)
             {
                 neighbour.neighbors.Remove(this);
@@ -68,7 +81,12 @@ namespace Bloodbender
                 {
                     Bloodbender.ptr.world.RayCast((fixture, point, normal, fraction) =>
                     {
-                        if (fixture.IsSensor)
+                        if (fixture.UserData == null)
+                        {
+                            isVisible = false;
+                            return 0;
+                        }
+                        if (fixture.IsSensor || ((AdditionalFixtureData)fixture.UserData).physicParent.pathNodeType == PathFinderNodeType.CENTER)
                             return -1;
                         isVisible = false;
                         return 0;
@@ -93,6 +111,16 @@ namespace Bloodbender
         private int pathNodeRayCastCallback(Fixture fix, Vector2 vec1, Vector2 vec2, float fl1, float fl2)
         {
             return 0;
+        }
+
+        public void remove()
+        {
+            foreach (PathFinderNode neighbour in neighbors)
+            {
+                neighbour.neighbors.Remove(this);
+            }
+            neighbors.Clear();
+            Bloodbender.ptr.pathFinder.removeNode(this);
         }
     }
 
@@ -298,15 +326,12 @@ namespace Bloodbender
 
         public List<PathFinderNode> getPathFinderNodes()
         {
-            /*List<PathFinderNode> straightListNode = new List<PathFinderNode>();
-
-            foreach (List<PathFinderNode> nodeList in allNodes)
-            {
-                straightListNode.AddRange(nodeList);
-            }
-
-            return straightListNode; */
             return nodes;
+        }
+
+        public void removeNode(PathFinderNode nodeToRemove)
+        {
+            nodes.Remove(nodeToRemove);
         }
 
     }

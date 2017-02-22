@@ -101,8 +101,12 @@ namespace Bloodbender
                 cornerSquare2.Translate(vertexPx);
 
                 /* création des PathNode */
-                Bloodbender.ptr.pathFinder.addNode(new PathFinderNode(cornerSquare1[0]));
-                Bloodbender.ptr.pathFinder.addNode(new PathFinderNode(cornerSquare2[0]));
+                PathFinderNode node1 = new PathFinderNode(cornerSquare1[0]);
+                PathFinderNode node2 = new PathFinderNode(cornerSquare2[0]);
+                Bloodbender.ptr.pathFinder.addNode(node1);
+                Bloodbender.ptr.pathFinder.addNode(node2);
+                pathFinderNodes.Add(node1);
+                pathFinderNodes.Add(node2);
 
                 verticePos++;
             }
