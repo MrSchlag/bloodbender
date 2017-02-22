@@ -25,14 +25,14 @@ namespace Bloodbender
         {
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
 
-            velocity = 100;
+            velocity = 50;
 
             Fixture playerBoundsFix = createOctogoneFixture(32f, 32f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
 
             //add method to be called on collision, different denpending of fixture
             addFixtureToCheckedCollision(playerBoundsFix);
 
-            IComponent comp = new FollowBehaviorComponent(this, player, 40);
+            IComponent comp = new FollowBehaviorComponent(this, player, 80);
             addComponent(comp);
         }
 

@@ -157,10 +157,10 @@ namespace Bloodbender
             nodes.Add(node);
         }
 
-        public float pathRequest(GraphicObj startObj, PathFinderNode startNode, PathFinderNode endNode)
+        public PathFinderNode pathRequest(GraphicObj startObj, PathFinderNode startNode, PathFinderNode endNode)
         {
-            Console.WriteLine("[PathFinder][Request] Start Request");
-            Console.WriteLine("[PathFinder][Request] StartNode pos : " + startNode.position * Bloodbender.meterToPixel + " EndNode pos : " + endNode.position * Bloodbender.meterToPixel);
+            //Console.WriteLine("[PathFinder][Request] Start Request");
+            //Console.WriteLine("[PathFinder][Request] StartNode pos : " + startNode.position * Bloodbender.meterToPixel + " EndNode pos : " + endNode.position * Bloodbender.meterToPixel);
 
             resultPath.Clear();
             openList.Clear();
@@ -170,7 +170,7 @@ namespace Bloodbender
 
             pathDict[startObj] = new List<PathFinderNode>(resultPath);
 
-            return 0;
+            return resultPath[1];
         }
 
         private void runAstar(PathFinderNode startNode, PathFinderNode endNode)
@@ -190,9 +190,9 @@ namespace Bloodbender
                 closedList.Add(currentNode);
                 openList.Remove(currentNode);
                 currentNode = findBestInOpenList();
-                Console.WriteLine("[PathFinder][Request] find best score : " + openList.Count);
+                //Console.WriteLine("[PathFinder][Request] find best score : " + openList.Count);
             }
-            Console.WriteLine("[PathFinder][Request] Astar End");
+            //Console.WriteLine("[PathFinder][Request] Astar End");
         }
 
         private void resetAllNodes()
@@ -264,9 +264,9 @@ namespace Bloodbender
 
             foreach (PathFinderNode node in resultPath)
             {
-                Console.WriteLine("[PathFinder][Request][Result] PathNode : " + node.position * Bloodbender.meterToPixel);
+                //Console.WriteLine("[PathFinder][Request][Result] PathNode : " + node.position * Bloodbender.meterToPixel);
             }
-            Console.WriteLine("[PathFinder][Request] Path Found");
+            //Console.WriteLine("[PathFinder][Request] Path Found");
         }
 
         public List<PathFinderNode> getPathFinderNodes()
