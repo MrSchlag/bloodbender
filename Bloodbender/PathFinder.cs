@@ -26,13 +26,13 @@ namespace Bloodbender
         public Vector2 position; //position en metre (Farseer Units)
         public Vector2 offset;
         public bool free;
-        public int score;
+        public float score;
 
         public PathFinderNode(Vector2 position)
         {
             neighbors = new List<PathFinderNode>();
-            free = false;
-            score = 0;
+            free = true;
+            score = 0f;
             this.offset = new Vector2(0);
             this.position = position * Bloodbender.pixelToMeter;
 
@@ -43,7 +43,7 @@ namespace Bloodbender
         {
             neighbors = new List<PathFinderNode>();
             free = false;
-            score = 0;
+            score = 0f;
             this.offset = offset;
             this.position = position * Bloodbender.pixelToMeter;
             this.position += offset;
@@ -125,34 +125,31 @@ namespace Bloodbender
     }
 
     public class PathFinder
-    { //TODO : mettre a jour les nodes dans un autre thread
-        MapBound mapBounds;
-        List<List<PathFinderNode>> allNodes;
-
+    { 
         List<PathFinderNode> nodes;
 
         List<PathFinderNode> openList;
         List<PathFinderNode> closedList;
+        List<PathFinderNode> resultPath;
 
         public int pathStep;
         List<Fixture> mapShapeFixtures;
         Body body;
 
+        Dictionary<GraphicObj, List<PathFinderNode>> pathDict = new Dictionary<GraphicObj, List<PathFinderNode>>();
+
         public PathFinder(int pathStep)
         {
             body = BodyFactory.CreateBody(Bloodbender.ptr.world);
             body.BodyType = BodyType.Static;
-            allNodes = new List<List<PathFinderNode>>();
+
             openList = new List<PathFinderNode>();
             closedList = new List<PathFinderNode>();
             mapShapeFixtures = new List<Fixture>();
             nodes = new List<PathFinderNode>();
-            this.pathStep = pathStep;
+            resultPath = new List<PathFinderNode>();
 
-            //createMapShape();
-            //createGridOverlay();
-            //destroyMapShape();
-            //createNodeLinks();
+            this.pathStep = pathStep;
         }
 
         public void addNode(PathFinderNode node)
@@ -160,75 +157,20 @@ namespace Bloodbender
             nodes.Add(node);
         }
 
-        private void createNodeLinks()
+        public float pathRequest(GraphicObj startObj, PathFinderNode startNode, PathFinderNode endNode)
         {
-            for (int i = 0; i < allNodes.Count(); i++)
-            {
-                for (int j = 0; j < allNodes[i].Count(); j++)
-                {
-                    nodeLink(allNodes[i][j], i - 1, j - 1);
-                    nodeLink(allNodes[i][j], i, j - 1);
-                    nodeLink(allNodes[i][j], i + 1, j - 1);
-                    nodeLink(allNodes[i][j], i + 1, j);
-                    nodeLink(allNodes[i][j], i + 1, j + 1);
-                    nodeLink(allNodes[i][j], i, j + 1);
-                    nodeLink(allNodes[i][j], i - 1, j + 1);
-                    nodeLink(allNodes[i][j], i - 1, j);
-                }
-            }
-        }
+            Console.WriteLine("[PathFinder][Request] Start Request");
+            Console.WriteLine("[PathFinder][Request] StartNode pos : " + startNode.position * Bloodbender.meterToPixel + " EndNode pos : " + endNode.position * Bloodbender.meterToPixel);
 
-        private void nodeLink(PathFinderNode currentNode, int xPosNodeToLink, int yPosNodeToLink)
-        {
-            if (xPosNodeToLink < 0 || yPosNodeToLink < 0 ||
-                xPosNodeToLink >= allNodes.Count() ||
-                yPosNodeToLink >= allNodes[0].Count())
-                return;
-            foreach (PathFinderNode neighbour in currentNode.neighbors)
-            {
-                if (neighbour.Equals(allNodes[xPosNodeToLink][yPosNodeToLink]))
-                    return;
-            }
-            currentNode.neighbors.Add(allNodes[xPosNodeToLink][yPosNodeToLink]);
-        }
-
-        public float pathRequest(GraphicObj objRequest, GraphicObj objTarget)//, GraphicObj objTarget)
-        {
-            PathFinderNode startNode = findClosestNode(objRequest.position);
-            PathFinderNode targetNode = findClosestNode(objTarget.position);
-
+            resultPath.Clear();
+            openList.Clear();
+            closedList.Clear();
             resetAllNodes();
-            runAstar(startNode, targetNode);
+            runAstar(startNode, endNode);
+
+            pathDict[startObj] = new List<PathFinderNode>(resultPath);
 
             return 0;
-        }
-
-        public float pathRequest(Vector2 startPos, Vector2 endPos)
-        {
-            PathFinderNode startNode = findClosestNode(startPos);
-            PathFinderNode targetNode = findClosestNode(endPos);
-
-            Console.WriteLine("[PathFinder] StartNode pos : " + startNode.position * Bloodbender.meterToPixel + " EndNode pos : " + targetNode.position * Bloodbender.meterToPixel);
-            Console.WriteLine("[PathFinder] StartNode free : " + startNode.free + " EndNode free : " + targetNode.free);
-
-            resetAllNodes();
-            runAstar(startNode, targetNode);
-
-            return 0;
-        }
-
-        private PathFinderNode findClosestNode(Vector2 position)
-        {
-            int nodeX = ((int)position.X - (int)mapBounds.minX) / pathStep;
-            int nodeY = ((int)position.Y - (int)mapBounds.minY) / pathStep;
-
-            nodeX = nodeX < 0 ? 0 : nodeX;
-            nodeY = nodeY < 0 ? 0 : nodeY;
-
-            nodeX = nodeX > allNodes.Count() - 1 ? allNodes.Count() - 1 : nodeX;
-            nodeY = nodeY > allNodes.Count() - 1 ? allNodes.Count() - 1 : nodeY;
-
-            return allNodes[nodeX][nodeY];
         }
 
         private void runAstar(PathFinderNode startNode, PathFinderNode endNode)
@@ -238,57 +180,59 @@ namespace Bloodbender
             openList.Add(startNode);
             while (openList.Any())
             {
+                //Console.WriteLine("[PathFinder][Request] OpenList Loop");
                 if (currentNode == endNode)
                 {
                     createPath(currentNode, startNode);
                     break;
                 }
-                neighborsProcessing(currentNode);
+                neighborsProcessing(currentNode, endNode);
                 closedList.Add(currentNode);
                 openList.Remove(currentNode);
                 currentNode = findBestInOpenList();
+                Console.WriteLine("[PathFinder][Request] find best score : " + openList.Count);
             }
-            Console.WriteLine("[PathFinder] : Astar End");
+            Console.WriteLine("[PathFinder][Request] Astar End");
         }
 
         private void resetAllNodes()
         {
-            foreach (List<PathFinderNode> listNode in allNodes)
-                foreach (PathFinderNode node in listNode)
-                    node.reset();
+            foreach (PathFinderNode node in nodes)
+            {
+                node.reset();
+            }
         }
 
-        private void neighborsProcessing(PathFinderNode currentNode)
+        private void neighborsProcessing(PathFinderNode currentNode, PathFinderNode endNode)
         {
-            int score = 0;
+            float score = 0;
 
             foreach (PathFinderNode neighbour in currentNode.neighbors)
             {
-                if (neighbour.free == false || closedList.Contains(neighbour))
-                    continue;
-                score = getNodeScore(currentNode, neighbour);
-                if (openList.Contains(neighbour) == false)
+                score = getNodeScore(currentNode, neighbour, endNode);
+                if (closedList.Contains(neighbour) == false)
                 {
-                    neighbour.parent = currentNode;
-                    neighbour.score = score;
-                    openList.Add(neighbour);
-                }
-                else if (score > neighbour.score)
-                {
-                    neighbour.score = score;
-                    neighbour.parent = currentNode;
+                    if (openList.Contains(neighbour) == false)
+                    {
+                        neighbour.parent = currentNode;
+                        neighbour.score = score;
+                        openList.Add(neighbour);
+                    }
+                    else if (score < neighbour.score)
+                    {
+                        neighbour.score = score;
+                        neighbour.parent = currentNode;
+                    }
                 }
             }
         }
 
-        private int getNodeScore(PathFinderNode currentNode, PathFinderNode neighbour)
+        private float getNodeScore(PathFinderNode currentNode, PathFinderNode neighbour, PathFinderNode endNode)
         {
-            int disty = (int)neighbour.position.Y - (int)currentNode.position.Y;
-            int distx = (int)neighbour.position.X - (int)currentNode.position.X;
-            distx *= distx;
-            disty *= disty;
+            Vector2 curToNeigh = new Vector2(neighbour.position.X - currentNode.position.X, neighbour.position.Y - currentNode.position.Y);
+            Vector2 neighToEnd = new Vector2(endNode.position.X - neighbour.position.X, endNode.position.Y - neighbour.position.Y);
 
-            return disty + distx;
+            return curToNeigh.Length() + neighToEnd.Length();
         }
 
         private PathFinderNode findBestInOpenList()
@@ -307,21 +251,22 @@ namespace Bloodbender
 
         private void createPath(PathFinderNode currentNode, PathFinderNode startNode)
         {
-            List<PathFinderNode> path = new List<PathFinderNode>();
             PathFinderNode backPathNode = currentNode;
 
             while (backPathNode.Equals(startNode) == false)
             {
-                path.Add(backPathNode);
+                resultPath.Add(backPathNode);
                 backPathNode = backPathNode.parent;
             }
-            path.Add(startNode);
-            path.Reverse();
-            foreach (PathFinderNode node in path)
+
+            resultPath.Add(startNode);
+            resultPath.Reverse();
+
+            foreach (PathFinderNode node in resultPath)
             {
-                Console.WriteLine("[PathFinder] PathNode : " + node.position * Bloodbender.meterToPixel);
+                Console.WriteLine("[PathFinder][Request][Result] PathNode : " + node.position * Bloodbender.meterToPixel);
             }
-            Console.WriteLine("Path Found");
+            Console.WriteLine("[PathFinder][Request] Path Found");
         }
 
         public List<PathFinderNode> getPathFinderNodes()

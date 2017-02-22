@@ -287,5 +287,12 @@ namespace Bloodbender
                 }
             }
         }
+
+        public PathFinderNode getPosNode()
+        {
+            if (pathNodeType != PathFinderNodeType.OTHER && pathFinderNodes.Any())
+                return pathFinderNodes[0];
+            return null;
+        }
     }
 }

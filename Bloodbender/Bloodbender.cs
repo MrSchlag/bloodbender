@@ -153,6 +153,9 @@ namespace Bloodbender
             player.addAnimation(new Animation(textureCarre));
             player.setLinearDamping(10);
 
+            Enemy enemy = new Enemy(new Vector2(700, 200), player);
+            enemy.addAnimation(new Animation(textureCarre2));
+
             Totem totem = new Totem(new Vector2(300, 300));
             totem.addAnimation(new Animation(textureTotem));
 
@@ -161,6 +164,7 @@ namespace Bloodbender
             listGraphicObj.Add(sprinkler);
             listGraphicObj.Add(totem);
             listGraphicObj.Add(player);
+            listGraphicObj.Add(enemy);
             listGraphicObj.Add(pobj);
 
             frameRateCounter = new FrameRateCounter(font);
