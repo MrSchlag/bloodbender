@@ -25,6 +25,8 @@ namespace Bloodbender
         float askPathFrq;
         float askPathFrqCounter;
 
+        bool testPath = false;
+
         public Player(Vector2 position) : base(position, PathFinderNodeType.CENTER)
         {
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
