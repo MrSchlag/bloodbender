@@ -274,6 +274,11 @@ namespace Bloodbender
             return nodes;
         }
 
+        public Dictionary<GraphicObj, List<PathFinderNode>> getCurrentPaths()
+        {
+            return pathDict;
+        }
+
         public void removeNode(PathFinderNode nodeToRemove)
         {
             nodes.Remove(nodeToRemove);

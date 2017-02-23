@@ -43,9 +43,13 @@ namespace Bloodbender
                 pathRequestRateCounter = 0f;
                 //Console.WriteLine("[FollowBehaviorComponent] asking path");
                 PathFinderNode nextNode = Bloodbender.ptr.pathFinder.pathRequest(owner, owner.getPosNode(), target.getPosNode());
+                Vector2 newNodePosCorrected = correctNodePositionForBodyWidth(nextNode);
 
                 Vector2 posToNode = nextNode.position - owner.body.Position;
+                //Vector2 posToNode = newNodePosCorrected - owner.body.Position;
+                Console.WriteLine("posToNode : " + posToNode);
                 Vector2 posToTarget = target.body.Position - owner.body.Position;
+
                 if (posToTarget.Length() * Bloodbender.meterToPixel > escapeZoneRadius)
                 {
                     posToNode.Normalize();
@@ -59,6 +63,48 @@ namespace Bloodbender
             }
 
             return true;
+        }
+
+        private Vector2 correctNodePositionForBodyWidth(PathFinderNode node)
+        {
+            if (node.offset == Vector2.Zero)
+                return node.position;
+
+            Vector2 centerToVertexOffset = node.offset;
+
+            centerToVertexOffset *= new Vector2(maxLenghtCentroidVertex() / centerToVertexOffset.Length());
+
+            Console.WriteLine("[followComponenet] corrected : " + (node.position + centerToVertexOffset));
+            Console.WriteLine("[followComponenet] initial  : " + node.position);
+
+            return node.position + centerToVertexOffset;
+        }
+
+        private float maxLenghtCentroidVertex()
+        {
+            float maxLenght = 0f;
+            float lenght;
+            Vertices vertices = null;
+            
+            foreach (Fixture fixBounds in owner.body.FixtureList)
+            {
+                if (((AdditionalFixtureData)fixBounds.UserData).type == HitboxType.BOUND)
+                {
+                    vertices = ((PolygonShape)fixBounds.Shape).Vertices;
+                    break;
+                }
+            }
+
+            if (vertices == null)
+                return 0f;
+
+            foreach (Vector2 vertex in vertices)
+            {
+                lenght = (vertex - vertices.GetCentroid()).Length();
+                maxLenght = lenght > maxLenght ? lenght : maxLenght;
+            }
+
+            return maxLenght;
         }
 
         public void changeTarget(PhysicObj target)
