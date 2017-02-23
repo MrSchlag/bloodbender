@@ -22,6 +22,8 @@ namespace Bloodbender
                 particuleSpawner.Update(elapsed);
             }
 
+            particuleSpawners.RemoveAll(item => item.shouldDie == true);
+
             return true;
         }
 

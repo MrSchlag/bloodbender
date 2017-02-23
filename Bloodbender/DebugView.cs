@@ -26,42 +26,36 @@ namespace Bloodbender
         {
             Dictionary<GraphicObj, List <PathFinderNode>> pathstmp = (Bloodbender.ptr.pathFinder.getCurrentPaths());
 
-            if (paths.Equals(pathstmp))
-            {
-                paths = new Dictionary<GraphicObj, List<PathFinderNode>>(Bloodbender.ptr.pathFinder.getCurrentPaths());
-
-                //ajout de tout les pathdebug
-                foreach (KeyValuePair<GraphicObj, List<PathFinderNode>> key in paths)
-                {
-                    setPathParticuleSpawer(key);
-                }
-            }
-
             bool reset = false;
 
             foreach (KeyValuePair<GraphicObj, List<PathFinderNode>> key in pathstmp)
             {
-                //key
+
 
                 if (!paths.ContainsKey(key.Key))
                 {
+
                     reset = true;
 
-                    setPathParticuleSpawer(key);
+                    //setPathParticuleSpawer(key);
                 }
             }
 
+            //check suppression path
+
             if (reset == true)
-                paths = pathstmp;
+                paths = new Dictionary<GraphicObj, List<PathFinderNode>>(Bloodbender.ptr.pathFinder.getCurrentPaths());
+
 
             ps.Update(elapsed);
         }
 
         private void setPathParticuleSpawer(KeyValuePair<GraphicObj, List<PathFinderNode>> key)
         {
+
             ParticuleSpawner particuleSpawner = new ParticuleSpawner(60, key.Key.position);
 
-            MoveTo comp = new MoveTo(particuleSpawner, key.Value, 450);
+            MoveTo comp = new MoveTo(particuleSpawner, key.Value, 600);
             particuleSpawner.addComponent(comp);
 
             ps.particuleSpawners.Add(particuleSpawner);
@@ -84,6 +78,21 @@ namespace Bloodbender
                         DrawSegment(n.position, nl.position, Color.Gray);
                     }
                 }
+
+                Color color = new Color(0, 255, 0, 255);
+                if (paths.Count > 0)
+                    color *= 1 / paths.Count;
+
+                foreach (KeyValuePair<GraphicObj, List<PathFinderNode>> key in paths)
+                {
+                    for (int i = 0; i < key.Value.Count - 1 ; ++i)
+                    {
+                        DrawSegment(key.Value[i].position, key.Value[i+1].position, color);
+                    }
+
+                }
+
+                
             }
         }
 

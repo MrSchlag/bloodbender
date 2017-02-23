@@ -30,7 +30,7 @@ namespace Bloodbender
             }
 
             //
-            length = 1.0f;
+            length = 1f;
             margin = length / nb;
             //
         }
