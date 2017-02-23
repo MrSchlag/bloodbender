@@ -13,22 +13,60 @@ namespace Bloodbender
     public class DebugView : DebugViewXNA
     {
         ParticuleSystem ps;
+
+        Dictionary<GraphicObj, List<PathFinderNode>> paths = new Dictionary<GraphicObj, List<PathFinderNode>>();
         public DebugView() : base(Bloodbender.ptr.world)
         {
             ps = new ParticuleSystem();
-
-            ParticuleSpawner particuleSpawner = new ParticuleSpawner(60);
-            
-            ps.particuleSpawners.Add(particuleSpawner);
-
 
             AppendFlags(DebugViewFlags.PathFinding);
         }
 
         public void Update(float elapsed)
         {
+            Dictionary<GraphicObj, List <PathFinderNode>> pathstmp = (Bloodbender.ptr.pathFinder.getCurrentPaths());
+
+            if (paths.Equals(pathstmp))
+            {
+                paths = new Dictionary<GraphicObj, List<PathFinderNode>>(Bloodbender.ptr.pathFinder.getCurrentPaths());
+
+                //ajout de tout les pathdebug
+                foreach (KeyValuePair<GraphicObj, List<PathFinderNode>> key in paths)
+                {
+                    setPathParticuleSpawer(key);
+                }
+            }
+
+            bool reset = false;
+
+            foreach (KeyValuePair<GraphicObj, List<PathFinderNode>> key in pathstmp)
+            {
+                //key
+
+                if (!paths.ContainsKey(key.Key))
+                {
+                    reset = true;
+
+                    setPathParticuleSpawer(key);
+                }
+            }
+
+            if (reset == true)
+                paths = pathstmp;
+
             ps.Update(elapsed);
         }
+
+        private void setPathParticuleSpawer(KeyValuePair<GraphicObj, List<PathFinderNode>> key)
+        {
+            ParticuleSpawner particuleSpawner = new ParticuleSpawner(60, key.Key.position);
+
+            MoveTo comp = new MoveTo(particuleSpawner, key.Value, 450);
+            particuleSpawner.addComponent(comp);
+
+            ps.particuleSpawners.Add(particuleSpawner);
+        }
+
         protected override void DrawDebugData()
         {
             base.DrawDebugData();

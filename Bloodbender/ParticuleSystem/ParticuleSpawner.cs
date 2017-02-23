@@ -8,22 +8,25 @@ using System.Threading.Tasks;
 
 namespace Bloodbender
 {
-    public class ParticuleSpawner
+    public class ParticuleSpawner : GraphicObj
     {
-        public Vector2 position = Vector2.Zero;
         public List<Particule> particules = null;
 
         //
         int currentParticule = 0;
         float margin, length, timer = 0.0f;
         //
-        public ParticuleSpawner(int nb)
+        public ParticuleSpawner(int nb, Vector2 position)
         {
             particules = new List<Particule>();
 
+            this.position = position;
+
             for (int i = 0; i < nb; ++i)
             {
-                particules.Add(new GreenCercle());
+                GreenCercle part = new GreenCercle(); //
+                part.position = position;
+                particules.Add(part);
             }
 
             //
@@ -32,11 +35,9 @@ namespace Bloodbender
             //
         }
 
-        public bool Update(float elapsed)
+        public override bool Update(float elapsed)
         {
             //
-            position = Bloodbender.ptr.camera.ConvertScreenToWorld(Bloodbender.ptr.getMousePosition());
-
             timer += elapsed;
 
             Particule part = particules[currentParticule];
@@ -70,10 +71,12 @@ namespace Bloodbender
                 }
             }
 
+            base.Update(elapsed);
+
             return true;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             foreach (Particule particule in particules)
             {

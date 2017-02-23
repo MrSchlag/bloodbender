@@ -47,7 +47,7 @@ namespace Bloodbender
 
                 Vector2 posToNode = nextNode.position - owner.body.Position;
                 //Vector2 posToNode = newNodePosCorrected - owner.body.Position;
-                Console.WriteLine("posToNode : " + posToNode);
+                //Console.WriteLine("posToNode : " + posToNode);
                 Vector2 posToTarget = target.body.Position - owner.body.Position;
 
                 if (posToTarget.Length() * Bloodbender.meterToPixel > escapeZoneRadius)

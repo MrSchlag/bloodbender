@@ -75,7 +75,6 @@ namespace Bloodbender
 
             //graphics.IsFullScreen = true;
 
-
             resolutionIndependence = new ResolutionIndependentRenderer(this);            
         }
 
@@ -169,7 +168,7 @@ namespace Bloodbender
             listGraphicObj.Add(enemy);
             listGraphicObj.Add(pobj);
 
-            frameRateCounter = new FrameRateCounter(font);
+            frameRateCounter = new FrameRateCounter(font);            
 
             //pathFinder.pathRequest(new Vector2(41, 42), new Vector2(300, 300));
         }
