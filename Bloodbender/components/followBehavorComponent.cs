@@ -25,7 +25,7 @@ namespace Bloodbender
 
         float escapeZoneRadius;
 
-        float pathRequestRate = 0.1f;
+        float pathRequestRate = 0.2f;
         float pathRequestRateCounter = 0f;
 
         public FollowBehaviorComponent(PhysicObj obj, PhysicObj target, float escapeZoneRadius)
@@ -60,6 +60,7 @@ namespace Bloodbender
                 {
                     owner.body.LinearVelocity = Vector2.Zero;
                 }
+                //Console.WriteLine("pos : " + owner.body.Position);
             }
 
             return true;
@@ -74,8 +75,8 @@ namespace Bloodbender
 
             centerToVertexOffset *= new Vector2(maxLenghtCentroidVertex() / centerToVertexOffset.Length());
 
-            Console.WriteLine("[followComponenet] corrected : " + (node.position + centerToVertexOffset));
-            Console.WriteLine("[followComponenet] initial  : " + node.position);
+            //Console.WriteLine("[followComponenet] corrected : " + (node.position + centerToVertexOffset));
+            //Console.WriteLine("[followComponenet] initial  : " + node.position);
 
             return node.position + centerToVertexOffset;
         }

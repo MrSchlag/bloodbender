@@ -77,7 +77,7 @@ namespace Bloodbender
             foreach (PathFinderNode node in allNodes)
             {
                 isVisible = true;
-                if (!node.Equals(this))
+                if (!node.Equals(this) && node.position != position)
                 {
                     Bloodbender.ptr.world.RayCast((fixture, point, normal, fraction) =>
                     {

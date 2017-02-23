@@ -134,7 +134,7 @@ namespace Bloodbender
             debugNodeBusy = Content.Load<Texture2D>("debugPathFinderNode");
             debugNodeFree = Content.Load<Texture2D>("debugPathFinderNode2");
 
-            pathFinder = new PathFinder(20);
+            pathFinder = new PathFinder(40);
 
             MapBound mapBounds = new MapBound();
             mapBounds.addVertex(new Vector2(0, 0));
@@ -156,6 +156,24 @@ namespace Bloodbender
 
             Enemy enemy = new Enemy(new Vector2(700, 200), player);
             enemy.addAnimation(new Animation(textureCarre2));
+            Enemy enemy1 = new Enemy(new Vector2(700, 200), player);
+            enemy1.addAnimation(new Animation(textureCarre2));
+            Enemy enemy2 = new Enemy(new Vector2(700, 200), player);
+            enemy2.addAnimation(new Animation(textureCarre2));
+            Enemy enemy3 = new Enemy(new Vector2(700, 200), player);
+            enemy3.addAnimation(new Animation(textureCarre2));
+            Enemy enemy4 = new Enemy(new Vector2(700, 200), player);
+            enemy4.addAnimation(new Animation(textureCarre2));
+            Enemy enemy5 = new Enemy(new Vector2(700, 200), player);
+            enemy5.addAnimation(new Animation(textureCarre2));
+            Enemy enemy6 = new Enemy(new Vector2(700, 200), player);
+            enemy6.addAnimation(new Animation(textureCarre2));
+            Enemy enemy7 = new Enemy(new Vector2(700, 200), player);
+            enemy7.addAnimation(new Animation(textureCarre2));
+            Enemy enemy8 = new Enemy(new Vector2(700, 200), player);
+            enemy8.addAnimation(new Animation(textureCarre2));
+            Enemy enemy9 = new Enemy(new Vector2(700, 200), player);
+            enemy9.addAnimation(new Animation(textureCarre2));
 
             Totem totem = new Totem(new Vector2(300, 300));
             totem.addAnimation(new Animation(textureTotem));
@@ -166,6 +184,16 @@ namespace Bloodbender
             listGraphicObj.Add(totem);
             listGraphicObj.Add(player);
             listGraphicObj.Add(enemy);
+            listGraphicObj.Add(enemy1);
+            listGraphicObj.Add(enemy2);
+            listGraphicObj.Add(enemy3);
+            listGraphicObj.Add(enemy4);
+            listGraphicObj.Add(enemy5);
+            listGraphicObj.Add(enemy6);
+            listGraphicObj.Add(enemy7);
+            listGraphicObj.Add(enemy8);
+            listGraphicObj.Add(enemy9);
+
             listGraphicObj.Add(pobj);
 
             frameRateCounter = new FrameRateCounter(font);            
