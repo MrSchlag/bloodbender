@@ -80,8 +80,8 @@ namespace Bloodbender
                 }
 
                 Color color = new Color(0, 255, 0, 255);
-                if (paths.Count > 0)
-                    color *= 1 / paths.Count;
+                //if (paths.Count > 0)
+                  //  color *= 1 / paths.Count;
 
                 foreach (KeyValuePair<GraphicObj, List<PathFinderNode>> key in paths)
                 {
