@@ -16,6 +16,7 @@ namespace Bloodbender
 
         public GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
+        public MouseState mouse;
 
         public ResolutionIndependentRenderer resolutionIndependence;
         public Camera camera;
@@ -59,6 +60,7 @@ namespace Bloodbender
         {
             ptr = this;
 
+            mouse = Mouse.GetState();
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
@@ -218,6 +220,7 @@ namespace Bloodbender
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            mouse = Mouse.GetState();
             elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             inputHelper.Update(elapsed);
@@ -302,6 +305,8 @@ namespace Bloodbender
 
             frameRateCounter.Update(elapsed);
 
+            debugView.Update(elapsed);
+
             base.Update(gameTime);
         }
 
@@ -320,10 +325,8 @@ namespace Bloodbender
             spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.GetView());
-
             foreach (GraphicObj obj in listGraphicObj)
                 obj.Draw(spriteBatch);
-
             spriteBatch.End();
 
 
@@ -331,16 +334,19 @@ namespace Bloodbender
 
 
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.GetViewWithoutZoom());
-
             inputHelper.Draw();
-
             spriteBatch.End();
 
-
             resolutionIndependence.SetupFullViewport();
+
             frameRateCounter.Draw(spriteBatch);
 
             base.Draw(gameTime);
+        }
+
+        public Vector2 getMousePosition()
+        {
+            return new Vector2(mouse.X, mouse.Y);
         }
     }
 }
