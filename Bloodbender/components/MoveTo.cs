@@ -39,12 +39,11 @@ namespace Bloodbender
                     currentPoint = 0;
                     target.position = points[0].position * Bloodbender.meterToPixel; // mettre une condition pour boucler ou non
                 }
-                point1 = target.position;
-                point2 = points[currentPoint].position * Bloodbender.meterToPixel;
-                distance = Math.Sqrt(Math.Pow(point1.X - point2.X, 2) + Math.Pow(point1.Y - point2.Y, 2));
-                
-                
             }
+
+            point1 = target.position;
+            point2 = points[currentPoint].position * Bloodbender.meterToPixel;
+            distance = Math.Sqrt(Math.Pow(point1.X - point2.X, 2) + Math.Pow(point1.Y - point2.Y, 2));
 
             float step = speed * elapsed;
 
