@@ -21,7 +21,7 @@ namespace Bloodbender
             owner = obj;
         }
 
-        void IComponent.Update(float elapsed)
+        bool IComponent.Update(float elapsed)
         {
             incTimer += elapsed;
             if (incTimer > frequency)
@@ -29,6 +29,8 @@ namespace Bloodbender
                 GenerateProjectile();
                 incTimer = 0.0f;
             }
+
+            return true;
         }
 
         void GenerateProjectile()

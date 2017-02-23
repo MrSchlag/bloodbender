@@ -49,7 +49,7 @@ namespace Bloodbender
             owner = obj;
         }
 
-        void IComponent.Update(float elapsed)
+        bool IComponent.Update(float elapsed)
         {
             if (frequency != 0.0f)
             {
@@ -60,6 +60,8 @@ namespace Bloodbender
                     incTimer = 0.0f;
                 }
             }
+
+            return true;
         }
 
         void GenerateDirectionalBlast()

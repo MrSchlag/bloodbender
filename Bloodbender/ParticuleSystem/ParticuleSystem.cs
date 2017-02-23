@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,16 +9,28 @@ namespace Bloodbender
 {
     public class ParticuleSystem
     {
-        List<ParticuleSpawner> particuleSpawners = null;
+        public List<ParticuleSpawner> particuleSpawners = null;
         public ParticuleSystem()
         {
-
+            particuleSpawners = new List<ParticuleSpawner>();
         }
 
         public bool Update(float elapsed)
         {
+            foreach (ParticuleSpawner particuleSpawner in particuleSpawners)
+            {
+                particuleSpawner.Update(elapsed);
+            }
 
             return true;
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            foreach (ParticuleSpawner particuleSpawner in particuleSpawners)
+            {
+                particuleSpawner.Draw(spriteBatch);
+            }
         }
     }
 }

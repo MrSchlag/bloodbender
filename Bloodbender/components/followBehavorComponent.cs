@@ -35,7 +35,7 @@ namespace Bloodbender
             this.escapeZoneRadius = escapeZoneRadius;
         }
 
-        void IComponent.Update(float elapsed)
+        bool IComponent.Update(float elapsed)
         {
             pathRequestRateCounter += elapsed;
             if (pathRequestRateCounter > pathRequestRate)
@@ -61,6 +61,8 @@ namespace Bloodbender
                     owner.body.LinearVelocity = Vector2.Zero;
                 }
             }
+
+            return true;
         }
 
         private Vector2 correctNodePositionForBodyWidth(PathFinderNode node)

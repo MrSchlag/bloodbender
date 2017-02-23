@@ -8,6 +8,6 @@ namespace Bloodbender
 {
     public interface IComponent
     {
-       void Update(float elapsed);
+        bool Update(float elapsed);
     }
 }

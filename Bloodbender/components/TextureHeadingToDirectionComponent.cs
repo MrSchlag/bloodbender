@@ -15,10 +15,12 @@ namespace Bloodbender
             owner = obj;
         }
 
-        void IComponent.Update(float elapsed)
+        bool IComponent.Update(float elapsed)
         {
             float angleLinearVelocityVector = (float)Math.Atan(owner.body.LinearVelocity.Y / owner.body.LinearVelocity.X);
             owner.setRotation(angleLinearVelocityVector + (float)Math.PI / 2);
+
+            return true;
         }
     }
 }
