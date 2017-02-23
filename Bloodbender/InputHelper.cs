@@ -184,7 +184,7 @@ namespace Bloodbender
                 MouseState mouse = Mouse.GetState();
 
                 //Bloodbender.ptr.spriteBatch.Begin();
-                Bloodbender.ptr.spriteBatch.Draw(_cursorSprite.Texture, Bloodbender.ptr.camera.ConvertScreenToWorld(new Vector2(mouse.X, mouse.Y)) * Bloodbender.meterToPixel, null, Color.White, 0f, _cursorSprite.Origin, 1f, SpriteEffects.None, 1.0f);
+                Bloodbender.ptr.spriteBatch.Draw(_cursorSprite.Texture, Bloodbender.ptr.camera.ConvertScreenToWorld(new Vector2(mouse.X, mouse.Y)) , null, Color.White, 0f, _cursorSprite.Origin, 1f, SpriteEffects.None, 1.0f);
                 //Bloodbender.ptr.spriteBatch.End();
             }
 #if WINDOWS_PHONE

@@ -88,7 +88,7 @@ namespace Bloodbender
 
         public float angleWithMouse()
         {
-            Vector2 positionInScreen = Bloodbender.ptr.camera.ConvertWorldToScreen(position * Bloodbender.pixelToMeter);
+            Vector2 positionInScreen = Bloodbender.ptr.camera.ConvertWorldToScreen(position);
             MouseState mouse = Mouse.GetState();
 
             float deltaY = mouse.Y - positionInScreen.Y;
@@ -102,6 +102,26 @@ namespace Bloodbender
         public void setRotation(float rotation)
         {
             this.rotation = rotation;
+        }
+
+        public void setOffSet(OffSet off)
+        {
+            if (off == OffSet.Center)
+            {
+                foreach (Animation animation in animations)
+                {
+                    animation.origin = animation.getFrameDimensions();
+                    animation.origin /= 2;
+                }
+            }
+            else if (off == OffSet.BottomCenterHorizontal)
+            {
+                foreach (Animation animation in animations)
+                {
+                    animation.origin = animation.getFrameDimensions();
+                    animation.origin.X /= 2;
+                }
+            }
         }
 
         public virtual void Dispose()
