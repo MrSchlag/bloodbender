@@ -29,6 +29,7 @@ namespace Bloodbender
                 distance = 0;
                 currentPoint = 0;
                 count = points.Count;
+                target.position = points[0].position * Bloodbender.meterToPixel;
             }
 
             if (distance <= 0)
