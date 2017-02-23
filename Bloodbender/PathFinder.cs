@@ -168,8 +168,16 @@ namespace Bloodbender
             resetAllNodes();
             runAstar(startNode, endNode);
 
-            pathDict[startObj] = new List<PathFinderNode>(resultPath);
-
+            if (pathDict.ContainsKey(startObj))
+            {
+                pathDict[startObj].Clear();
+                pathDict[startObj].AddRange(resultPath);
+            }
+            else
+            {
+                pathDict[startObj] = new List<PathFinderNode>(resultPath);
+            }
+            
             return resultPath[1];
         }
 
