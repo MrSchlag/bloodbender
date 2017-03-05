@@ -55,6 +55,13 @@ namespace Bloodbender
             //addComponent(comp);
 
             //height = 10;
+
+            Texture2D texture1 = Bloodbender.ptr.Content.Load<Texture2D>("Soldat/soldat-bas");
+            Texture2D texture2 = Bloodbender.ptr.Content.Load<Texture2D>("Soldat/course");
+
+
+            addAnimation(new Animation(texture1));
+            addAnimation(new Animation(texture2, 8, 0.1f, 64, 0, 0, 0));
         }
 
         public override bool Update(float elapsed)
@@ -69,11 +76,17 @@ namespace Bloodbender
                 askPathFrqCounter = 0f;
             }
 
+
             if (Keyboard.GetState().IsKeyDown(Keys.Z)
                 || Keyboard.GetState().IsKeyDown(Keys.S)
                 || Keyboard.GetState().IsKeyDown(Keys.Q)
                 || Keyboard.GetState().IsKeyDown(Keys.D))
+            {
                 body.LinearVelocity = new Vector2(0, 0);
+                runAnimation(1);
+            }
+            else
+                runAnimation(0);
 
             if (Keyboard.GetState().IsKeyDown(Keys.Z))
             {
@@ -91,6 +104,9 @@ namespace Bloodbender
 
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
+                spriteEffect = SpriteEffects.None;
+
+
                 if (!Keyboard.GetState().IsKeyDown(Keys.Q))
                 {
                     nbrArrowPressed += 1;
@@ -99,6 +115,9 @@ namespace Bloodbender
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Q))
             {
+                spriteEffect = SpriteEffects.FlipHorizontally;
+
+
                 nbrArrowPressed += 1;
                 body.LinearVelocity += new Vector2(-velocity * pixelToMeter, 0);
             }
