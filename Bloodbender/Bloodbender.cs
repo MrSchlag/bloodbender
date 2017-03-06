@@ -151,7 +151,6 @@ namespace Bloodbender
             pobj.isRotationFixed(true);
 
             Player player = new Player(new Vector2(100, 100));
-            player.addAnimation(new Animation(textureCarre));
             player.setLinearDamping(10);
 
             Enemy enemy = new Enemy(new Vector2(700, 200), player);
