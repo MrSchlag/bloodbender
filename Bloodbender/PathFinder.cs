@@ -25,28 +25,31 @@ namespace Bloodbender
         public PathFinderNode parent;
         public Vector2 position; //position en metre (Farseer Units)
         public Vector2 offset;
+        public PhysicObj owner;
         public bool free;
         public float score;
 
-        public PathFinderNode(Vector2 position)
+        public PathFinderNode(Vector2 position, PhysicObj owner = null)
         {
             neighbors = new List<PathFinderNode>();
             free = true;
             score = 0f;
-            this.offset = new Vector2(0);
+            offset = new Vector2(0);
             this.position = position * Bloodbender.pixelToMeter;
+            this.owner = owner;
 
             findNeighbors();
         }
 
-        public PathFinderNode(Vector2 position, Vector2 offset)
+        public PathFinderNode(Vector2 position, Vector2 offset, PhysicObj owner = null)
         {
             neighbors = new List<PathFinderNode>();
-            free = false;
+            free = true;
             score = 0f;
             this.offset = offset;
             this.position = position * Bloodbender.pixelToMeter;
             this.position += offset;
+            this.owner = owner;
 
             findNeighbors();
         }
@@ -55,6 +58,7 @@ namespace Bloodbender
         {
             score = 0;
             parent = null;
+            free = true;
         }
 
         public void setPosition(Vector2 position)
@@ -157,15 +161,14 @@ namespace Bloodbender
             nodes.Add(node);
         }
 
-        public PathFinderNode pathRequest(GraphicObj startObj, PathFinderNode startNode, PathFinderNode endNode)
+        public List<PathFinderNode> pathRequest(GraphicObj startObj, PathFinderNode startNode, PathFinderNode endNode, List<PathFinderNode> ignoredNodes = null)
         {
-            //Console.WriteLine("[PathFinder][Request] Start Request");
-            //Console.WriteLine("[PathFinder][Request] StartNode pos : " + startNode.position * Bloodbender.meterToPixel + " EndNode pos : " + endNode.position * Bloodbender.meterToPixel);
-
             resultPath.Clear();
             openList.Clear();
             closedList.Clear();
             resetAllNodes();
+            setIgnoredNodes(ignoredNodes);
+
             runAstar(startNode, endNode);
 
             if (pathDict.ContainsKey(startObj))
@@ -177,8 +180,18 @@ namespace Bloodbender
             {
                 pathDict[startObj] = new List<PathFinderNode>(resultPath);
             }
-            
-            return resultPath[1];
+
+            return resultPath;
+        }
+
+        private void setIgnoredNodes(List<PathFinderNode> ignoredNodes)
+        {
+            if (ignoredNodes == null)
+                return;
+            foreach (PathFinderNode node in ignoredNodes)
+            {
+                node.free = false;
+            }
         }
 
         private void runAstar(PathFinderNode startNode, PathFinderNode endNode)
@@ -188,7 +201,6 @@ namespace Bloodbender
             openList.Add(startNode);
             while (openList.Any())
             {
-                //Console.WriteLine("[PathFinder][Request] OpenList Loop");
                 if (currentNode == endNode)
                 {
                     createPath(currentNode, startNode);
@@ -198,9 +210,12 @@ namespace Bloodbender
                 closedList.Add(currentNode);
                 openList.Remove(currentNode);
                 currentNode = findBestInOpenList();
-                //Console.WriteLine("[PathFinder][Request] find best score : " + openList.Count);
+                if (currentNode == null)
+                {
+                    resultPath = null;
+                    break;
+                }
             }
-            //Console.WriteLine("[PathFinder][Request] Astar End");
         }
 
         private void resetAllNodes()
@@ -218,7 +233,7 @@ namespace Bloodbender
             foreach (PathFinderNode neighbour in currentNode.neighbors)
             {
                 score = getNodeScore(currentNode, neighbour, endNode);
-                if (closedList.Contains(neighbour) == false)
+                if (closedList.Contains(neighbour) == false && neighbour.free == true)
                 {
                     if (openList.Contains(neighbour) == false)
                     {
@@ -249,10 +264,13 @@ namespace Bloodbender
 
             foreach (PathFinderNode node in openList)
             {
-                if (bestNode == null)
-                    bestNode = node;
-                else if (node.score < bestNode.score)
-                    bestNode = node;
+                if (node.free == true)
+                {
+                    if (bestNode == null)
+                        bestNode = node;
+                    else if (node.score < bestNode.score)
+                        bestNode = node;
+                }
             }
             return bestNode;
         }

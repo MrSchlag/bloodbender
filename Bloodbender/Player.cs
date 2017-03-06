@@ -68,13 +68,13 @@ namespace Bloodbender
                 //Bloodbender.ptr.pathFinder.pathRequest(this);
                 askPathFrqCounter = 0f;
             }
-
+            
             if (Keyboard.GetState().IsKeyDown(Keys.Z)
                 || Keyboard.GetState().IsKeyDown(Keys.S)
                 || Keyboard.GetState().IsKeyDown(Keys.Q)
                 || Keyboard.GetState().IsKeyDown(Keys.D))
                 body.LinearVelocity = new Vector2(0, 0);
-
+             
             if (Keyboard.GetState().IsKeyDown(Keys.Z))
             {
                 if (!Keyboard.GetState().IsKeyDown(Keys.S))

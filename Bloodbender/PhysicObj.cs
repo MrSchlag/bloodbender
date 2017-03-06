@@ -262,6 +262,9 @@ namespace Bloodbender
             PolygonShape polyShape;
             HitboxType hitboxType;
 
+            if (pathNodeType != PathFinderNodeType.OUTLINE)
+                return;
+
             foreach (Fixture fix in body.FixtureList)
             {
                 hitboxType = HitboxType.BOUND;
@@ -271,21 +274,50 @@ namespace Bloodbender
                 {
                     Console.WriteLine("[PathFinder] one fixture");
                     polyShape = (PolygonShape)fix.Shape;
+                    int index = 0;
                     foreach (Vector2 vertex in polyShape.Vertices)
                     {
-                        Vertices node = new Vertices();
-                        node.Add(new Vector2(vertex.X, vertex.Y));
+                        /* centroid to corner vertex */
+                        centerToVertexNodeCreate(vertex, polyShape);
 
-                        Vector2 centroid = polyShape.MassData.Centroid;
-                        Vector2 centerToVertex = new Vector2(vertex.X - centroid.X, vertex.Y - centroid.Y);
-                        centerToVertex *= new Vector2(1) + new Vector2((Bloodbender.ptr.pathFinder.pathStep * Bloodbender.pixelToMeter) / centerToVertex.Length());
+                        /* next corner to corner vertex */
+                        /*
+                        Vertices translationVertice = new Vertices();
+                        translationVertice.Add(vertex);
+                        Vector2 nextVertex = polyShape.Vertices[polyShape.Vertices.NextIndex(index)];
+                        Vector2 nextToVertex = new Vector2(vertex.X - nextVertex.X, vertex.Y - nextVertex.Y);
+                        nextToVertex *= new Vector2((Bloodbender.ptr.pathFinder.pathStep * Bloodbender.pixelToMeter) / nextToVertex.Length());
+                        translationVertice.Translate(nextToVertex);
+                        centerToVertexNodeCreate(translationVertice[0], polyShape);
 
-                        PathFinderNode node1 = new PathFinderNode(body.Position * Bloodbender.meterToPixel, centerToVertex);
-                        Bloodbender.ptr.pathFinder.addNode(node1);
-                        pathFinderNodes.Add(node1);
+                        /* next to corner
+                        /* previous corner to corner vertex */
+                        /*Vector2 prevVertex = polyShape.Vertices[polyShape.Vertices.PreviousIndex(index)];
+                        Vector2 prevToVertex = vertex - prevVertex;
+                        prevToVertex *= new Vector2(1) + new Vector2((Bloodbender.ptr.pathFinder.pathStep * Bloodbender.pixelToMeter) / prevToVertex.Length());
+                        PathFinderNode node3 = new PathFinderNode(body.Position * Bloodbender.meterToPixel, prevToVertex, this);
+                        */
+                      /*
+                        Bloodbender.ptr.pathFinder.addNode(node2);
+                        pathFinderNodes.Add(node2);
+                        /*
+                        Bloodbender.ptr.pathFinder.addNode(node3);
+                        pathFinderNodes.Add(node3);*/
+
+                        index++;
                     }
                 }
             }
+        }
+
+        private void centerToVertexNodeCreate(Vector2 vertex, PolygonShape shape)
+        {
+            Vector2 centroid = shape.MassData.Centroid;
+            Vector2 centerToVertex = new Vector2(vertex.X - centroid.X, vertex.Y - centroid.Y);
+            centerToVertex *= new Vector2(1) + new Vector2((Bloodbender.ptr.pathFinder.pathStep * Bloodbender.pixelToMeter) / centerToVertex.Length());
+            PathFinderNode node1 = new PathFinderNode(body.Position * Bloodbender.meterToPixel, centerToVertex, this);
+            Bloodbender.ptr.pathFinder.addNode(node1);
+            pathFinderNodes.Add(node1);
         }
 
         public PathFinderNode getPosNode()
@@ -294,5 +326,34 @@ namespace Bloodbender
                 return pathFinderNodes[0];
             return null;
         }
+
+        public Fixture getBoundsFixture()
+        {
+            foreach (Fixture fix in body.FixtureList)
+            {
+                if (((AdditionalFixtureData)fix.UserData).type == HitboxType.BOUND)
+                    return fix;
+            }
+            return null;
+        }
+
+        public bool isTouching(PhysicObj obj)
+        {
+            AdditionalFixtureData fixData;
+            foreach (Fixture fix in body.FixtureList)
+            {
+                fixData = (AdditionalFixtureData)fix.UserData;
+                if (fixData.isTouching == true)
+                {
+                    foreach (Fixture fixtureTouching in fixData.fixInContactList)
+                    {
+                        if (((AdditionalFixtureData)fixtureTouching.UserData).physicParent.Equals(obj))
+                            return true;
+                    }
+                }
+            }
+            return false;
+        }
+
     }
 }
