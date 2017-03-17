@@ -25,7 +25,7 @@ namespace Bloodbender
 
         float escapeZoneRadius;
 
-        float pathRequestRate = 0.2f;
+        float pathRequestRate = 0.5f;
         float pathRequestRateCounter = 0f;
 
         //float ignoreNodeRadiusOffset = 5 * Bloodbender.pixelToMeter;
@@ -62,7 +62,8 @@ namespace Bloodbender
                     nextNode = Bloodbender.ptr.pathFinder.pathRequest(owner, owner.getPosNode(), target.getPosNode(), ignoreNodes);
                 }
                 else*/
-                nextNode = Bloodbender.ptr.pathFinder.pathRequest(owner, owner.getPosNode(), target.getPosNode())[1];
+                nextNode = Bloodbender.ptr.pathFinder.pathRequest(owner, owner.getPosNode(), target.getPosNode());
+                Console.WriteLine("[mandatory waypoint] nextnode : " + nextNode.position);
                 //pathRequestAdjusted();
                 //Vector2 newNodePosCorrected = correctNodePositionForBodyWidth(nextNode);
 
@@ -73,10 +74,11 @@ namespace Bloodbender
                 
                 Console.WriteLine("speed : " + owner.body.LinearVelocity.Length());
 
+                /*
                 if (velocityCorrection() == true)
                 {
                     return true;
-                }
+                }*/
 
                 if (posToTarget.Length() * Bloodbender.meterToPixel > escapeZoneRadius)
                 {
@@ -97,6 +99,7 @@ namespace Bloodbender
             return true;
         }
 
+        /*
         private Vector2 shapeAvoidTrajectoryCorrection()
         {
             List<PathFinderNode> path = Bloodbender.ptr.pathFinder.pathRequest(owner, owner.getPosNode(), target.getPosNode());
@@ -122,8 +125,8 @@ namespace Bloodbender
             }
             
             return nextNode.position - owner.getPosNode().position;
-        }
-
+        }*/
+        /*
         private void pathRequestAdjusted()
         {
             PathFinderNode posNode = owner.getPosNode();
@@ -148,7 +151,7 @@ namespace Bloodbender
                 posNode.offset = centerToNextNodeVec.Rotate((float)Math.PI / -2);
             else
                 posNode.offset = centerToNextNodeVec.Rotate((float)Math.PI / 2);
-            */
+            
             posNode.offset = centerToNextNodeVec;
             
             //DistanceOutput distanceToNextNodeOwner = distanceWithPhysicObj(nextNode.owner);
@@ -156,7 +159,7 @@ namespace Bloodbender
 
             nextNode = Bloodbender.ptr.pathFinder.pathRequest(owner, owner.getPosNode(), target.getPosNode())[1];
             
-        }
+        }*/
 
         private bool velocityCorrection()
         {

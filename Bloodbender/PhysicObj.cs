@@ -355,5 +355,47 @@ namespace Bloodbender
             return false;
         }
 
+        /*
+        public bool isPointInside(Vector2 point)
+        {
+            Fixture fixFound = Bloodbender.ptr.world.TestPoint(point);
+
+            if (fixFound == null)
+                return false;
+            foreach (Fixture fix in body.FixtureList)
+            {
+                if (fix.Equals(fixFound))
+                    return true;
+            }
+            return false;
+        }*/
+
+        public bool isPointInside(Vector2 point)
+        {
+            Vector2 vec = body.Position - point;
+
+            if (vec.Length() < maxLenghtCentroidVertex())
+                return true;
+            return false;
+        }
+
+        public float maxLenghtCentroidVertex()
+        {
+            float maxLenght = 0f;
+            float lenght;
+            Vertices vertices = ((PolygonShape)getBoundsFixture().Shape).Vertices;
+
+            if (vertices == null)
+                return 0f;
+
+            foreach (Vector2 vertex in vertices)
+            {
+                lenght = (vertex - vertices.GetCentroid()).Length();
+                maxLenght = lenght > maxLenght ? lenght : maxLenght;
+            }
+
+            return maxLenght;
+        }
+
     }
 }

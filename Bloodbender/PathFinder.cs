@@ -28,8 +28,9 @@ namespace Bloodbender
         public PhysicObj owner;
         public bool free;
         public float score;
+        private bool mandatoryWaypoint;
 
-        public PathFinderNode(Vector2 position, PhysicObj owner = null)
+        public PathFinderNode(Vector2 position, PhysicObj owner = null, bool notConnected = false)
         {
             neighbors = new List<PathFinderNode>();
             free = true;
@@ -38,7 +39,12 @@ namespace Bloodbender
             this.position = position * Bloodbender.pixelToMeter;
             this.owner = owner;
 
-            findNeighbors();
+            if (notConnected == false)
+            {
+                findNeighbors();
+                setMandatoryWaypoint();
+            }
+            
         }
 
         public PathFinderNode(Vector2 position, Vector2 offset, PhysicObj owner = null)
@@ -52,6 +58,7 @@ namespace Bloodbender
             this.owner = owner;
 
             findNeighbors();
+            setMandatoryWaypoint();
         }
 
         public void reset()
@@ -107,6 +114,44 @@ namespace Bloodbender
             }
         }
 
+        private void setMandatoryWaypoint()
+        {
+            if (owner == null)
+            {
+                mandatoryWaypoint = false;
+            }
+            else if (owner.pathNodeType == PathFinderNodeType.OUTLINE)
+            {
+                mandatoryWaypoint = true;
+            }
+            else
+            {
+                mandatoryWaypoint = false;
+            }
+        }
+
+        public bool isReached(PhysicObj obj)
+        {
+            Vector2 objPos = obj.position * Bloodbender.pixelToMeter;
+            Vector2 objPosNodeCorrectedCenterVec = pathNodePositionCorrectedForWidth(obj).position - objPos;
+            Vector2 objPosNodeCenterVec = position - objPos;
+
+            Console.WriteLine("[reached] length : " + objPosNodeCorrectedCenterVec.Length() + " maxLengthCentroidVertex " + obj.maxLenghtCentroidVertex());
+            
+            if (objPosNodeCorrectedCenterVec.Length() < obj.maxLenghtCentroidVertex())
+            {
+                Console.WriteLine("[reached] reached");
+                return true;
+            }
+
+            if (objPosNodeCenterVec.Length() < obj.maxLenghtCentroidVertex())
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         private float pathNodeRayCastCallback(Fixture arg1, Vector2 arg2, Vector2 arg3, float arg4)
         {
             throw new NotImplementedException();
@@ -125,6 +170,30 @@ namespace Bloodbender
             }
             neighbors.Clear();
             Bloodbender.ptr.pathFinder.removeNode(this);
+        }
+
+        public bool isMandatory()
+        {
+            return mandatoryWaypoint;
+        }
+
+        public PathFinderNode pathNodePositionCorrectedForWidth(PhysicObj startObj)
+        {
+            if (owner == null)
+                return this;
+
+            if (offset == Vector2.Zero)
+                return this;
+
+            Vector2 centerToVertexOffset = new Vector2(offset.X, offset.Y);
+            //centerToVertexOffset *= new Vector2(startObj.maxLenghtCentroidVertex() + (6 * Bloodbender.pixelToMeter) / centerToVertexOffset.Length());
+            centerToVertexOffset *= new Vector2((float)Math.Sqrt(startObj.maxLenghtCentroidVertex() * 2) / centerToVertexOffset.Length());
+
+            PathFinderNode test = new PathFinderNode((position + centerToVertexOffset) * Bloodbender.meterToPixel, null, true);
+
+            Console.WriteLine("[mandatoryPath] : corrected node " + position * Bloodbender.meterToPixel + " " + test.position * Bloodbender.meterToPixel);
+
+            return test;
         }
     }
 
@@ -161,15 +230,18 @@ namespace Bloodbender
             nodes.Add(node);
         }
 
-        public List<PathFinderNode> pathRequest(GraphicObj startObj, PathFinderNode startNode, PathFinderNode endNode, List<PathFinderNode> ignoredNodes = null)
+        public PathFinderNode pathRequest(GraphicObj startObj, PathFinderNode startNode, PathFinderNode endNode, List<PathFinderNode> ignoredNodes = null)
         {
             resultPath.Clear();
             openList.Clear();
             closedList.Clear();
             resetAllNodes();
-            setIgnoredNodes(ignoredNodes);
 
-            runAstar(startNode, endNode);
+            //findNodeToIgnore();
+
+            setIgnoredNodes(findNodeToIgnore(startObj));//ignoredNodes);
+
+            runAstar(startNode, endNode, (PhysicObj)startObj);
 
             if (pathDict.ContainsKey(startObj))
             {
@@ -181,7 +253,24 @@ namespace Bloodbender
                 pathDict[startObj] = new List<PathFinderNode>(resultPath);
             }
 
-            return resultPath;
+            if ((startObj is PhysicObj) == false)
+                return resultPath[1];
+            return resultPath[1].pathNodePositionCorrectedForWidth((PhysicObj)startObj);
+        }
+
+        private List<PathFinderNode> findNodeToIgnore(GraphicObj obj)
+        {
+            if ((obj is PhysicObj) == false)
+                return null;
+            if (pathDict.ContainsKey(obj) == false || pathDict[obj].Count <= 1)
+                return null;
+            if (pathDict[obj][1].isReached((PhysicObj)obj))
+            {
+                List<PathFinderNode> listIgnored = new List<PathFinderNode>();
+                listIgnored.Add(pathDict[obj][1]);
+                return listIgnored;
+            }
+            return null;
         }
 
         private void setIgnoredNodes(List<PathFinderNode> ignoredNodes)
@@ -194,7 +283,35 @@ namespace Bloodbender
             }
         }
 
-        private void runAstar(PathFinderNode startNode, PathFinderNode endNode)
+        private void mandatoryNodeControl(GraphicObj startObj)
+        {
+            if (resultPath == null || resultPath.Count <= 1 || pathDict.ContainsKey(startObj) == false)
+            {
+                Console.WriteLine("[mandatory waypoint] : null error");
+                return;
+            }  
+            if (resultPath[1].isMandatory() == false)
+            {
+                Console.WriteLine("[mandatory waypoint] : mandatory false");
+                return;
+            }
+            if (resultPath[1].isReached((PhysicObj)startObj))
+            {
+                resultPath.RemoveAt(1);
+                Console.WriteLine("[mandatory waypoint] : is reached");
+                return;
+            }
+            if (pathDict[startObj][1].isMandatory() == false)
+            {
+                return;
+            }
+            Console.WriteLine("[mandatory waypoint] : replace old path");
+            resultPath.Clear();
+            resultPath.AddRange(pathDict[startObj]);
+            Console.WriteLine("[mandatory waypoint] : count " + resultPath.Count);
+        }
+
+        private void runAstar(PathFinderNode startNode, PathFinderNode endNode, PhysicObj startObj)
         {
             PathFinderNode currentNode = startNode;
 
@@ -206,7 +323,7 @@ namespace Bloodbender
                     createPath(currentNode, startNode);
                     break;
                 }
-                neighborsProcessing(currentNode, endNode);
+                neighborsProcessing(currentNode, endNode, startObj);
                 closedList.Add(currentNode);
                 openList.Remove(currentNode);
                 currentNode = findBestInOpenList();
@@ -226,14 +343,21 @@ namespace Bloodbender
             }
         }
 
-        private void neighborsProcessing(PathFinderNode currentNode, PathFinderNode endNode)
+        private void neighborsProcessing(PathFinderNode currentNode, PathFinderNode endNode, PhysicObj startObj)
         {
             float score = 0;
 
             foreach (PathFinderNode neighbour in currentNode.neighbors)
             {
+                //bool objOverlapNode = startObj.isPointInside(neighbour.pathNodePositionCorrectedForWidth(startObj).position);
+                //bool test = isNeighbourWayClear(neighbour, startObj, endNode);
+                //Console.WriteLine("[reached] overlap : " + objOverlapNode);
+
+
+               // bool objOverlapNodeZone = isInOverlapZone();
                 score = getNodeScore(currentNode, neighbour, endNode);
-                if (closedList.Contains(neighbour) == false && neighbour.free == true)
+
+                if (closedList.Contains(neighbour) == false && neighbour.free == true /*&& objOverlapNode == false /*&& test == true*/)
                 {
                     if (openList.Contains(neighbour) == false)
                     {
@@ -243,11 +367,45 @@ namespace Bloodbender
                     }
                     else if (score < neighbour.score)
                     {
-                        neighbour.score = score;
-                        neighbour.parent = currentNode;
+                         neighbour.score = score;
+                         neighbour.parent = currentNode;
                     }
                 }
             }
+        }
+
+        private bool isNeighbourWayClear(PathFinderNode neighbour, PhysicObj startObj, PathFinderNode endNode)
+        {
+            Vertices objVertices = ((PolygonShape)startObj.getBoundsFixture().Shape).Vertices;
+            bool isVisible = true;
+            PhysicObj endObj = endNode.owner;
+
+            foreach (Vector2 vertex in objVertices)
+            {
+                Bloodbender.ptr.world.RayCast((fixture, point, normal, fraction) =>
+                {
+                    if (fixture.UserData == null)
+                    {
+                        isVisible = false;
+                        return 0;
+                    }
+                    if (fixture.IsSensor || ((AdditionalFixtureData)fixture.UserData).physicParent.pathNodeType == PathFinderNodeType.CENTER)
+                        return -1;
+                    if (((AdditionalFixtureData)fixture.UserData).physicParent.Equals(startObj))
+                        return -1;
+                    if (((AdditionalFixtureData)fixture.UserData).physicParent.Equals(endObj))
+                    {
+                        Console.WriteLine("oscarzzaijdizjdizajdiazjdiazj");
+                        return 0;
+                    }
+                    isVisible = false;
+                    return 0;
+                }, vertex, neighbour.pathNodePositionCorrectedForWidth(startObj).position);
+                if (isVisible == false)
+                    return false;
+            }
+
+            return true;
         }
 
         private float getNodeScore(PathFinderNode currentNode, PathFinderNode neighbour, PathFinderNode endNode)
