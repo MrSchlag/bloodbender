@@ -26,9 +26,15 @@ namespace Bloodbender
         public Vector2 position; //position en metre (Farseer Units)
         public Vector2 offset;
         public PhysicObj owner;
+
+        /* Astar */
         public bool free;
         public float score;
         private bool mandatoryWaypoint;
+
+        /* Djikstra */
+        public uint weight;
+        public bool used;
 
         public PathFinderNode(Vector2 position, PhysicObj owner = null, bool notConnected = false)
         {
@@ -38,6 +44,7 @@ namespace Bloodbender
             offset = new Vector2(0);
             this.position = position * Bloodbender.pixelToMeter;
             this.owner = owner;
+            reset();
 
             if (notConnected == false)
             {
@@ -56,6 +63,7 @@ namespace Bloodbender
             this.position = position * Bloodbender.pixelToMeter;
             this.position += offset;
             this.owner = owner;
+            reset();
 
             findNeighbors();
             setMandatoryWaypoint();
@@ -66,6 +74,8 @@ namespace Bloodbender
             score = 0;
             parent = null;
             free = true;
+            weight = uint.MaxValue;
+            used = false;
         }
 
         public void setPosition(Vector2 position)
@@ -133,11 +143,21 @@ namespace Bloodbender
         public bool isReached(PhysicObj obj)
         {
             Vector2 objPos = obj.position * Bloodbender.pixelToMeter;
+            /*
             Vector2 objPosNodeCorrectedCenterVec = pathNodePositionCorrectedForWidth(obj).position - objPos;
             Vector2 objPosNodeCenterVec = position - objPos;
+            */
+            Vector2 correctedPos = pathNodePositionCorrectedForWidth(obj).position;
+            Vector2 midPoint = new Vector2((position.X + correctedPos.X) / 2, (position.Y + correctedPos.Y) / 2);
 
-            Console.WriteLine("[reached] length : " + objPosNodeCorrectedCenterVec.Length() + " maxLengthCentroidVertex " + obj.maxLenghtCentroidVertex());
+            Vector2 objPosNodeMidPoint = midPoint - objPos;
+
+            Console.WriteLine("[Corrected node] lenght control : " + objPosNodeMidPoint.Length() + " " + obj.maxLenghtCentroidVertex());
+
+            if (objPosNodeMidPoint.Length() <= obj.maxLenghtCentroidVertex())
+                return true;
             
+            /*
             if (objPosNodeCorrectedCenterVec.Length() < obj.maxLenghtCentroidVertex())
             {
                 Console.WriteLine("[reached] reached");
@@ -147,7 +167,9 @@ namespace Bloodbender
             if (objPosNodeCenterVec.Length() < obj.maxLenghtCentroidVertex())
             {
                 return true;
-            }
+            }*/
+
+
 
             return false;
         }
@@ -191,7 +213,7 @@ namespace Bloodbender
 
             PathFinderNode test = new PathFinderNode((position + centerToVertexOffset) * Bloodbender.meterToPixel, null, true);
 
-            Console.WriteLine("[mandatoryPath] : corrected node " + position * Bloodbender.meterToPixel + " " + test.position * Bloodbender.meterToPixel);
+            //Console.WriteLine("[mandatoryPath] : corrected node " + position * Bloodbender.meterToPixel + " " + test.position * Bloodbender.meterToPixel);
 
             return test;
         }
@@ -241,7 +263,8 @@ namespace Bloodbender
 
             setIgnoredNodes(findNodeToIgnore(startObj));//ignoredNodes);
 
-            runAstar(startNode, endNode, (PhysicObj)startObj);
+            //runAstar(startNode, endNode, (PhysicObj)startObj);
+            runDjikstra(startNode, endNode);
 
             if (pathDict.ContainsKey(startObj))
             {
@@ -333,6 +356,48 @@ namespace Bloodbender
                     break;
                 }
             }
+        }
+
+        private void runDjikstra(PathFinderNode startNode, PathFinderNode endNode)
+        {
+            startNode.weight = 0;
+            PathFinderNode currentNode = startNode;
+            PathFinderNode bestNeighbour;
+
+            while (currentNode != null && currentNode != endNode)
+            {
+                currentNode.used = true;
+                bestNeighbour = null;
+                foreach (PathFinderNode neighbour in currentNode.neighbors)
+                {
+                    if (neighbour.used == false)
+                    {
+                        uint linkWeight = getDjikstraWeight(currentNode, neighbour);
+                        if (currentNode.weight + linkWeight < neighbour.weight)
+                        {
+                            neighbour.weight = currentNode.weight + linkWeight;
+                            neighbour.parent = currentNode;
+                        }
+
+                        if (bestNeighbour == null || neighbour.weight < bestNeighbour.weight)
+                            bestNeighbour = neighbour;
+                    }
+                }
+                currentNode = bestNeighbour;
+            }
+            createPath(endNode, startNode);
+        }
+
+        private uint getDjikstraWeight(PathFinderNode current, PathFinderNode neighbour)
+        {
+            int manathanDistX = ((int)current.position.X * 100) - ((int)neighbour.position.X * 100);
+            int manathanDistY = ((int)current.position.Y * 100) - ((int)neighbour.position.Y * 100);
+            if (manathanDistX < 0)
+                manathanDistX *= -1;
+            if (manathanDistY < 0)
+                manathanDistY *= -1;
+            uint manathanDist = (uint)(manathanDistY + manathanDistX);
+            return manathanDist;
         }
 
         private void resetAllNodes()
@@ -448,7 +513,7 @@ namespace Bloodbender
 
             foreach (PathFinderNode node in resultPath)
             {
-                //Console.WriteLine("[PathFinder][Request][Result] PathNode : " + node.position * Bloodbender.meterToPixel);
+                Console.WriteLine("[PathFinder][Request][Result] PathNode : " + node.position * Bloodbender.meterToPixel);
             }
             //Console.WriteLine("[PathFinder][Request] Path Found");
         }

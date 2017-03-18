@@ -25,7 +25,7 @@ namespace Bloodbender
 
         float escapeZoneRadius;
 
-        float pathRequestRate = 0.5f;
+        float pathRequestRate = 0.2f;
         float pathRequestRateCounter = 0f;
 
         //float ignoreNodeRadiusOffset = 5 * Bloodbender.pixelToMeter;
