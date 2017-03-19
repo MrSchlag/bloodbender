@@ -152,7 +152,7 @@ namespace Bloodbender
 
             Vector2 objPosNodeMidPoint = midPoint - objPos;
 
-            Console.WriteLine("[Corrected node] lenght control : " + objPosNodeMidPoint.Length() + " " + obj.maxLenghtCentroidVertex());
+            //Console.WriteLine("[Corrected node] lenght control : " + objPosNodeMidPoint.Length() + " " + obj.maxLenghtCentroidVertex());
 
             if (objPosNodeMidPoint.Length() <= obj.maxLenghtCentroidVertex())
                 return true;
@@ -266,6 +266,8 @@ namespace Bloodbender
             //runAstar(startNode, endNode, (PhysicObj)startObj);
             runDjikstra(startNode, endNode);
 
+            
+
             if (pathDict.ContainsKey(startObj))
             {
                 pathDict[startObj].Clear();
@@ -310,28 +312,28 @@ namespace Bloodbender
         {
             if (resultPath == null || resultPath.Count <= 1 || pathDict.ContainsKey(startObj) == false)
             {
-                Console.WriteLine("[mandatory waypoint] : null error");
+                //Console.WriteLine("[mandatory waypoint] : null error");
                 return;
             }  
             if (resultPath[1].isMandatory() == false)
             {
-                Console.WriteLine("[mandatory waypoint] : mandatory false");
+                //Console.WriteLine("[mandatory waypoint] : mandatory false");
                 return;
             }
             if (resultPath[1].isReached((PhysicObj)startObj))
             {
                 resultPath.RemoveAt(1);
-                Console.WriteLine("[mandatory waypoint] : is reached");
+                //Console.WriteLine("[mandatory waypoint] : is reached");
                 return;
             }
             if (pathDict[startObj][1].isMandatory() == false)
             {
                 return;
             }
-            Console.WriteLine("[mandatory waypoint] : replace old path");
+            //Console.WriteLine("[mandatory waypoint] : replace old path");
             resultPath.Clear();
             resultPath.AddRange(pathDict[startObj]);
-            Console.WriteLine("[mandatory waypoint] : count " + resultPath.Count);
+            //Console.WriteLine("[mandatory waypoint] : count " + resultPath.Count);
         }
 
         private void runAstar(PathFinderNode startNode, PathFinderNode endNode, PhysicObj startObj)
@@ -372,7 +374,12 @@ namespace Bloodbender
                 {
                     if (neighbour.used == false)
                     {
-                        uint linkWeight = getDjikstraWeight(currentNode, neighbour);
+                        uint linkWeight;
+                        if (neighbour.Equals(endNode) && isWayClearToTarget(startNode.owner, endNode) == false)
+                            linkWeight = uint.MaxValue;
+                        else
+                            linkWeight = getDjikstraWeight(currentNode, neighbour);
+
                         if (currentNode.weight + linkWeight < neighbour.weight)
                         {
                             neighbour.weight = currentNode.weight + linkWeight;
@@ -439,7 +446,7 @@ namespace Bloodbender
             }
         }
 
-        private bool isNeighbourWayClear(PathFinderNode neighbour, PhysicObj startObj, PathFinderNode endNode)
+        private bool isWayClearToTarget(PhysicObj startObj,  PathFinderNode endNode)
         {
             Vertices objVertices = ((PolygonShape)startObj.getBoundsFixture().Shape).Vertices;
             bool isVisible = true;
@@ -460,12 +467,13 @@ namespace Bloodbender
                         return -1;
                     if (((AdditionalFixtureData)fixture.UserData).physicParent.Equals(endObj))
                     {
-                        Console.WriteLine("oscarzzaijdizjdizajdiazjdiazj");
+                        //Console.WriteLine("oscarzzaijdizjdizajdiazjdiazj");
                         return 0;
                     }
                     isVisible = false;
                     return 0;
-                }, vertex, neighbour.pathNodePositionCorrectedForWidth(startObj).position);
+                }, vertex + startObj.body.Position, endNode.position);
+
                 if (isVisible == false)
                     return false;
             }
@@ -513,7 +521,7 @@ namespace Bloodbender
 
             foreach (PathFinderNode node in resultPath)
             {
-                Console.WriteLine("[PathFinder][Request][Result] PathNode : " + node.position * Bloodbender.meterToPixel);
+                //Console.WriteLine("[PathFinder][Request][Result] PathNode : " + node.position * Bloodbender.meterToPixel);
             }
             //Console.WriteLine("[PathFinder][Request] Path Found");
         }

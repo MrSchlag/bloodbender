@@ -63,7 +63,7 @@ namespace Bloodbender
                 }
                 else*/
                 nextNode = Bloodbender.ptr.pathFinder.pathRequest(owner, owner.getPosNode(), target.getPosNode());
-                Console.WriteLine("[mandatory waypoint] nextnode : " + nextNode.position);
+                //Console.WriteLine("[mandatory waypoint] nextnode : " + nextNode.position);
                 //pathRequestAdjusted();
                 //Vector2 newNodePosCorrected = correctNodePositionForBodyWidth(nextNode);
 
@@ -72,7 +72,7 @@ namespace Bloodbender
                 //Vector2 posToNode = shapeAvoidTrajectoryCorrection();
                 Vector2 posToTarget = target.body.Position - owner.body.Position;
                 
-                Console.WriteLine("speed : " + owner.body.LinearVelocity.Length());
+                //Console.WriteLine("speed : " + owner.body.LinearVelocity.Length());
 
                 /*
                 if (velocityCorrection() == true)

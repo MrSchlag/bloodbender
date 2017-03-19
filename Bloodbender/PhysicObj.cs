@@ -83,7 +83,7 @@ namespace Bloodbender
             pathFinderNodes = new List<PathFinderNode>();
             pathNodeType = nodeType;
             if (nodeType == PathFinderNodeType.CENTER)
-                pathFinderNodes.Add(new PathFinderNode(position));
+                pathFinderNodes.Add(new PathFinderNode(position, this));
             foreach (PathFinderNode node in pathFinderNodes)
                 Bloodbender.ptr.pathFinder.addNode(node);
         }

@@ -173,8 +173,8 @@ namespace Bloodbender
             Enemy enemy8 = new Enemy(new Vector2(700, 200), player);
             enemy8.addAnimation(new Animation(textureCarre2));
             Enemy enemy9 = new Enemy(new Vector2(700, 200), player);
-            enemy9.addAnimation(new Animation(textureCarre2));*/
-           
+            enemy9.addAnimation(new Animation(textureCarre2));
+           */
             Totem totem = new Totem(new Vector2(300, 300));
             totem.addAnimation(new Animation(textureTotem));
 
