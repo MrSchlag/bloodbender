@@ -378,7 +378,12 @@ namespace Bloodbender
                     if (neighbour.used == false)
                     {
                         uint linkWeight;
+                        
+                        /*
                         if (neighbour.Equals(endNode) && isWayClearToTarget(startNode.owner, endNode) == false)
+                            linkWeight = uint.MaxValue;*/
+                        
+                        if (currentNode.Equals(startNode) && isWayClearToNode(startNode.owner, neighbour) == false)
                             linkWeight = uint.MaxValue;
                         else
                             linkWeight = getDjikstraWeight(currentNode, neighbour);
@@ -450,7 +455,7 @@ namespace Bloodbender
             }
         }
 
-        private bool isWayClearToTarget(PhysicObj startObj,  PathFinderNode endNode)
+        private bool isWayClearToTarget(PhysicObj startObj, PathFinderNode endNode)
         {
             Vertices objVertices = ((PolygonShape)startObj.getBoundsFixture().Shape).Vertices;
             bool isVisible = true;
@@ -477,6 +482,35 @@ namespace Bloodbender
                     isVisible = false;
                     return 0;
                 }, vertex + startObj.body.Position, endNode.position);
+
+                if (isVisible == false)
+                    return false;
+            }
+
+            return true;
+        }
+
+        private bool isWayClearToNode(PhysicObj startObj, PathFinderNode node)
+        {
+            Vertices objVertices = ((PolygonShape)startObj.getBoundsFixture().Shape).Vertices;
+            bool isVisible = true;
+
+            foreach (Vector2 vertex in objVertices)
+            {
+                Bloodbender.ptr.world.RayCast((fixture, point, normal, fraction) =>
+                {
+                    if (fixture.UserData == null)
+                    {
+                        isVisible = false;
+                        return 0;
+                    }
+                    if (fixture.IsSensor || ((AdditionalFixtureData)fixture.UserData).physicParent.pathNodeType == PathFinderNodeType.CENTER)
+                        return -1;
+                    if (((AdditionalFixtureData)fixture.UserData).physicParent.Equals(startObj))
+                        return -1;
+                    isVisible = false;
+                    return 0;
+                }, vertex + startObj.body.Position, node.position);
 
                 if (isVisible == false)
                     return false;
