@@ -278,6 +278,9 @@ namespace Bloodbender
                 pathDict[startObj] = new List<PathFinderNode>(resultPath);
             }
 
+            if (resultPath == null || resultPath.Count < 2)
+                return null;
+
             if ((startObj is PhysicObj) == false)
                 return resultPath[1];
             return resultPath[1].pathNodePositionCorrectedForWidth((PhysicObj)startObj);
@@ -392,7 +395,8 @@ namespace Bloodbender
                 }
                 currentNode = bestNeighbour;
             }
-            createPath(endNode, startNode);
+            if (endNode != null)
+                createPath(endNode, startNode);
         }
 
         private uint getDjikstraWeight(PathFinderNode current, PathFinderNode neighbour)
@@ -514,16 +518,12 @@ namespace Bloodbender
             {
                 resultPath.Add(backPathNode);
                 backPathNode = backPathNode.parent;
+                if (backPathNode == null)
+                    return;
             }
 
             resultPath.Add(startNode);
             resultPath.Reverse();
-
-            foreach (PathFinderNode node in resultPath)
-            {
-                //Console.WriteLine("[PathFinder][Request][Result] PathNode : " + node.position * Bloodbender.meterToPixel);
-            }
-            //Console.WriteLine("[PathFinder][Request] Path Found");
         }
 
         public List<PathFinderNode> getPathFinderNodes()

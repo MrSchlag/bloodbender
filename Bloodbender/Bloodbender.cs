@@ -155,7 +155,7 @@ namespace Bloodbender
 
             Enemy enemy = new Enemy(new Vector2(700, 200), player);
             enemy.addAnimation(new Animation(textureCarre2));
-            /*
+            
             Enemy enemy1 = new Enemy(new Vector2(700, 200), player);
             enemy1.addAnimation(new Animation(textureCarre2));
             Enemy enemy2 = new Enemy(new Vector2(700, 200), player);
@@ -174,7 +174,7 @@ namespace Bloodbender
             enemy8.addAnimation(new Animation(textureCarre2));
             Enemy enemy9 = new Enemy(new Vector2(700, 200), player);
             enemy9.addAnimation(new Animation(textureCarre2));
-           */
+           
             Totem totem = new Totem(new Vector2(300, 300));
             totem.addAnimation(new Animation(textureTotem));
 
@@ -184,7 +184,7 @@ namespace Bloodbender
             listGraphicObj.Add(totem);
             listGraphicObj.Add(player);
             listGraphicObj.Add(enemy);
-            /*
+           
             listGraphicObj.Add(enemy1);
             listGraphicObj.Add(enemy2);
             listGraphicObj.Add(enemy3);
@@ -194,7 +194,7 @@ namespace Bloodbender
             listGraphicObj.Add(enemy7);
             listGraphicObj.Add(enemy8);
             listGraphicObj.Add(enemy9);
-            */
+           
             listGraphicObj.Add(pobj);
 
             frameRateCounter = new FrameRateCounter(font);            

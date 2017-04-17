@@ -63,6 +63,11 @@ namespace Bloodbender
                 }
                 else*/
                 nextNode = Bloodbender.ptr.pathFinder.pathRequest(owner, owner.getPosNode(), target.getPosNode());
+                if (nextNode == null)
+                {
+                    owner.body.LinearVelocity = Vector2.Zero;
+                    return false;
+                }
                 //Console.WriteLine("[mandatory waypoint] nextnode : " + nextNode.position);
                 //pathRequestAdjusted();
                 //Vector2 newNodePosCorrected = correctNodePositionForBodyWidth(nextNode);
