@@ -61,7 +61,7 @@ namespace Bloodbender
 
 
             addAnimation(new Animation(texture1));
-            addAnimation(new Animation(texture2, 8, 0.1f, 64, 0, 0, 0));
+            addAnimation(new Animation(texture2, 8, 0.06f, 64, 0, 0, 0));
         }
 
         public override bool Update(float elapsed)
