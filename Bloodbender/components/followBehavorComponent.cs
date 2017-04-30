@@ -52,38 +52,15 @@ namespace Bloodbender
             if (pathRequestRateCounter > pathRequestRate)
             {
                 pathRequestRateCounter = 0f;
-                //Console.WriteLine("[FollowBehaviorComponent] asking path");
-
-                /*
-                if (ignoreThisNodeForWidth(nextNode))
-                {
-                    List<PathFinderNode> ignoreNodes = new List<PathFinderNode>();
-                    ignoreNodes.Add(nextNode);
-                    nextNode = Bloodbender.ptr.pathFinder.pathRequest(owner, owner.getPosNode(), target.getPosNode(), ignoreNodes);
-                }
-                else*/
                 nextNode = Bloodbender.ptr.pathFinder.pathRequest(owner, owner.getPosNode(), target.getPosNode());
                 if (nextNode == null)
                 {
                     owner.body.LinearVelocity = Vector2.Zero;
                     return false;
                 }
-                //Console.WriteLine("[mandatory waypoint] nextnode : " + nextNode.position);
-                //pathRequestAdjusted();
-                //Vector2 newNodePosCorrected = correctNodePositionForBodyWidth(nextNode);
 
                 Vector2 posToNode = nextNode.position - owner.getPosNode().position;
-                //Vector2 posToNode = newNodePosCorrected - owner.body.Position;
-                //Vector2 posToNode = shapeAvoidTrajectoryCorrection();
                 Vector2 posToTarget = target.body.Position - owner.body.Position;
-                
-                //Console.WriteLine("speed : " + owner.body.LinearVelocity.Length());
-
-                /*
-                if (velocityCorrection() == true)
-                {
-                    return true;
-                }*/
 
                 if (posToTarget.Length() * Bloodbender.meterToPixel > escapeZoneRadius)
                 {
@@ -95,76 +72,10 @@ namespace Bloodbender
                 {
                     owner.body.LinearVelocity = Vector2.Zero;
                 }
-
-                //velocityCorrection();
-                
-                //Console.WriteLine("pos : " + owner.body.Position);
             }
 
             return true;
         }
-
-        /*
-        private Vector2 shapeAvoidTrajectoryCorrection()
-        {
-            List<PathFinderNode> path = Bloodbender.ptr.pathFinder.pathRequest(owner, owner.getPosNode(), target.getPosNode());
-
-            nextNode = path[1];
-            if (path.Count < 3 || path[1].owner == null || path[2].owner == null)
-            {
-                return nextNode.position - owner.getPosNode().position;
-                //return Vector2.Zero;
-            }
-
-            nextNode = path[1];
-            if (path[1].owner.pathNodeType == PathFinderNodeType.OUTLINE && path[2].owner.pathNodeType == PathFinderNodeType.OUTLINE)
-            {
-                if (distanceWithPhysicObj(path[1].owner) <= 4)//maxVertexDistance + maxVertexDistanceOffset + 0.5)
-                {
-                    Console.WriteLine("OOOKOKOKKO");
-                    return path[2].position - path[1].position;
-                    //owner.body.ve
-                    //Vector2 correctedLinearVelocity = path[2].position - path[1].position;
-                    //correctedLinearVelocity.Normalize();
-                }
-            }
-            
-            return nextNode.position - owner.getPosNode().position;
-        }*/
-        /*
-        private void pathRequestAdjusted()
-        {
-            PathFinderNode posNode = owner.getPosNode();
-            posNode.offset = Vector2.Zero;
-            if (nextNode == null || nextNode.owner == null || nextNode.owner.pathNodeType != PathFinderNodeType.OUTLINE)
-            {
-                nextNode = Bloodbender.ptr.pathFinder.pathRequest(owner, owner.getPosNode(), target.getPosNode())[1];
-                return;
-            }
-            
-            Vector2 centroid = owner.getBoundsFixture().Shape.MassData.Centroid + owner.body.Position;
-            //Vector2 centerToNextNodeVec = nextNode.position - centroid;//new Vector2(nextNode.position.X - centroid.X, nextNode.position.Y - centroid.Y);
-            Vector2 centerToNextNodeVec = owner.body.LinearVelocity;
-            centerToNextNodeVec.Normalize();
-            centerToNextNodeVec *= maxVertexDistance;
-
-            /*
-            Vector2 rot1ToNextNode = nextNode.position - centerToNextNodeVec.Rotate((float)Math.PI / 2);
-            Vector2 rot2ToNextNode = nextNode.position - centerToNextNodeVec.Rotate((float)Math.PI / -2);
-
-            if (rot1ToNextNode.Length() > rot2ToNextNode.Length())
-                posNode.offset = centerToNextNodeVec.Rotate((float)Math.PI / -2);
-            else
-                posNode.offset = centerToNextNodeVec.Rotate((float)Math.PI / 2);
-            
-            posNode.offset = centerToNextNodeVec;
-            
-            //DistanceOutput distanceToNextNodeOwner = distanceWithPhysicObj(nextNode.owner);
-            //posNode.offset = distanceToNextNodeOwner.PointA - posNode.position;
-
-            nextNode = Bloodbender.ptr.pathFinder.pathRequest(owner, owner.getPosNode(), target.getPosNode())[1];
-            
-        }*/
 
         private bool velocityCorrection()
         {
@@ -172,10 +83,8 @@ namespace Bloodbender
                 Console.WriteLine("is TOuching");
             if (owner.body.LinearVelocity == Vector2.Zero)
                 return false;
-            if (((AdditionalFixtureData)owner.getBoundsFixture().UserData).isTouching)//owner.isTouching(nextNode.owner))
+            if (((AdditionalFixtureData)owner.getBoundsFixture().UserData).isTouching)
             {
-                //owner.body.
-                
                 Vector2 velocityVec = owner.body.LinearVelocity;
                 Console.WriteLine("veclocity correction raw " + velocityVec);
 
@@ -195,12 +104,7 @@ namespace Bloodbender
         private bool ignoreThisNodeForWidth(PathFinderNode nextNode)
         {
             float maxLength = maxLenghtCentroidVertex();
-            /*
-            if (nextNode != null && maxLength + ignoreNodeRadiusOffset >= (nextNode.position - owner.body.Position).Length())
-            {
-                Console.WriteLine("escape");
-                return true;
-            }*/
+           
             return false;
         }
 
@@ -212,22 +116,9 @@ namespace Bloodbender
             if (node.offset == Vector2.Zero)
                 return node.position;
 
-            //float distanceWithObj = distanceWithPhysicObj(node.owner);
-
-            //distanceWithObj += 20 * Bloodbender.pixelToMeter;
-
-            //if (distanceWithObj <= maxVertexDistance)
-            //{
-                Vector2 centerToVertexOffset = node.offset;
-                centerToVertexOffset *= new Vector2(maxVertexDistance / centerToVertexOffset.Length());
-                return node.position + centerToVertexOffset;
-            //}
-
-            return node.position;
-
-            //Console.WriteLine("[followComponenet] corrected : " + (node.position + centerToVertexOffset));
-            //Console.WriteLine("[followComponenet] initial  : " + node.position);
-
+            Vector2 centerToVertexOffset = node.offset;
+            centerToVertexOffset *= new Vector2(maxVertexDistance / centerToVertexOffset.Length());
+            return node.position + centerToVertexOffset;
         }
 
         private float maxLenghtCentroidVertex()
