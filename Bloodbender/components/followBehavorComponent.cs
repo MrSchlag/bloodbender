@@ -32,8 +32,6 @@ namespace Bloodbender
         
         PathFinderNode nextNode;
         
-        //PathFinderNode switchingPathControl;
-
         float maxVertexDistance;
         float maxVertexDistanceOffset = 10 * Bloodbender.pixelToMeter;
 
