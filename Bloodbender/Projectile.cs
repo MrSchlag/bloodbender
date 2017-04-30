@@ -28,7 +28,8 @@ namespace Bloodbender
             //Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
             
             float pixelToMeter = Bloodbender.pixelToMeter;
-            
+
+            body.Dispose();
             body = BodyFactory.CreateRectangle(Bloodbender.ptr.world, 10 * pixelToMeter, 10 * pixelToMeter, 1);
             //body = BodyFactory.CreateCircle(Bloodbender.ptr.world, 5 * pixelToMeter, 1);
             body.BodyType = BodyType.Dynamic;
@@ -45,6 +46,7 @@ namespace Bloodbender
 
         public Projectile(Vector2 position, float radius, float angle, float speed) : base(position)
         {
+            body.Dispose();
             float pixelToMeter = Bloodbender.pixelToMeter;
             body = BodyFactory.CreateCircle(Bloodbender.ptr.world, radius * pixelToMeter, 1);
             body.BodyType = BodyType.Dynamic;

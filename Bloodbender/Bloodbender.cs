@@ -156,6 +156,7 @@ namespace Bloodbender
             Enemy enemy = new Enemy(new Vector2(700, 200), player);
             enemy.addAnimation(new Animation(textureCarre2));
             
+
             /*
             Enemy enemy1 = new Enemy(new Vector2(700, 200), player);
             enemy1.addAnimation(new Animation(textureCarre2));

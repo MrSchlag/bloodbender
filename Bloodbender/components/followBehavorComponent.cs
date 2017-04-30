@@ -14,6 +14,7 @@ using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Threading;
 
 
 namespace Bloodbender
@@ -51,6 +52,7 @@ namespace Bloodbender
             {
                 pathRequestRateCounter = 0f;
                 nextNode = Bloodbender.ptr.pathFinder.pathRequest(owner, owner.getPosNode(), target.getPosNode());
+                
                 if (nextNode == null)
                 {
                     owner.body.LinearVelocity = Vector2.Zero;
@@ -78,7 +80,7 @@ namespace Bloodbender
         private bool velocityCorrection()
         {
             if (((AdditionalFixtureData)owner.getBoundsFixture().UserData).isTouching)
-                Console.WriteLine("is TOuching");
+                Console.WriteLine("is Touching");
             if (owner.body.LinearVelocity == Vector2.Zero)
                 return false;
             if (((AdditionalFixtureData)owner.getBoundsFixture().UserData).isTouching)

@@ -253,7 +253,9 @@ namespace Bloodbender
             {
                 node.remove();
             }
-            Bloodbender.ptr.world.RemoveBody(body);
+            //Bloodbender.ptr.world.RemoveBody(body);
+            
+            body.Dispose();
             base.Dispose();
         }
 
