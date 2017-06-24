@@ -19,28 +19,26 @@ namespace Bloodbender
 {
     public class Player : PhysicObj
     {
-        Fixture playerBoundsFix;
-        Fixture playerHitSensorFix;
-        float attackSensorAngle;
-        float askPathFrq;
-        float askPathFrqCounter;
-
-        bool testPath = false;
+        private Fixture playerHitSensorFix;
+        private float attackSensorAngle;
+        private float dashSpeed = 1500f;
+        private float dashDuration = 0.05f;
+        private float dashTime = 0f;
+        private bool isInDash;
+        private float dashRestDuration = 3f;
+        private float dashRestTime = 4f;
+        private bool isInDashRest;
+        private Vector2 dashLinearVelocity = Vector2.Zero;
 
         public Player(Vector2 position) : base(position, PathFinderNodeType.CENTER)
         {
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
             Bloodbender.ptr.camera.TrackingBody = body;
 
-            askPathFrq = 4f;
-            askPathFrqCounter = 0f;
-
             velocity = 200;
             attackSensorAngle = 0f;
 
             Fixture playerBoundsFix = createOctogoneFixture(32f, 32f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
-            //Fixture playerBoundsFix = createRectangleFixture(32.0f, 32.0f, new Vector2(0f, 0), new AdditionalFixtureData(this, HitboxType.BOUND));
-
 
             playerHitSensorFix = createRectangleFixture(32.0f, 32.0f, new Vector2(32.0f, 0), new AdditionalFixtureData(this, HitboxType.ATTACK));
 
@@ -51,14 +49,10 @@ namespace Bloodbender
             addFixtureToCheckedCollision(playerHitSensorFix); 
             addFixtureToCheckedCollision(playerBoundsFix);
 
-            IComponent comp = new GenerateProjectileComponent(this);
-            //addComponent(comp);
-
             //height = 10;
 
             Texture2D texture1 = Bloodbender.ptr.Content.Load<Texture2D>("Soldat/soldat-bas");
             Texture2D texture2 = Bloodbender.ptr.Content.Load<Texture2D>("Soldat/course");
-
 
             addAnimation(new Animation(texture1));
             addAnimation(new Animation(texture2, 8, 0.06f, 64, 0, 0, 0));
@@ -66,17 +60,28 @@ namespace Bloodbender
 
         public override bool Update(float elapsed)
         {
-            float pixelToMeter = Bloodbender.pixelToMeter;
+            ContinueDash(elapsed);
+            InputSwitch(elapsed);
+
+            height = MathHelper.Clamp(height, 0.0f, 10000.0f);
+
+            isSensorColliding();
+            playerHitSensorFixMousePosRotation();
+            checkSensorInteractions();
+
+            return base.Update(elapsed);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+        }
+
+        private void InputSwitch(float elapsed)
+        {
+            if (isInDash)
+                return;
             int nbrArrowPressed = 0;
-
-            askPathFrqCounter += elapsed;
-            if (askPathFrqCounter > askPathFrq)
-            {
-                //Bloodbender.ptr.pathFinder.pathRequest(this);
-                askPathFrqCounter = 0f;
-            }
-
-
             if (Keyboard.GetState().IsKeyDown(Keys.Z)
                 || Keyboard.GetState().IsKeyDown(Keys.S)
                 || Keyboard.GetState().IsKeyDown(Keys.Q)
@@ -92,14 +97,14 @@ namespace Bloodbender
             {
                 if (!Keyboard.GetState().IsKeyDown(Keys.S))
                 {
-                    nbrArrowPressed += 1;                    
-                    body.LinearVelocity += new Vector2(0, -velocity * pixelToMeter);
+                    nbrArrowPressed += 1;
+                    body.LinearVelocity += new Vector2(0, -velocity * Bloodbender.pixelToMeter);
                 }
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
                 nbrArrowPressed += 1;
-                body.LinearVelocity += new Vector2(0, velocity * pixelToMeter);
+                body.LinearVelocity += new Vector2(0, velocity * Bloodbender.pixelToMeter);
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.D))
@@ -110,7 +115,7 @@ namespace Bloodbender
                 if (!Keyboard.GetState().IsKeyDown(Keys.Q))
                 {
                     nbrArrowPressed += 1;
-                    body.LinearVelocity += new Vector2(velocity * pixelToMeter, 0);
+                    body.LinearVelocity += new Vector2(velocity * Bloodbender.pixelToMeter, 0);
                 }
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Q))
@@ -119,29 +124,55 @@ namespace Bloodbender
 
 
                 nbrArrowPressed += 1;
-                body.LinearVelocity += new Vector2(-velocity * pixelToMeter, 0);
+                body.LinearVelocity += new Vector2(-velocity * Bloodbender.pixelToMeter, 0);
             }
             if (nbrArrowPressed >= 2)
                 body.LinearVelocity /= 2;
 
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                StartDash();
 
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
                 height += 50 * elapsed;
             else if (Keyboard.GetState().IsKeyDown(Keys.Down))
                 height -= 50 * elapsed;
-
-            height = MathHelper.Clamp(height, 0.0f, 10000.0f);
-
-            isSensorColliding();
-            playerHitSensorFixMousePosRotation();
-            checkSensorInteractions();
-
-            return base.Update(elapsed);
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        private void StartDash()
         {
-            base.Draw(spriteBatch);
+            if (body.LinearVelocity == Vector2.Zero || isInDashRest)
+                return;
+            Vector2 linearVelocityNorm = new Vector2(body.LinearVelocity.X, body.LinearVelocity.Y);
+            linearVelocityNorm.Normalize();
+            body.LinearVelocity = linearVelocityNorm * dashSpeed * Bloodbender.pixelToMeter;
+            dashLinearVelocity = body.LinearVelocity;
+            isInDash = true;
+            dashTime = 0f;
+            dashRestTime = 0f;
+        }
+
+        private void ContinueDash(float elapsed)
+        {
+            if (isInDash == true)
+            {
+                if (dashTime < dashDuration)
+                {
+                    dashTime += elapsed;
+                    body.LinearVelocity = dashLinearVelocity;
+                }
+                else
+                {
+                    dashTime = 0f;
+                    isInDash = false;
+                    isInDashRest = true;
+                }
+            }
+            else if (isInDashRest)
+            {
+                dashRestTime += elapsed;
+                if (dashRestTime > dashRestDuration)
+                    isInDashRest = false;
+            }
         }
 
         private void playerHitSensorFixMousePosRotation()
@@ -186,6 +217,8 @@ namespace Bloodbender
                 }
             }
         }
+
+       
 
         private void isSensorColliding()
         {
