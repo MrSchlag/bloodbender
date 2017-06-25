@@ -11,12 +11,13 @@ namespace Bloodbender
     public class Animation
     {
         public bool isLooping { get; set; } = true; // bool to know if the animation loop forever
-        public bool isRunning { get; set; } = true; // bool to know if the animation is running
+        public bool isRunning { get; set; } = false; // bool to know if the animation is running
         public bool isDepthForce = false;
 
         private Texture2D texture;
         private Rectangle rectangleSource; // rectangle used to get a different part of the texture at each draw
         public Vector2 origin = Vector2.Zero;
+        public Vector2 offSet = Vector2.Zero;
         public float depth { get; set; } = 0.0f;
         public Color color = Color.White;
 
@@ -100,6 +101,8 @@ namespace Bloodbender
             // permet d'évite l'effet escalier sur les sprites
             position.X = (int)(position.X);
             position.Y = (int)(position.Y);
+
+            position += offSet;
 
             spriteBatch.Draw(texture, position, rectangleSource, color,
                 rotation, origin, scale, spriteEffect, depth);

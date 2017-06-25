@@ -25,7 +25,7 @@ namespace Bloodbender
         private float dashDuration = 0.05f;
         private float dashTime = 0f;
         private bool isInDash;
-        private float dashRestDuration = 3f;
+        private float dashRestDuration = 2f;
         private float dashRestTime = 4f;
         private bool isInDashRest;
         private Vector2 dashLinearVelocity = Vector2.Zero;
@@ -53,9 +53,15 @@ namespace Bloodbender
 
             Texture2D texture1 = Bloodbender.ptr.Content.Load<Texture2D>("Soldat/soldat-bas");
             Texture2D texture2 = Bloodbender.ptr.Content.Load<Texture2D>("Soldat/course");
+            Texture2D textureAttack1 = Bloodbender.ptr.Content.Load<Texture2D>("Soldat/attack1");
 
             addAnimation(new Animation(texture1));
             addAnimation(new Animation(texture2, 8, 0.06f, 64, 0, 0, 0));
+
+            Animation attack1 = new Animation(textureAttack1, 9, 0.04f, 128, 0, 0, 0);
+            attack1.isLooping = false;
+            attack1.offSet = new Vector2(0,32);
+            addAnimation(attack1);
         }
 
         public override bool Update(float elapsed)
@@ -79,8 +85,47 @@ namespace Bloodbender
 
         private void InputSwitch(float elapsed)
         {
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+
             if (isInDash)
                 return;
+
+            if (getAnimation(2).isRunning)
+                return;
+
+            if (gamePadState.IsConnected)
+            {
+
+                body.LinearVelocity = new Vector2(gamePadState.ThumbSticks.Left.X * velocity * Bloodbender.pixelToMeter, -gamePadState.ThumbSticks.Left.Y * velocity * Bloodbender.pixelToMeter);
+
+                if (gamePadState.ThumbSticks.Left.X > 0)
+                {
+                    spriteEffect = SpriteEffects.None;
+                }
+                else if (gamePadState.ThumbSticks.Left.X < 0)
+                {
+                    spriteEffect = SpriteEffects.FlipHorizontally;
+                }
+
+                if (gamePadState.Triggers.Left == 1)
+                {
+                    StartDash();
+                }
+
+                if (gamePadState.Triggers.Right == 1)
+                {
+                    runAnimation(2);
+                    return;
+                }
+                   
+
+                if (gamePadState.ThumbSticks.Left.X != 0 || gamePadState.ThumbSticks.Left.Y != 0)
+                {
+                    runAnimation(1);
+                    return;
+                }
+            }
+
             int nbrArrowPressed = 0;
             if (Keyboard.GetState().IsKeyDown(Keys.Z)
                 || Keyboard.GetState().IsKeyDown(Keys.S)
@@ -130,7 +175,13 @@ namespace Bloodbender
                 body.LinearVelocity /= 2;
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
                 StartDash();
+                
+            }
+
+            if (Bloodbender.ptr.inputHelper.IsNewMouseButtonPress(MouseButtons.LeftButton))
+                runAnimation(2);
 
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
                 height += 50 * elapsed;
