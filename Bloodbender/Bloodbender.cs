@@ -7,6 +7,7 @@ using FarseerPhysics.Dynamics;
 using FarseerPhysics.Factories;
 using FarseerPhysics;
 using System;
+using Bloodbender.PathFinding;
 
 namespace Bloodbender
 {
@@ -33,6 +34,7 @@ namespace Bloodbender
         public List<GraphicObj> listGraphicObj;
 
         public PathFinder pathFinder;
+        public PathFinder2 pFinder;
 
         public float elapsed = 0.0f;
 
@@ -135,10 +137,14 @@ namespace Bloodbender
             debugNodeFree = Content.Load<Texture2D>("debugPathFinderNode2");
 
             pathFinder = new PathFinder(2);
+            pFinder = new PathFinder2();
+            pFinder.BuildtNavMeshes(6, 10);
 
             MapBound mapBounds = new MapBound();
             mapBounds.addVertex(new Vector2(0, 0));
             mapBounds.addVertex(new Vector2(120, -50));
+            mapBounds.addVertex(new Vector2(350, -20));
+            mapBounds.addVertex(new Vector2(700, 0));
             mapBounds.addVertex(new Vector2(2000, 0));
             mapBounds.addVertex(new Vector2(1900, 500));
             mapBounds.addVertex(new Vector2(0, 500));
@@ -180,10 +186,15 @@ namespace Bloodbender
             Totem totem = new Totem(new Vector2(300, 300));
             totem.addAnimation(new Animation(textureTotem));
 
+            Totem totem2 = new Totem(new Vector2(700, 400));
+            totem2.addAnimation(new Animation(textureTotem));
+
+
             Sprinkler sprinkler = new Sprinkler(new Vector2(500, 300));
 
             listGraphicObj.Add(sprinkler);
             listGraphicObj.Add(totem);
+            listGraphicObj.Add(totem2);
             listGraphicObj.Add(player);
             listGraphicObj.Add(enemy);
            
@@ -200,9 +211,10 @@ namespace Bloodbender
            */
             listGraphicObj.Add(pobj);
 
-            frameRateCounter = new FrameRateCounter(font);            
+            frameRateCounter = new FrameRateCounter(font);
 
             //pathFinder.pathRequest(new Vector2(41, 42), new Vector2(300, 300));
+            pFinder.GeneratesMeshes();
         }
 
         

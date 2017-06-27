@@ -12,6 +12,7 @@ using FarseerPhysics.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Bloodbender.PathFinding;
 
 namespace Bloodbender
 {
@@ -52,6 +53,16 @@ namespace Bloodbender
         public float length;
         public PathFinderNodeType pathNodeType;
 
+        private float radius;
+        public float Radius {
+            get { return radius; }
+            protected set
+            {
+                radius = value;
+                Bloodbender.ptr.pFinder.RegisterObj(this);
+            }
+        }
+
         protected List<PathFinderNode> pathFinderNodes;
 
         public PhysicObj(Body body, Vector2 position) : base(OffSet.BottomCenterHorizontal)
@@ -84,15 +95,15 @@ namespace Bloodbender
             pathNodeType = nodeType;
             if (nodeType == PathFinderNodeType.CENTER)
                 pathFinderNodes.Add(new PathFinderNode(position, this));
-            foreach (PathFinderNode node in pathFinderNodes)
-                Bloodbender.ptr.pathFinder.addNode(node);
+            //foreach (PathFinderNode node in pathFinderNodes)
+                //Bloodbender.ptr.pathFinder.addNode(node);
         }
 
         public override bool Update(float elapsed)
         {
             position = body.Position * Bloodbender.meterToPixel;
             foreach (PathFinderNode node in pathFinderNodes)
-                node.setPosition(body.Position);
+                node.SetPosition(body.Position);
             return base.Update(elapsed);
         }
 
@@ -280,31 +291,8 @@ namespace Bloodbender
                     foreach (Vector2 vertex in polyShape.Vertices)
                     {
                         /* centroid to corner vertex */
+                        
                         centerToVertexNodeCreate(vertex, polyShape);
-
-                        /* next corner to corner vertex */
-                        /*
-                        Vertices translationVertice = new Vertices();
-                        translationVertice.Add(vertex);
-                        Vector2 nextVertex = polyShape.Vertices[polyShape.Vertices.NextIndex(index)];
-                        Vector2 nextToVertex = new Vector2(vertex.X - nextVertex.X, vertex.Y - nextVertex.Y);
-                        nextToVertex *= new Vector2((Bloodbender.ptr.pathFinder.pathStep * Bloodbender.pixelToMeter) / nextToVertex.Length());
-                        translationVertice.Translate(nextToVertex);
-                        centerToVertexNodeCreate(translationVertice[0], polyShape);
-
-                        /* next to corner
-                        /* previous corner to corner vertex */
-                        /*Vector2 prevVertex = polyShape.Vertices[polyShape.Vertices.PreviousIndex(index)];
-                        Vector2 prevToVertex = vertex - prevVertex;
-                        prevToVertex *= new Vector2(1) + new Vector2((Bloodbender.ptr.pathFinder.pathStep * Bloodbender.pixelToMeter) / prevToVertex.Length());
-                        PathFinderNode node3 = new PathFinderNode(body.Position * Bloodbender.meterToPixel, prevToVertex, this);
-                        */
-                      /*
-                        Bloodbender.ptr.pathFinder.addNode(node2);
-                        pathFinderNodes.Add(node2);
-                        /*
-                        Bloodbender.ptr.pathFinder.addNode(node3);
-                        pathFinderNodes.Add(node3);*/
 
                         index++;
                     }
@@ -318,8 +306,12 @@ namespace Bloodbender
             Vector2 centerToVertex = new Vector2(vertex.X - centroid.X, vertex.Y - centroid.Y);
             centerToVertex *= new Vector2(1) + new Vector2((Bloodbender.ptr.pathFinder.pathStep * Bloodbender.pixelToMeter) / centerToVertex.Length());
             PathFinderNode node1 = new PathFinderNode(body.Position * Bloodbender.meterToPixel, centerToVertex, this);
-            Bloodbender.ptr.pathFinder.addNode(node1);
-            pathFinderNodes.Add(node1);
+            //Bloodbender.ptr.pathFinder.addNode(node1);
+            //pathFinderNodes.Add(node1);
+
+            node1.DivergencePoint = centroid + body.Position;
+            Bloodbender.ptr.pFinder.AddNode(node1);
+
         }
 
         public PathFinderNode getPosNode()

@@ -39,7 +39,7 @@ namespace Bloodbender
             attackSensorAngle = 0f;
 
             Fixture playerBoundsFix = createOctogoneFixture(32f, 32f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
-
+            Radius = 32f;
             playerHitSensorFix = createRectangleFixture(32.0f, 32.0f, new Vector2(32.0f, 0), new AdditionalFixtureData(this, HitboxType.ATTACK));
 
             //set wether the fixture is a sensor or not (sensor: no response, no contact point)

@@ -15,7 +15,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Threading;
-
+using Bloodbender.PathFinding;
 
 namespace Bloodbender
 {
@@ -51,10 +51,12 @@ namespace Bloodbender
             if (pathRequestRateCounter > pathRequestRate)
             {
                 pathRequestRateCounter = 0f;
-                nextNode = Bloodbender.ptr.pathFinder.pathRequest(owner, owner.getPosNode(), target.getPosNode());
-                
+                //nextNode = Bloodbender.ptr.pathFinder.pathRequest(owner, owner.getPosNode(), target.getPosNode());
+                nextNode = Bloodbender.ptr.pFinder.pathRequest(owner, target);
+
                 if (nextNode == null)
                 {
+                    Console.WriteLine("No path found");
                     owner.body.LinearVelocity = Vector2.Zero;
                     return false;
                 }

@@ -1,4 +1,5 @@
-﻿using FarseerPhysics;
+﻿using Bloodbender.PathFinding;
+using FarseerPhysics;
 using FarseerPhysics.DebugView;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -67,7 +68,9 @@ namespace Bloodbender
 
             if ((Flags & DebugViewFlags.PathFinding) == DebugViewFlags.PathFinding)
             {
-                List<PathFinderNode> listNodes = Bloodbender.ptr.pathFinder.getPathFinderNodes();
+                //List<PathFinderNode> listNodes = Bloodbender.ptr.pathFinder.getPathFinderNodes();
+                List<PathFinderNode> listNodes = Bloodbender.ptr.pFinder.GetFirstMesh();
+
 
                 foreach (PathFinderNode n in listNodes)
                 {
