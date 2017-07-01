@@ -13,7 +13,11 @@ namespace BloodbenderMapGenerator
         top,
         bot,
         left,
-        right
+        right,
+        topleftdiag,
+        toprightdiag,
+        botleftdiag,
+        botrightdiag
     }
     public class Entry
     {
