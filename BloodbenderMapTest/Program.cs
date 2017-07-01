@@ -15,8 +15,9 @@ namespace BloodbenderMapTest
         static void Main(string[] args)
         {
             Debug.WriteLine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-            Debug.WriteLine("zobi");
-            MapLoader mLoader = new MapLoader();
+            MapGenerator mGen = new MapGenerator();
+
+            mGen.newMap();
         }
     }
 }
