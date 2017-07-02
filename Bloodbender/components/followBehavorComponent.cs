@@ -59,6 +59,9 @@ namespace Bloodbender
                     Console.WriteLine("No path found");
                     owner.body.LinearVelocity = Vector2.Zero;
                     return false;
+                } else
+                {
+                    Console.WriteLine("nextNode = {0}", nextNode.position);
                 }
 
                 Vector2 posToNode = nextNode.position - owner.getPosNode().position;

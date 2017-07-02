@@ -1,22 +1,19 @@
-﻿using System;
+﻿using FarseerPhysics.Collision.Shapes;
+using FarseerPhysics.Common;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bloodbender.PathFinding
 {
     public class PathProcessor
     {
-        List<PathFinderNode> nodes;
-
         List<PathFinderNode> openList;
         List<PathFinderNode> closedList;
         List<PathFinderNode> resultPath;
 
         public PathProcessor()
         {
-            nodes = new List<PathFinderNode>();
             openList = new List<PathFinderNode>();
             closedList = new List<PathFinderNode>();
             resultPath = new List<PathFinderNode>();
@@ -28,7 +25,6 @@ namespace Bloodbender.PathFinding
             closedList.Clear();
             resultPath.Clear();
         }
-
 
         public List<PathFinderNode> runDjikstra(PathFinderNode startNode, PathFinderNode endNode)
         {
@@ -47,9 +43,9 @@ namespace Bloodbender.PathFinding
                     {
                         uint linkWeight;
 
-                        if (currentNode.Equals(startNode))
-                            linkWeight = uint.MaxValue;
-                        else
+                        //if (currentNode.Equals(startNode))
+                          //  linkWeight = uint.MaxValue;
+                        //else
                             linkWeight = getDjikstraWeight(currentNode, neighbour);
 
                         if (currentNode.weight + linkWeight < neighbour.weight)
@@ -61,6 +57,7 @@ namespace Bloodbender.PathFinding
                         if (bestNeighbour == null || neighbour.weight < bestNeighbour.weight)
                             bestNeighbour = neighbour;
                     }
+                    
                 }
                 currentNode = bestNeighbour;
             }
@@ -90,12 +87,41 @@ namespace Bloodbender.PathFinding
                 resultPath.Add(backPathNode);
                 backPathNode = backPathNode.parent;
                 if (backPathNode == null)
-                    return null;
+                    break;
             }
 
             resultPath.Add(startNode);
             resultPath.Reverse();
             return resultPath;
+        }
+
+        public static bool isWayClearToNode(PhysicObj startObj, PathFinderNode node)
+        {
+            Vertices objVertices = ((PolygonShape)startObj.getBoundsFixture().Shape).Vertices;
+            bool isVisible = true;
+
+            foreach (Vector2 vertex in objVertices)
+            {
+                Bloodbender.ptr.world.RayCast((fixture, point, normal, fraction) =>
+                {
+                    if (fixture.UserData == null)
+                    {
+                        isVisible = false;
+                        return 0;
+                    }
+                    if (fixture.IsSensor || ((AdditionalFixtureData)fixture.UserData).physicParent.pathNodeType == PathFinderNodeType.CENTER)
+                        return -1;
+                    if (((AdditionalFixtureData)fixture.UserData).physicParent.Equals(startObj))
+                        return -1;
+                    isVisible = false;
+                    return 0;
+                }, vertex + startObj.body.Position, node.position);
+
+                if (isVisible == false)
+                    return false;
+            }
+
+            return true;
         }
     }
 }

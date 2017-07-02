@@ -100,7 +100,7 @@ namespace Bloodbender.PathFinding
             }
         }
 
-        private bool NodeToNodeRayCast(PathFinderNode node1, PathFinderNode node2)
+        public static bool NodeToNodeRayCast(PathFinderNode node1, PathFinderNode node2)
         {
             bool isVisible = true;
 
@@ -117,10 +117,7 @@ namespace Bloodbender.PathFinding
                 return 0;
             }, node2.position, node1.position);
 
-            if (isVisible == false)
-                return false;
-
-            return true;
+            return isVisible;
         }
 
         public PathFinderNode GetNodeFromPosition(Triangulator.Geometry.Point pos)
@@ -169,6 +166,20 @@ namespace Bloodbender.PathFinding
                     return triangle;
             }
             return new NodeTriangle();
+        }
+
+        public List<PathFinderNode> GetNodeOnNode(PathFinderNode node)
+        {
+            foreach (var n in Nodes)
+            {
+                var distance = Math.Sqrt(Math.Pow(node.position.X - n.position.X, 2) + Math.Pow(node.position.Y - n.position.Y, 2));
+                if (distance < 0.5)
+                {
+                    Console.WriteLine("distance");
+                    return n.neighbors;
+                }
+            }
+            return null;
         }
     }
 }
