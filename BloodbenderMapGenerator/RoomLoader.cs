@@ -39,7 +39,6 @@ namespace BloodbenderMapGenerator
             List<Wall> walls = new List<Wall>();
             foreach (TmxObject border_obj in tmxmap.ObjectGroups["wall"].Objects) {
                 Collection<TmxObjectPoint> bpoints = border_obj.Points;
-
                 Vector2 bvpoint1 = new Vector2();
                 Vector2 bvpoint2 = new Vector2();
                 int i = 0;
