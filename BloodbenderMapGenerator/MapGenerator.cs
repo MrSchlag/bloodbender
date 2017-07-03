@@ -12,7 +12,18 @@ namespace BloodbenderMapGenerator
 {
     public class MapGenerator
     {
-
+        string[] spawnRoomFiles = new string[]
+        {
+            "../../map/roomSpawn1.tmx",
+            "../../map/roomSpawn2.tmx",
+        };
+        string[] roomFiles = new string[]
+        {
+            "../../map/room1.tmx",
+            "../../map/room1.tmx",
+            "../../map/room1.tmx",
+            "../../map/room1.tmx",
+        };
         List<Room> rooms = new List<Room>();
         List<RoomLinker> roomLinkers = new List<RoomLinker>();
 

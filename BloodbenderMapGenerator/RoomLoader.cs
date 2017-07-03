@@ -16,22 +16,42 @@ namespace BloodbenderMapGenerator
         TmxMap tmxmap;
 
         public Room load(string path) {
-            this.tmxmap = new TmxMap(path);
 
+            loadFile(path);
             if (tmxmap != null)
             {
-                List<Wall> walls = this.loadWalls();
-                List<Entry> entries = this.loadEntries();
-                List<Entities> entities = this.loadEntities();
-                Vector2 spawnPoint = this.loadSpawnPoint();
+                List<Wall> walls = new List<Wall>();
+                List<Entry> entries = new List<Entry>();
+                List<Entities> entities = new List<Entities>();
+                Vector2 spawnPoint = new Vector2();
 
+                if (checkWallExist())
+                {
+                    walls = this.loadWalls();
+                }
+                if (checkEntryExist())
+                {
+                    entries = this.loadEntries();
+                }
+                if (checkEntityExist())
+                {
+                    entities = this.loadEntities();
+                }
+                if (checkSpawnExist())
+                {
+                    spawnPoint = this.loadSpawnPoint();
+                }
                 if (walls.Count > 3 && entries.Count >= 1)
                 {
-                    if (tmxmap.ObjectGroups["player"].Objects[0] != null)
+                    try
                     {
-                        Room room = new Room(tmxmap.TileWidth, tmxmap.Width, tmxmap.Height, walls, entries, entities, spawnPoint);
-                        return room;
-                    } else
+                        if (tmxmap.ObjectGroups["player"].Objects[0] != null)
+                        {
+                            Room room = new Room(tmxmap.TileWidth, tmxmap.Width, tmxmap.Height, walls, entries, entities, spawnPoint);
+                            return room;
+                        }
+                    }
+                    catch (Exception e)
                     {
                         Room room = new Room(tmxmap.TileWidth, tmxmap.Width, tmxmap.Height, walls, entries, entities);
                         return room;
@@ -51,6 +71,81 @@ namespace BloodbenderMapGenerator
             return null;
         }
 
+        public void loadFile(String path)
+        {
+            try
+            {
+                this.tmxmap = new TmxMap(path);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Invalid room file path");
+            }
+        }
+
+        public bool checkWallExist()
+        {
+            try
+            {
+                if (tmxmap.ObjectGroups["wall"].Objects != null)
+                {
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool checkEntryExist()
+        {
+            try
+            {
+                if (tmxmap.ObjectGroups["entry"].Objects != null)
+                {
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool checkEntityExist()
+        {
+            try
+            {
+                if (tmxmap.ObjectGroups["entity"].Objects != null)
+                {
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool checkSpawnExist()
+        {
+            try
+            {
+                if (tmxmap.ObjectGroups["player"].Objects != null)
+                {
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return true;
+        }
         public List<Wall> loadWalls()
         {
             List<Wall> walls = new List<Wall>();
@@ -112,16 +207,8 @@ namespace BloodbenderMapGenerator
         }
 
         public Vector2 loadSpawnPoint() {
-            if (tmxmap.ObjectGroups["player"].Objects[0] != null)
-            {
-                TmxObject spawnObj = tmxmap.ObjectGroups["player"].Objects[0];
-                return new Vector2((float)spawnObj.X, (float)spawnObj.Y);
-            } else
-            {
-                Debug.WriteLine("No Spawn point found");
-                return new Vector2();
-            }
-            
+            TmxObject spawnObj = tmxmap.ObjectGroups["player"].Objects[0];
+            return new Vector2((float)spawnObj.X, (float)spawnObj.Y);
         }
 
         public int findType(String type) {

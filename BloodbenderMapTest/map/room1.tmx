@@ -16,7 +16,7 @@
    <polyline points="0,0 96,0"/>
   </object>
  </objectgroup>
- <objectgroup color="#0055ff" name="player">
+ <objectgroup color="#aa0000" name="entities">
   <object id="87" x="160" y="96"/>
   <object id="88" x="160" y="96"/>
  </objectgroup>
