@@ -48,10 +48,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="MapGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Room.cs" />
+    <Compile Include="RoomLinker.cs" />
     <Compile Include="RoomLoader.cs" />
     <Compile Include="Visualizer.cs" />
     <Compile Include="Wall.cs" />

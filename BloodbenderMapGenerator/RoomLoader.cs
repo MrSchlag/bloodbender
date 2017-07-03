@@ -22,13 +22,30 @@ namespace BloodbenderMapGenerator
             {
                 List<Wall> walls = this.loadWalls();
                 List<Entry> entries = this.loadEntries();
+                List<Entities> entities = this.loadEntities();
                 Vector2 spawnPoint = this.loadSpawnPoint();
 
-
-                if (walls.Count > 2 && entries.Count > 1)
+                if (walls.Count > 3 && entries.Count >= 1)
                 {
-                    Room room = new Room(tmxmap.TileWidth, tmxmap.Width, tmxmap.Height, walls, entries, spawnPoint);
-                    return room;
+                    if (tmxmap.ObjectGroups["player"].Objects[0] != null)
+                    {
+                        Room room = new Room(tmxmap.TileWidth, tmxmap.Width, tmxmap.Height, walls, entries, entities, spawnPoint);
+                        return room;
+                    } else
+                    {
+                        Room room = new Room(tmxmap.TileWidth, tmxmap.Width, tmxmap.Height, walls, entries, entities);
+                        return room;
+                    }
+                    
+                } else
+                {
+                    if (walls.Count < 3)
+                    {
+                        Debug.WriteLine("Room doesn't have enough walls to make a polygon");
+                    } else if (entries.Count < 1)
+                    {
+                        Debug.WriteLine("Room doesn't have any entries");
+                    }
                 }
             }
             return null;
@@ -75,20 +92,36 @@ namespace BloodbenderMapGenerator
                     Vector2 evpoint1 = new Vector2((float)(entry_obj.X + entry_obj.Points[0].X), (float)(entry_obj.Y + entry_obj.Points[0].Y));
                     Vector2 evpoint2 = new Vector2((float)(entry_obj.X + entry_obj.Points[1].X), (float)(entry_obj.Y + entry_obj.Points[1].Y));
                     int itype = this.findType(entry_obj.Type);
-                    if (itype != -1)
+                    if (itype != 4)
                     {
                         entryType type = (entryType)itype;
                         Entry entry = new Entry(evpoint1, evpoint2, type);
                         entries.Add(entry);
+                    } else
+                    {
+                        Debug.WriteLine("Type of entry [" + evpoint1.X + "/" + evpoint1.Y + "-" + evpoint2.X + "/" + evpoint2.Y + "] is undefined] => Fix it on Tiled");
                     }
                 }
             }
             return entries;
         }
 
+        public List<Entities> loadEntities()
+        {
+            return new List<Entities>();
+        }
+
         public Vector2 loadSpawnPoint() {
-            TmxObject spawnObj = tmxmap.ObjectGroups["player"].Objects[0];
-            return new Vector2((float)spawnObj.X, (float)spawnObj.Y);
+            if (tmxmap.ObjectGroups["player"].Objects[0] != null)
+            {
+                TmxObject spawnObj = tmxmap.ObjectGroups["player"].Objects[0];
+                return new Vector2((float)spawnObj.X, (float)spawnObj.Y);
+            } else
+            {
+                Debug.WriteLine("No Spawn point found");
+                return new Vector2();
+            }
+            
         }
 
         public int findType(String type) {
@@ -100,7 +133,7 @@ namespace BloodbenderMapGenerator
                 return 2;
             else if (type == "right")
                 return 3;
-            return -1;
+            return 4;
         }
     }
 }

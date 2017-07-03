@@ -12,6 +12,10 @@ namespace BloodbenderMapGenerator
 {
     public class MapGenerator
     {
+
+        List<Room> rooms;
+        List<RoomLinker> roomLinkers;
+
         public void newMap()
         {
             RoomLoader rloader = new RoomLoader();

@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Farseer Physics MonoGame", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugView MonoGame", "Farseer Physics DebugView 3.5\DebugView MonoGame.csproj", "{566F1803-90B5-4947-8730-57F092FBB002}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodbenderMapTest", "BloodbenderMapTest\BloodbenderMapTest.csproj", "{B2D4CC62-8C0F-43F9-9B77-00637D370ABF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodbenderMapGeneratorTest", "BloodbenderMapTest\BloodbenderMapGeneratorTest.csproj", "{B2D4CC62-8C0F-43F9-9B77-00637D370ABF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodbenderMapGenerator", "BloodbenderMapGenerator\BloodbenderMapGenerator.csproj", "{A8019E1A-B79A-489F-8415-45D170252258}"
 EndProject

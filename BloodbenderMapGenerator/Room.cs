@@ -15,16 +15,29 @@ namespace BloodbenderMapGenerator
 
         public int tileSize { get; set; }
         public List<Wall> wallList { get; set; }
-        public List<Entry> entryList { get;  set; }
+        public List<Entry> entryList { get; set; }
+        public List<Entities> entityList { get; set; }
         public Vector2 spawnPoint { get; set; }
 
-        public Room(int tileSize, int X, int Y, List<Wall> wallList, List<Entry> entryList, Vector2 spawnPoint)
+        public Room(int tileSize, int X, int Y, List<Wall> wallList, List<Entry> entryList, List<Entities> entityList, Vector2 spawnPoint)
         {
             this.tileSize = tileSize;
             this.X = X;
             this.Y = Y;
             this.wallList = wallList;
             this.entryList = entryList;
+            this.entityList = entityList;
+            this.spawnPoint = spawnPoint;
+        }
+
+        public Room(int tileSize, int X, int Y, List<Wall> wallList, List<Entry> entryList, List<Entities> entityList)
+        {
+            this.tileSize = tileSize;
+            this.X = X;
+            this.Y = Y;
+            this.wallList = wallList;
+            this.entryList = entryList;
+            this.entityList = entityList;
             this.spawnPoint = spawnPoint;
         }
     }
