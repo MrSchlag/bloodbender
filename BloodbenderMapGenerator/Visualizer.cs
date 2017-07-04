@@ -15,7 +15,6 @@ namespace BloodbenderMapGenerator
             List<StringBuilder> lines = init(wallList);
             foreach(Wall wall in wallList)
             {
-                Debug.WriteLine(wall.ptA.X / 32 + "/" + wall.ptA.Y / 32 + " " + wall.ptB.X / 32 + "/" + wall.ptB.Y / 32);
                 if (wall.ptA.X == wall.ptB.X)
                 {
                     int i = (int)wall.ptA.Y / 32;
@@ -43,7 +42,6 @@ namespace BloodbenderMapGenerator
                 {
                     int i = (int)wall.ptA.X / 32;
                     int j = (int)wall.ptB.X / 32;
-                    Debug.WriteLine("choosed " + i + " " + j);
                     if (i <= j) {
                         while (i <= j)
                         {
@@ -104,7 +102,6 @@ namespace BloodbenderMapGenerator
             {
                 maxY = (maxY / 32) + 3;
             }
-            Debug.WriteLine(maxX + " " + maxY); 
             for (int x = 0; x <= maxX; x++)
             {
                 line += "X";

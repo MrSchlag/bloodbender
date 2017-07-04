@@ -38,7 +38,6 @@ namespace BloodbenderMapGenerator
             this.wallList = wallList;
             this.entryList = entryList;
             this.entityList = entityList;
-            this.spawnPoint = spawnPoint;
         }
     }
 }

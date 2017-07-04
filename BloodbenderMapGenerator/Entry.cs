@@ -13,7 +13,8 @@ namespace BloodbenderMapGenerator
         top,
         bot,
         left,
-        right
+        right,
+        undefined
     }
     public class Entry
     {
@@ -25,6 +26,20 @@ namespace BloodbenderMapGenerator
             this.ptA = ptA;
             this.ptB = ptB;
             this.type = type;
+        }
+
+        public int findOppositeEntryType()
+        {
+            if (type == entryType.top)
+                return (int)entryType.bot;
+            else if (type == entryType.bot)
+                return (int)entryType.top;
+            if (type == entryType.left)
+                return (int)entryType.right;
+            else if (type == entryType.right)
+                return (int)entryType.left;
+            else
+                return (int)entryType.undefined;
         }
     }
 }

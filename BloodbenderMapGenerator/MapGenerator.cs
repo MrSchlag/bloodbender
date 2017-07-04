@@ -12,42 +12,58 @@ namespace BloodbenderMapGenerator
 {
     public class MapGenerator
     {
-        string[] spawnRoomFiles = new string[]
+        List<String> spawnRoomFiles;
+        List<String> roomFiles;
+        RoomLoader rloader;
+
+        public Random rand { get; set; }
+        public int numberOfRooms { get; set; }
+        public List<Room> rooms { get; set; }
+        public List<RoomLinker> roomLinkers { get; set; }
+
+        public MapGenerator()
         {
-            "../../map/roomSpawn1.tmx",
-            "../../map/roomSpawn2.tmx",
-        };
-        string[] roomFiles = new string[]
-        {
-            "../../map/room1.tmx",
-            "../../map/room1.tmx",
-            "../../map/room1.tmx",
-            "../../map/room1.tmx",
-        };
-        List<Room> rooms = new List<Room>();
-        List<RoomLinker> roomLinkers = new List<RoomLinker>();
+            spawnRoomFiles = new List<String>(new string[]
+            {
+                "../../map/roomSpawn1.tmx",
+            });
+            roomFiles = new List<String>(new string[]
+            {
+                "../../map/room1.tmx",
+            });
+            rand = new Random();
+            rloader = new RoomLoader();
+            numberOfRooms = rand.Next(4, 10);
+            rooms = new List<Room>();
+            roomLinkers = new List<RoomLinker>();
+        }
 
         public void newMap()
         {
-            RoomLoader rloader = new RoomLoader();
-            Room room1 = rloader.load("../../map/room1.tmx");
-            Room room2 = rloader.load("../../map/room1.tmx");
-            Room room3 = rloader.load("../../map/room1.tmx");
-            Room room4 = rloader.load("../../map/room1.tmx");
-            addRoom(room1, 0, 0);
-            addRoom(room2, 0, (room2.Y + 3) * room2.tileSize);
-            addRoom(room3, (room3.X + 3) * room3.tileSize, 0);
-            addRoom(room4, (room4.X + 3) * room4.tileSize, (room4.Y + 3) * room4.tileSize);
-            List<Wall> wallList = new List<Wall>();
-
-            foreach(Room room in rooms)
+            rooms.Add(selectRandomSpawn());
+            for (int i = 2; i <= 3/*numberOfRooms*/; i++)
             {
-                foreach (var wall in room.wallList)
-                {
-                    wallList.Add(wall);
-                }
+                selectRandomRoom();
             }
-            visualizeMap(wallList);
+            //addRoom(room1, 0, 0);
+            //addRoom(room2, 0, (room2.Y + 3) * room2.tileSize);
+            visualizeMap();
+        }
+
+        public Room selectRandomSpawn()
+        {
+            int spawnIndex = rand.Next(0, spawnRoomFiles.Count);
+            Debug.WriteLine("SPAWN INDEX" + spawnIndex + " " + spawnRoomFiles.Count);
+            Room spawn = rloader.load(spawnRoomFiles[spawnIndex]);
+            return spawn;
+        }
+
+        public void selectRandomRoom()
+        {
+            Room lastRoom = rooms[rooms.Count - 1];
+            int entryIndex = rand.Next(0, lastRoom.entryList.Count);
+            Debug.WriteLine("ROOM INDEX " + entryIndex + " " + lastRoom.entryList.Count);
+            int oppositEntryIndex = lastRoom.entryList[entryIndex].findOppositeEntryType();
         }
 
         public void addRoom(Room room, int xTrans, int yTrans)
@@ -65,8 +81,17 @@ namespace BloodbenderMapGenerator
                 rooms.Add(room);
             }
         }
-        public void visualizeMap(List<Wall> wallList)
+
+        public void visualizeMap()
         {
+            List<Wall> wallList = new List<Wall>();
+            foreach (Room room in rooms)
+            {
+                foreach (var wall in room.wallList)
+                {
+                    wallList.Add(wall);
+                }
+            }
             Visualizer visualizer = new Visualizer();
             visualizer.visualizeMap(wallList);
         }

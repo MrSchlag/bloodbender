@@ -186,7 +186,7 @@ namespace BloodbenderMapGenerator
                 {
                     Vector2 evpoint1 = new Vector2((float)(entry_obj.X + entry_obj.Points[0].X), (float)(entry_obj.Y + entry_obj.Points[0].Y));
                     Vector2 evpoint2 = new Vector2((float)(entry_obj.X + entry_obj.Points[1].X), (float)(entry_obj.Y + entry_obj.Points[1].Y));
-                    int itype = this.findType(entry_obj.Type);
+                    int itype = this.findEntryType(entry_obj.Type);
                     if (itype != 4)
                     {
                         entryType type = (entryType)itype;
@@ -211,7 +211,7 @@ namespace BloodbenderMapGenerator
             return new Vector2((float)spawnObj.X, (float)spawnObj.Y);
         }
 
-        public int findType(String type) {
+        public int findEntryType(String type) {
             if (type == "top")
                 return 0;
             else if (type == "bot")
