@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TiledSharp;
 
-namespace BloodbenderMapGenerator
+namespace MapGenerator
 {
     public class RoomLoader
     {
@@ -26,46 +26,31 @@ namespace BloodbenderMapGenerator
                 Vector2 spawnPoint = new Vector2();
 
                 if (checkWallExist())
-                {
                     walls = this.loadWalls();
-                }
                 if (checkEntryExist())
-                {
                     entries = this.loadEntries();
-                }
                 if (checkEntityExist())
-                {
                     entities = this.loadEntities();
-                }
                 if (checkSpawnExist())
-                {
                     spawnPoint = this.loadSpawnPoint();
-                }
                 if (walls.Count > 3 && entries.Count >= 1)
                 {
                     try
                     {
                         if (tmxmap.ObjectGroups["player"].Objects[0] != null)
-                        {
-                            Room room = new Room(tmxmap.TileWidth, tmxmap.Width, tmxmap.Height, walls, entries, entities, spawnPoint);
-                            return room;
-                        }
+                            return new Room(tmxmap.TileWidth, tmxmap.Width, tmxmap.Height, walls, entries, entities, spawnPoint);
                     }
                     catch (Exception e)
                     {
-                        Room room = new Room(tmxmap.TileWidth, tmxmap.Width, tmxmap.Height, walls, entries, entities);
-                        return room;
+                        return new Room(tmxmap.TileWidth, tmxmap.Width, tmxmap.Height, walls, entries, entities);
                     }
                     
                 } else
                 {
                     if (walls.Count < 3)
-                    {
                         Debug.WriteLine("Room doesn't have enough walls to make a polygon");
-                    } else if (entries.Count < 1)
-                    {
+                    else if (entries.Count < 1)
                         Debug.WriteLine("Room doesn't have any entries");
-                    }
                 }
             }
             return null;
@@ -136,9 +121,7 @@ namespace BloodbenderMapGenerator
             try
             {
                 if (tmxmap.ObjectGroups["player"].Objects != null)
-                {
                     return true;
-                }
             }
             catch (Exception e)
             {
@@ -213,14 +196,14 @@ namespace BloodbenderMapGenerator
 
         public int findEntryType(String type) {
             if (type == "top")
-                return 0;
+                return (int)entryType.top;
             else if (type == "bot")
-                return 1;
+                return (int)entryType.bot;
             else if (type == "left")
-                return 2;
+                return (int)entryType.left;
             else if (type == "right")
-                return 3;
-            return 4;
+                return (int)entryType.right;
+            return (int)entryType.undefined;
         }
     }
 }

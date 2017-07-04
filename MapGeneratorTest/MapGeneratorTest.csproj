@@ -7,8 +7,8 @@
     <ProjectGuid>{B2D4CC62-8C0F-43F9-9B77-00637D370ABF}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BloodbenderMapTest</RootNamespace>
-    <AssemblyName>BloodbenderMapTest</AssemblyName>
+    <RootNamespace>MapGeneratorTest</RootNamespace>
+    <AssemblyName>MapGeneratorTest</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -51,9 +51,9 @@
     <None Include="map\sans-titre.tmx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BloodbenderMapGenerator\BloodbenderMapGenerator.csproj">
+    <ProjectReference Include="..\MapGenerator\MapGenerator.csproj">
       <Project>{a8019e1a-b79a-489f-8415-45d170252258}</Project>
-      <Name>BloodbenderMapGenerator</Name>
+      <Name>MapGenerator</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

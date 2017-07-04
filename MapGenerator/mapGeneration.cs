@@ -8,9 +8,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BloodbenderMapGenerator
+namespace MapGenerator
 {
-    public class MapGenerator
+    public class MapGeneration
     {
         List<String> spawnRoomFiles;
         List<String> roomFiles;
@@ -21,7 +21,7 @@ namespace BloodbenderMapGenerator
         public List<Room> rooms { get; set; }
         public List<RoomLinker> roomLinkers { get; set; }
 
-        public MapGenerator()
+        public MapGeneration()
         {
             spawnRoomFiles = new List<String>(new string[]
             {
@@ -63,7 +63,8 @@ namespace BloodbenderMapGenerator
             Room lastRoom = rooms[rooms.Count - 1];
             int entryIndex = rand.Next(0, lastRoom.entryList.Count);
             Debug.WriteLine("ROOM INDEX " + entryIndex + " " + lastRoom.entryList.Count);
-            int oppositEntryIndex = lastRoom.entryList[entryIndex].findOppositeEntryType();
+            entryType opEntryType = lastRoom.entryList[entryIndex].findOppositeEntryType();
+            Debug.WriteLine(lastRoom.entryList[entryIndex].type + " " + opEntryType);
         }
 
         public void addRoom(Room room, int xTrans, int yTrans)

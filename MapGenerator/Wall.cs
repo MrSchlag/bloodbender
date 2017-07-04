@@ -5,17 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BloodbenderMapGenerator
+namespace MapGenerator
 {
-    public class Entities
+    public class Wall
     {
         public Vector2 ptA { get; set; }
         public Vector2 ptB { get; set; }
 
-        public Entities(Vector2 ptA, Vector2 ptB)
+        public Wall(Vector2 ptA, Vector2 ptB)
         {
             this.ptA = ptA;
             this.ptB = ptB;
         }
+        
     }
 }

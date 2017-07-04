@@ -7,8 +7,8 @@
     <ProjectGuid>{A8019E1A-B79A-489F-8415-45D170252258}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BloodbenderMapGenerator</RootNamespace>
-    <AssemblyName>BloodbenderMapGenerator</AssemblyName>
+    <RootNamespace>MapGenerator</RootNamespace>
+    <AssemblyName>MapGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -50,7 +50,7 @@
   <ItemGroup>
     <Compile Include="Entities.cs" />
     <Compile Include="Entry.cs" />
-    <Compile Include="MapGenerator.cs" />
+    <Compile Include="MapGeneration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Room.cs" />
     <Compile Include="RoomLinker.cs" />

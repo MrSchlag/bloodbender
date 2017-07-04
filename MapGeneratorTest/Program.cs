@@ -6,17 +6,16 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using BloodbenderMapGenerator;
+using MapGenerator;
 
-namespace BloodbenderMapTest
+namespace MapGeneratorTest
 {
     class Program
     {
         static void Main(string[] args)
         {
             Debug.WriteLine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-            MapGenerator mGen = new MapGenerator();
-
+            MapGeneration mGen = new MapGeneration();
             mGen.newMap();
         }
     }

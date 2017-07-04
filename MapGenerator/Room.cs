@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BloodbenderMapGenerator
+namespace MapGenerator
 {
     public class Room
     {

@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace BloodbenderMapGenerator
+namespace MapGenerator
 {
     class Visualizer
     {

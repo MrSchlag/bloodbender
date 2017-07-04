@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BloodbenderMapGenerator
+namespace MapGenerator
 {
     public enum entryType
     {
@@ -28,18 +28,18 @@ namespace BloodbenderMapGenerator
             this.type = type;
         }
 
-        public int findOppositeEntryType()
+        public entryType findOppositeEntryType()
         {
             if (type == entryType.top)
-                return (int)entryType.bot;
+                return entryType.bot;
             else if (type == entryType.bot)
-                return (int)entryType.top;
+                return entryType.top;
             if (type == entryType.left)
-                return (int)entryType.right;
+                return entryType.right;
             else if (type == entryType.right)
-                return (int)entryType.left;
+                return entryType.left;
             else
-                return (int)entryType.undefined;
+                return entryType.undefined;
         }
     }
 }

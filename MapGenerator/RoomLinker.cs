@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BloodbenderMapGenerator
+namespace MapGenerator
 {
     public class RoomLinker
     {
