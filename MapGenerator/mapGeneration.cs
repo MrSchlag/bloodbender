@@ -12,8 +12,12 @@ namespace MapGenerator
 {
     public class MapGeneration
     {
-        List<String> spawnRoomFiles;
-        List<String> roomFiles;
+        List<String> spawnRoomFilesWithTopBotEntries;
+        List<String> spawnRoomFilesWithLeftRightEntries;
+        List<String> roomFilesWithTopBotEntries;
+        List<String> roomFilesWithLeftRightEntries;
+        List<String> endRoomFilesWithTopBotEntries;
+        List<String> endRoomFilesWithLeftRightEntries;
         RoomLoader rloader;
 
         public Random rand { get; set; }
@@ -23,13 +27,31 @@ namespace MapGenerator
 
         public MapGeneration()
         {
-            spawnRoomFiles = new List<String>(new string[]
+            // spawn rooms with entry top or bot
+            spawnRoomFilesWithTopBotEntries = new List<String>(new string[]
             {
                 "../../map/roomSpawn1.tmx",
             });
-            roomFiles = new List<String>(new string[]
+            // spawn rooms with entry left or right
+            spawnRoomFilesWithLeftRightEntries = new List<String>(new string[]
+            {
+            });
+            // rooms that goes from bot to top (or opposite)
+            roomFilesWithTopBotEntries = new List<String>(new string[]
             {
                 "../../map/room1.tmx",
+            });
+            // rooms that goes from top to bot (or opposite)
+            roomFilesWithLeftRightEntries = new List<String>(new string[]
+            {
+            });
+            // end rooms with entry top or bot
+            endRoomFilesWithTopBotEntries = new List<String>(new string[]
+            {
+            });
+            // end rooms with entry left or right
+            endRoomFilesWithLeftRightEntries = new List<String>(new string[]
+            {
             });
             rand = new Random();
             rloader = new RoomLoader();
@@ -40,34 +62,74 @@ namespace MapGenerator
 
         public void newMap()
         {
-            rooms.Add(selectRandomSpawn());
+            this.addRoomToList(selectRandomSpawn(), 0, 0);
             for (int i = 2; i <= 3/*numberOfRooms*/; i++)
             {
-                selectRandomRoom();
+                this.addRandomRoom();
             }
-            //addRoom(room1, 0, 0);
-            //addRoom(room2, 0, (room2.Y + 3) * room2.tileSize);
-            visualizeMap();
+            //this.addRoomToList(room1, 0, 0);
+            //this.addRoomToList(room2, 0, (room2.Y + 3) * room2.tileSize);
+            this.visualizeMap();
         }
 
         public Room selectRandomSpawn()
         {
-            int spawnIndex = rand.Next(0, spawnRoomFiles.Count);
-            Debug.WriteLine("SPAWN INDEX" + spawnIndex + " " + spawnRoomFiles.Count);
-            Room spawn = rloader.load(spawnRoomFiles[spawnIndex]);
+            int spawnIndex = rand.Next(0, spawnRoomFilesWithTopBotEntries.Count);
+            // Debug.WriteLine("SPAWN INDEX" + spawnIndex + " " + spawnRoomFilesWithTopBotEntries.Count);
+            Room spawn = rloader.load(spawnRoomFilesWithTopBotEntries[spawnIndex]);
             return spawn;
         }
 
-        public void selectRandomRoom()
+        public void addRandomRoom()
         {
             Room lastRoom = rooms[rooms.Count - 1];
             int entryIndex = rand.Next(0, lastRoom.entryList.Count);
-            Debug.WriteLine("ROOM INDEX " + entryIndex + " " + lastRoom.entryList.Count);
+            // Debug.WriteLine("ROOM INDEX " + entryIndex + " " + lastRoom.entryList.Count);
             entryType opEntryType = lastRoom.entryList[entryIndex].findOppositeEntryType();
-            Debug.WriteLine(lastRoom.entryList[entryIndex].type + " " + opEntryType);
+            if (opEntryType == entryType.undefined)
+                return;
+            // Debug.WriteLine(lastRoom.entryList[entryIndex].type + " " + opEntryType);
+            Room newRoom = this.findRandomRoomWithEntryType(opEntryType);
+            if (newRoom == null)
+                return;
+            this.positionNewRoom(lastRoom.entryList[entryIndex], newRoom);
         }
 
-        public void addRoom(Room room, int xTrans, int yTrans)
+        public Room findRandomRoomWithEntryType(entryType type)
+        {
+            List<String> roomsFilesSelected = null;
+            if (type == entryType.top || type == entryType.bot)
+                roomsFilesSelected = roomFilesWithTopBotEntries;
+            else if (type == entryType.left || type == entryType.right)
+                roomsFilesSelected = roomFilesWithLeftRightEntries;
+            if (roomsFilesSelected != null)
+            {
+                int roomIndex = rand.Next(0, roomsFilesSelected.Count);
+                // Debug.WriteLine(roomsFilesSelected[roomIndex]);
+                Room room = rloader.load(roomsFilesSelected[roomIndex]);
+                if (room == null)
+                    return null;
+                Entry entry = room.findRandomEntryByType(rand, type);
+                if (entry == null)
+                    return null;
+                room.entrySelected = entry;
+                return room;
+            }
+            return null;
+        }
+
+        public void positionNewRoom(Entry entry, Room newRoom)
+        {
+            Debug.WriteLine(entry.ptA.X + "/" + entry.ptA.Y + " - " + entry.ptB.X + "/" + entry.ptB.Y);
+            Debug.WriteLine(newRoom.entrySelected.ptA.X + " " + newRoom.entrySelected.ptA.Y);
+        }
+
+        public void findDifferenceInPositions(int a, int b)
+        {
+
+        }
+
+        public void addRoomToList(Room room, int xTrans, int yTrans)
         {
             if (room != null)
             {

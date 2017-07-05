@@ -25,13 +25,13 @@ namespace MapGenerator
                 List<Entities> entities = new List<Entities>();
                 Vector2 spawnPoint = new Vector2();
 
-                if (checkWallExist())
+                if (this.checkWallExist())
                     walls = this.loadWalls();
-                if (checkEntryExist())
+                if (this.checkEntryExist())
                     entries = this.loadEntries();
-                if (checkEntityExist())
+                if (this.checkEntityExist())
                     entities = this.loadEntities();
-                if (checkSpawnExist())
+                if (this.checkSpawnExist())
                     spawnPoint = this.loadSpawnPoint();
                 if (walls.Count > 3 && entries.Count >= 1)
                 {
@@ -129,6 +129,7 @@ namespace MapGenerator
             }
             return true;
         }
+
         public List<Wall> loadWalls()
         {
             List<Wall> walls = new List<Wall>();
