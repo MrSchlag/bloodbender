@@ -63,7 +63,7 @@ namespace MapGenerator
         public void newMap()
         {
             this.addRoomToList(selectRandomSpawn(), 0, 0);
-            for (int i = 2; i <= 3/*numberOfRooms*/; i++)
+            for (int i = 2; i <= 2 /*numberOfRooms*/; i++)
             {
                 this.addRandomRoom();
             }
@@ -82,6 +82,7 @@ namespace MapGenerator
 
         public void addRandomRoom()
         {
+            // Debug.WriteLine("ZOBI");
             Room lastRoom = rooms[rooms.Count - 1];
             int entryIndex = rand.Next(0, lastRoom.entryList.Count);
             // Debug.WriteLine("ROOM INDEX " + entryIndex + " " + lastRoom.entryList.Count);
@@ -92,7 +93,7 @@ namespace MapGenerator
             Room newRoom = this.findRandomRoomWithEntryType(opEntryType);
             if (newRoom == null)
                 return;
-            this.positionNewRoom(lastRoom.entryList[entryIndex], newRoom);
+            this.positionNewRoom(lastRoom.entryList[entryIndex], newRoom, lastRoom);
         }
 
         public Room findRandomRoomWithEntryType(entryType type)
@@ -105,7 +106,6 @@ namespace MapGenerator
             if (roomsFilesSelected != null)
             {
                 int roomIndex = rand.Next(0, roomsFilesSelected.Count);
-                // Debug.WriteLine(roomsFilesSelected[roomIndex]);
                 Room room = rloader.load(roomsFilesSelected[roomIndex]);
                 if (room == null)
                     return null;
@@ -118,28 +118,57 @@ namespace MapGenerator
             return null;
         }
 
-        public void positionNewRoom(Entry entry, Room newRoom)
+        public void positionNewRoom(Entry entry, Room newRoom, Room lastRoom)
         {
-            Debug.WriteLine(entry.ptA.X + "/" + entry.ptA.Y + " - " + entry.ptB.X + "/" + entry.ptB.Y);
-            Debug.WriteLine(newRoom.entrySelected.ptA.X + " " + newRoom.entrySelected.ptA.Y);
+            // Debug.WriteLine(entry.ptA.X + "/" + entry.ptA.Y + " - " + entry.ptB.X + "/" + entry.ptB.Y);
+            // Debug.WriteLine(newRoom.entrySelected.ptA.X + " " + newRoom.entrySelected.ptA.Y);
+
+            float randomTranslate = rand.Next(0, 4);
+            float translateValue = 0;
+            if (entry.type == entryType.top || entry.type == entryType.bot)
+            {
+                Debug.WriteLine("{0} - {1}", newRoom.entrySelected.ptA.X, entry.ptA.X);
+                translateValue = entry.ptA.X - newRoom.entrySelected.ptA.X;
+                this.addRoomToList(newRoom, 0, (lastRoom.Y + 3) * lastRoom.tileSize);
+
+                Debug.WriteLine("translateValue X " + translateValue);
+                this.addRoomToList(newRoom, translateValue, (lastRoom.Y + 3) * lastRoom.tileSize);
+            }
+            else if (entry.type == entryType.left || entry.type == entryType.right)
+            {
+                // Debug.WriteLine("yo");
+                translateValue = entry.ptA.Y - newRoom.entrySelected.ptA.Y;
+                // this.addRoomToList(newRoom, (lastRoom.X + 3) * lastRoom.tileSize, 0);
+                Debug.WriteLine("translateValue Y " + translateValue);
+                this.addRoomToList(newRoom, (lastRoom.X + 3) * lastRoom.tileSize, translateValue);
+            }
         }
 
-        public void findDifferenceInPositions(int a, int b)
+        public void addRoomToList(Room room, float xTrans, float yTrans)
         {
-
-        }
-
-        public void addRoomToList(Room room, int xTrans, int yTrans)
-        {
+            // Debug.WriteLine("madafuc");
             if (room != null)
             {
                 if (xTrans != 0  || yTrans != 0)
                 {
+                    Debug.WriteLine("{0}/{1}", xTrans, yTrans);
                     foreach(Wall wall in room.wallList)
                     {
                         wall.ptA = Vector2.Transform(wall.ptA, Matrix.CreateTranslation(xTrans, yTrans, 0));
                         wall.ptB = Vector2.Transform(wall.ptB, Matrix.CreateTranslation(xTrans, yTrans, 0));
                     }
+                    foreach (Entry entry in room.entryList)
+                    {
+                        entry.ptA = Vector2.Transform(entry.ptA, Matrix.CreateTranslation(xTrans, yTrans, 0));
+                        entry.ptB = Vector2.Transform(entry.ptB, Matrix.CreateTranslation(xTrans, yTrans, 0));
+                    }
+                    foreach (Entities entity in room.entityList)
+                    {
+                        entity.ptA = Vector2.Transform(entity.ptA, Matrix.CreateTranslation(xTrans, yTrans, 0));
+                        entity.ptB = Vector2.Transform(entity.ptB, Matrix.CreateTranslation(xTrans, yTrans, 0));
+                    }
+                    if (room.spawnPoint.X != 0 && room.spawnPoint.Y != 0)
+                        room.spawnPoint = Vector2.Transform(room.spawnPoint, Matrix.CreateTranslation(xTrans, yTrans, 0));
                 }
                 rooms.Add(room);
             }
