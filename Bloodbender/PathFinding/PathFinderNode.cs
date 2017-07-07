@@ -9,6 +9,8 @@ using FarseerPhysics.Dynamics;
 
 namespace Bloodbender.PathFinding
 {
+    public delegate void TargetChangeTriangle();
+
     public class PathFinderNode
     {
 
@@ -32,6 +34,19 @@ namespace Bloodbender.PathFinding
         /* Djikstra */
         public uint weight;
         public bool used;
+
+        private NodeTriangle _nodeTriangle;
+        public NodeTriangle NodeTriangle {
+            get { return _nodeTriangle; }
+            set
+            {
+                if (_nodeTriangle != value)
+                {
+                    _nodeTriangle = value;
+                    TriangleChangedEvent?.Invoke();
+                }
+            }
+        }
 
         public PathFinderNode(Vector2 position, PhysicObj owner = null, bool notConnected = false)
         {
@@ -257,8 +272,10 @@ namespace Bloodbender.PathFinding
 
             PathFinderNode correctedNode = new PathFinderNode((position + centerToVertexOffset) * Bloodbender.meterToPixel, null, true);
 
-
             return correctedNode;
         }
+
+        public event TargetChangeTriangle TriangleChangedEvent;
+
     }
 }

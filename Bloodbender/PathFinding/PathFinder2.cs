@@ -40,7 +40,12 @@ namespace Bloodbender.PathFinding
             }
         }
 
-        public PathFinderNode pathRequest(PhysicObj startObj, PhysicObj endObj)
+        public void UpdateTriangleForNode(PathFinderNode node)
+        {
+
+        }
+
+        public List<PathFinderNode> pathRequest(PhysicObj startObj, PhysicObj endObj)
         {
             startObj.getPosNode().neighbors.Remove(endObj.getPosNode());
             endObj.getPosNode().neighbors.Remove(startObj.getPosNode());
@@ -66,8 +71,13 @@ namespace Bloodbender.PathFinding
             //var resultPath = pathProc.RunAstar(startObj.getPosNode(), endObj.getPosNode());
 
             if (resultPath != null)
-                return resultPath[1];
+                return resultPath;
             return null;
+        }
+
+        public void UpdateTriangleForObj(PhysicObj obj)
+        {
+            AddNodeToNavMesh(GetNavMesh(obj), obj.getPosNode()); 
         }
 
         private void AddNodeToNavMesh(NavMesh nav, PathFinderNode node)
@@ -75,6 +85,7 @@ namespace Bloodbender.PathFinding
             NodeTriangle triangle;
 
             triangle = nav.GetNodeTriangle(node);
+            node.NodeTriangle = triangle;
 
             if (NavMesh.NodeToNodeRayCast(node, navMeshes[0].GetEquivalentNode(triangle.p1)))
             {

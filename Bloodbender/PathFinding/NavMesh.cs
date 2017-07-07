@@ -67,10 +67,22 @@ namespace Bloodbender.PathFinding
                 nodeTriangle.p2 = node2;
                 nodeTriangle.p3 = node3;
 
+                //if (CheckTriangleValidity(nodeTriangle))
                 allTriangle.Add(nodeTriangle);
             }
             DeleteInvalidLink();
             ThickenessCorrection();
+        }
+
+        private bool CheckTriangleValidity(NodeTriangle triangle)
+        {
+            if (!NodeToNodeRayCast(triangle.p1, triangle.p2))
+                return false;
+            if (!NodeToNodeRayCast(triangle.p1, triangle.p3))
+                return false;
+            if (!NodeToNodeRayCast(triangle.p2, triangle.p3))
+                return false;
+            return true;
         }
 
         private void ThickenessCorrection()
@@ -133,6 +145,8 @@ namespace Bloodbender.PathFinding
 
         public PathFinderNode GetEquivalentNode(PathFinderNode node)
         {
+            if (node == null)
+                return null;
             foreach (var n in Nodes)
             {
                 if (n.NavId == node.NavId)
@@ -142,7 +156,7 @@ namespace Bloodbender.PathFinding
         }
 
 
-        private float sign(Vector2 p1, Vector2 p2, Vector2 p3)
+        private float Sign(Vector2 p1, Vector2 p2, Vector2 p3)
         {
             return (p1.X - p3.X) * (p2.Y - p3.Y) - (p2.X - p3.X) * (p1.Y - p3.Y);
         }
@@ -151,9 +165,9 @@ namespace Bloodbender.PathFinding
         {
             bool b1, b2, b3;
 
-            b1 = sign(pt, v1, v2) < 0.0f;
-            b2 = sign(pt, v2, v3) < 0.0f;
-            b3 = sign(pt, v3, v1) < 0.0f;
+            b1 = Sign(pt, v1, v2) < 0.0f;
+            b2 = Sign(pt, v2, v3) < 0.0f;
+            b3 = Sign(pt, v3, v1) < 0.0f;
 
             return ((b1 == b2) && (b2 == b3));
         }

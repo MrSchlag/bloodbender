@@ -1,6 +1,6 @@
 ﻿namespace Bloodbender.PathFinding
 {
-    public struct NodeTriangle
+    public class NodeTriangle
     {
         public PathFinderNode p1;
         public PathFinderNode p2;
