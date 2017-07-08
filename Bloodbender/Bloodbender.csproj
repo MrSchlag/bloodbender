@@ -96,7 +96,6 @@
     <Compile Include="PathFinding\NavMesh.cs" />
     <Compile Include="PathFinding\NodeTriangle.cs" />
     <Compile Include="PathFinding\PathFinder.cs" />
-    <Compile Include="PathFinding\PathFinder2.cs" />
     <Compile Include="PathFinding\PathFinderNode.cs" />
     <Compile Include="PathFinding\PathProcessor.cs" />
     <Compile Include="PathFinding\Triangulation\Delauney.cs" />

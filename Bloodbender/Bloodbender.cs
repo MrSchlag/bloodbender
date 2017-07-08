@@ -33,8 +33,7 @@ namespace Bloodbender
         public ShadowsRenderer shadowsRendering;
         public List<GraphicObj> listGraphicObj;
 
-        public PathFinder pathFinder;
-        public PathFinder2 pFinder;
+        public PathFinder pFinder;
 
         public float elapsed = 0.0f;
 
@@ -136,8 +135,8 @@ namespace Bloodbender
             debugNodeBusy = Content.Load<Texture2D>("debugPathFinderNode");
             debugNodeFree = Content.Load<Texture2D>("debugPathFinderNode2");
 
-            pathFinder = new PathFinder(2);
-            pFinder = new PathFinder2();
+            //pathFinder = new PathFinder(2);
+            pFinder = new PathFinder();
             pFinder.BuildtNavMeshes(6, 10);
 
             MapBound mapBounds = new MapBound();

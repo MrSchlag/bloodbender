@@ -56,7 +56,7 @@ namespace Bloodbender
 
         public void createPathFinderNodes()
         {
-            float pathNodeOffset = Bloodbender.ptr.pathFinder.pathStep;
+            float pathNodeOffset = PathFinder.PathStep;
             int verticePos = 0;
 
             foreach (Vector2 vertex in mapVertices)

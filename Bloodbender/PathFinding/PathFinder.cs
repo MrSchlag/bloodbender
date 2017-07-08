@@ -1,369 +1,156 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using FarseerPhysics.Collision.Shapes;
-using FarseerPhysics.Common;
-using FarseerPhysics.Dynamics;
-using FarseerPhysics.Factories;
-using Microsoft.Xna.Framework;
-
 
 namespace Bloodbender.PathFinding
 {
-
     public class PathFinder
-    { 
-        List<PathFinderNode> nodes;
+    {
 
-        List<PathFinderNode> openList;
-        List<PathFinderNode> closedList;
-        List<PathFinderNode> resultPath;
+        public static float PathStep = 2f;
+        private List<NavMesh> navMeshes;
+        private PathProcessor pathProc;
+        private Dictionary<PhysicObj, NavMesh> objNavMeshMapping;
+        public Dictionary<GraphicObj, List<PathFinderNode>> PathDict { get; set; }
 
-        public int pathStep;
-        List<Fixture> mapShapeFixtures;
-        Body body;
-
-        Dictionary<GraphicObj, List<PathFinderNode>> pathDict = new Dictionary<GraphicObj, List<PathFinderNode>>();
-
-        public PathFinder(int pathStep)
+        public PathFinder()
         {
-            body = BodyFactory.CreateBody(Bloodbender.ptr.world);
-            body.BodyType = BodyType.Static;
-
-            openList = new List<PathFinderNode>();
-            closedList = new List<PathFinderNode>();
-            mapShapeFixtures = new List<Fixture>();
-            nodes = new List<PathFinderNode>();
-            resultPath = new List<PathFinderNode>();
-
-            this.pathStep = pathStep;
+            PathDict = new Dictionary<GraphicObj, List<PathFinderNode>>();
+            objNavMeshMapping = new Dictionary<PhysicObj, NavMesh>();
+            navMeshes = new List<NavMesh>();
+            pathProc = new PathProcessor();
         }
-
-        public void addNode(PathFinderNode node)
+        
+        public void BuildtNavMeshes(int navMeshNumber, int stepLenght)
         {
-            nodes.Add(node);
-        }
-
-        public PathFinderNode pathRequest(GraphicObj startObj, PathFinderNode startNode, PathFinderNode endNode, List<PathFinderNode> ignoredNodes = null)
-        {
-            resultPath.Clear();
-            openList.Clear();
-            closedList.Clear();
-            resetAllNodes();
-
-            //findNodeToIgnore();
-
-            setIgnoredNodes(findNodeToIgnore(startObj));//ignoredNodes);
-
-            //runAstar(startNode, endNode, (PhysicObj)startObj);
-            runDjikstra(startNode, endNode);
-
-            
-
-            if (pathDict.ContainsKey(startObj))
+            int initialRadiusOffset = 2;
+            for (int i = 0; i < navMeshNumber; i++)
             {
-                pathDict[startObj].Clear();
-                pathDict[startObj].AddRange(resultPath);
+                navMeshes.Add(new NavMesh(initialRadiusOffset + (stepLenght * i)));
             }
-            else
-            {
-                pathDict[startObj] = new List<PathFinderNode>(resultPath);
-            }
-
-            if (resultPath == null || resultPath.Count < 2)
-                return null;
-
-            if ((startObj is PhysicObj) == false)
-                return resultPath[1];
-            return resultPath[1].pathNodePositionCorrectedForWidth((PhysicObj)startObj);
         }
 
-        private List<PathFinderNode> findNodeToIgnore(GraphicObj obj)
+        public void RegisterObj(PhysicObj obj)
         {
-            if ((obj is PhysicObj) == false)
-                return null;
-            if (pathDict.ContainsKey(obj) == false || pathDict[obj].Count <= 1)
-                return null;
-            if (pathDict[obj][1].isReached((PhysicObj)obj))
+            objNavMeshMapping[obj] = navMeshes[0];
+
+            foreach (var navMesh in navMeshes)
             {
-                List<PathFinderNode> listIgnored = new List<PathFinderNode>();
-                listIgnored.Add(pathDict[obj][1]);
-                return listIgnored;
+                if (navMesh.RadiusOffset > obj.Radius)
+                {
+                    objNavMeshMapping[obj] = navMesh;
+                    break;
+                }
+            }
+        }
+
+        public void UpdateTriangleForNode(PathFinderNode node)
+        {
+
+        }
+
+        public List<PathFinderNode> pathRequest(PhysicObj startObj, PhysicObj endObj)
+        {
+            startObj.getPosNode().neighbors.Remove(endObj.getPosNode());
+            endObj.getPosNode().neighbors.Remove(startObj.getPosNode());
+
+            RemoveNodeFromNavMesh(GetNavMesh(startObj), startObj.getPosNode());
+            RemoveNodeFromNavMesh(GetNavMesh(startObj), endObj.getPosNode());
+
+            AddNodeToNavMesh(GetNavMesh(startObj), startObj.getPosNode());
+            AddNodeToNavMesh(GetNavMesh(startObj), endObj.getPosNode());
+
+            if (PathProcessor.isWayClearToNode(startObj, endObj.getPosNode()))
+            {
+                startObj.getPosNode().neighbors.Add(endObj.getPosNode());
+                endObj.getPosNode().neighbors.Add(startObj.getPosNode());
+            }
+
+            startObj.getPosNode().reset();
+            endObj.getPosNode().reset();
+            navMeshes.ForEach(nav => nav.Nodes.ForEach(node => node.reset()));
+
+            var resultPath = pathProc.runDjikstra(startObj.getPosNode(), endObj.getPosNode());
+
+            if (resultPath != null)
+            {
+                PathDict[startObj] = resultPath;
+                return resultPath;
             }
             return null;
         }
 
-        private void setIgnoredNodes(List<PathFinderNode> ignoredNodes)
+        public Dictionary<GraphicObj, List<PathFinderNode>> GetCurrentPaths()
         {
-            if (ignoredNodes == null)
-                return;
-            foreach (PathFinderNode node in ignoredNodes)
-            {
-                node.free = false;
-            }
+            return PathDict;
         }
 
-        private void mandatoryNodeControl(GraphicObj startObj)
+        public void UpdateTriangleForObj(PhysicObj obj)
         {
-            if (resultPath == null || resultPath.Count <= 1 || pathDict.ContainsKey(startObj) == false)
-            {
-                //Console.WriteLine("[mandatory waypoint] : null error");
-                return;
-            }  
-            if (resultPath[1].isMandatory() == false)
-            {
-                //Console.WriteLine("[mandatory waypoint] : mandatory false");
-                return;
-            }
-            if (resultPath[1].isReached((PhysicObj)startObj))
-            {
-                resultPath.RemoveAt(1);
-                //Console.WriteLine("[mandatory waypoint] : is reached");
-                return;
-            }
-            if (pathDict[startObj][1].isMandatory() == false)
-            {
-                return;
-            }
-            //Console.WriteLine("[mandatory waypoint] : replace old path");
-            resultPath.Clear();
-            resultPath.AddRange(pathDict[startObj]);
-            //Console.WriteLine("[mandatory waypoint] : count " + resultPath.Count);
+            AddNodeToNavMesh(GetNavMesh(obj), obj.getPosNode()); 
         }
 
-        private void runAstar(PathFinderNode startNode, PathFinderNode endNode, PhysicObj startObj)
+        private void AddNodeToNavMesh(NavMesh nav, PathFinderNode node)
         {
-            PathFinderNode currentNode = startNode;
+            NodeTriangle triangle;
 
-            openList.Add(startNode);
-            while (openList.Any())
+            triangle = nav.GetNodeTriangle(node);
+            node.NodeTriangle = triangle;
+
+            if (NavMesh.NodeToNodeRayCast(node, navMeshes[0].GetEquivalentNode(triangle.p1)))
             {
-                if (currentNode == endNode)
-                {
-                    createPath(currentNode, startNode);
-                    break;
-                }
-                neighborsProcessing(currentNode, endNode, startObj);
-                closedList.Add(currentNode);
-                openList.Remove(currentNode);
-                currentNode = findBestInOpenList();
-                if (currentNode == null)
-                {
-                    resultPath = null;
-                    break;
-                }
-            }
-        }
-
-        private void runDjikstra(PathFinderNode startNode, PathFinderNode endNode)
-        {
-            startNode.weight = 0;
-            PathFinderNode currentNode = startNode;
-            PathFinderNode bestNeighbour;
-
-            while (currentNode != null && currentNode != endNode)
-            {
-                currentNode.used = true;
-                bestNeighbour = null;
-                foreach (PathFinderNode neighbour in currentNode.neighbors)
-                {
-                    if (neighbour.used == false)
-                    {
-                        uint linkWeight;
-                        
-                        /*
-                        if (neighbour.Equals(endNode) && isWayClearToTarget(startNode.owner, endNode) == false)
-                            linkWeight = uint.MaxValue;*/
-                        
-                        if (currentNode.Equals(startNode) && isWayClearToNode(startNode.owner, neighbour) == false)
-                            linkWeight = uint.MaxValue;
-                        else
-                            linkWeight = getDjikstraWeight(currentNode, neighbour);
-
-                        if (currentNode.weight + linkWeight < neighbour.weight)
-                        {
-                            neighbour.weight = currentNode.weight + linkWeight;
-                            neighbour.parent = currentNode;
-                        }
-
-                        if (bestNeighbour == null || neighbour.weight < bestNeighbour.weight)
-                            bestNeighbour = neighbour;
-                    }
-                }
-                currentNode = bestNeighbour;
-            }
-            if (endNode != null)
-                createPath(endNode, startNode);
-        }
-
-        private uint getDjikstraWeight(PathFinderNode current, PathFinderNode neighbour)
-        {
-            int manathanDistX = ((int)current.position.X * 100) - ((int)neighbour.position.X * 100);
-            int manathanDistY = ((int)current.position.Y * 100) - ((int)neighbour.position.Y * 100);
-            if (manathanDistX < 0)
-                manathanDistX *= -1;
-            if (manathanDistY < 0)
-                manathanDistY *= -1;
-            uint manathanDist = (uint)(manathanDistY + manathanDistX);
-            return manathanDist;
-        }
-
-        private void resetAllNodes()
-        {
-            foreach (PathFinderNode node in nodes)
-            {
-                node.reset();
-            }
-        }
-
-        private void neighborsProcessing(PathFinderNode currentNode, PathFinderNode endNode, PhysicObj startObj)
-        {
-            float score = 0;
-
-            foreach (PathFinderNode neighbour in currentNode.neighbors)
-            {
-                //bool objOverlapNode = startObj.isPointInside(neighbour.pathNodePositionCorrectedForWidth(startObj).position);
-                //bool test = isNeighbourWayClear(neighbour, startObj, endNode);
-                //Console.WriteLine("[reached] overlap : " + objOverlapNode);
-
-
-               // bool objOverlapNodeZone = isInOverlapZone();
-                score = getNodeScore(currentNode, neighbour, endNode);
-
-                if (closedList.Contains(neighbour) == false && neighbour.free == true /*&& objOverlapNode == false /*&& test == true*/)
-                {
-                    if (openList.Contains(neighbour) == false)
-                    {
-                        neighbour.parent = currentNode;
-                        neighbour.score = score;
-                        openList.Add(neighbour);
-                    }
-                    else if (score < neighbour.score)
-                    {
-                         neighbour.score = score;
-                         neighbour.parent = currentNode;
-                    }
-                }
-            }
-        }
-
-        private bool isWayClearToTarget(PhysicObj startObj, PathFinderNode endNode)
-        {
-            Vertices objVertices = ((PolygonShape)startObj.getBoundsFixture().Shape).Vertices;
-            bool isVisible = true;
-            PhysicObj endObj = endNode.owner;
-
-            foreach (Vector2 vertex in objVertices)
-            {
-                Bloodbender.ptr.world.RayCast((fixture, point, normal, fraction) =>
-                {
-                    if (fixture.UserData == null)
-                    {
-                        isVisible = false;
-                        return 0;
-                    }
-                    if (fixture.IsSensor || ((AdditionalFixtureData)fixture.UserData).physicParent.pathNodeType == PathFinderNodeType.CENTER)
-                        return -1;
-                    if (((AdditionalFixtureData)fixture.UserData).physicParent.Equals(startObj))
-                        return -1;
-                    if (((AdditionalFixtureData)fixture.UserData).physicParent.Equals(endObj))
-                    {
-                        //Console.WriteLine("oscarzzaijdizjdizajdiazjdiazj");
-                        return 0;
-                    }
-                    isVisible = false;
-                    return 0;
-                }, vertex + startObj.body.Position, endNode.position);
-
-                if (isVisible == false)
-                    return false;
+                triangle.p1.neighbors.Add(node);
+                node.neighbors.Add(triangle.p1);
             }
 
-            return true;
-        }
-
-        private bool isWayClearToNode(PhysicObj startObj, PathFinderNode node)
-        {
-            Vertices objVertices = ((PolygonShape)startObj.getBoundsFixture().Shape).Vertices;
-            bool isVisible = true;
-
-            foreach (Vector2 vertex in objVertices)
+            if (NavMesh.NodeToNodeRayCast(node, navMeshes[0].GetEquivalentNode(triangle.p2)))
             {
-                Bloodbender.ptr.world.RayCast((fixture, point, normal, fraction) =>
-                {
-                    if (fixture.UserData == null)
-                    {
-                        isVisible = false;
-                        return 0;
-                    }
-                    if (fixture.IsSensor || ((AdditionalFixtureData)fixture.UserData).physicParent.pathNodeType == PathFinderNodeType.CENTER)
-                        return -1;
-                    if (((AdditionalFixtureData)fixture.UserData).physicParent.Equals(startObj))
-                        return -1;
-                    isVisible = false;
-                    return 0;
-                }, vertex + startObj.body.Position, node.position);
-
-                if (isVisible == false)
-                    return false;
+                triangle.p2.neighbors.Add(node);
+                node.neighbors.Add(triangle.p2);
             }
 
-            return true;
-        }
-
-        private float getNodeScore(PathFinderNode currentNode, PathFinderNode neighbour, PathFinderNode endNode)
-        {
-            Vector2 curToNeigh = new Vector2(neighbour.position.X - currentNode.position.X, neighbour.position.Y - currentNode.position.Y);
-            Vector2 neighToEnd = new Vector2(endNode.position.X - neighbour.position.X, endNode.position.Y - neighbour.position.Y);
-
-            return curToNeigh.Length() + neighToEnd.Length();
-        }
-
-        private PathFinderNode findBestInOpenList()
-        {
-            PathFinderNode bestNode = null;
-
-            foreach (PathFinderNode node in openList)
+            if (NavMesh.NodeToNodeRayCast(node, navMeshes[0].GetEquivalentNode(triangle.p3)))
             {
-                if (node.free == true)
-                {
-                    if (bestNode == null)
-                        bestNode = node;
-                    else if (node.score < bestNode.score)
-                        bestNode = node;
-                }
-            }
-            return bestNode;
-        }
-
-        private void createPath(PathFinderNode currentNode, PathFinderNode startNode)
-        {
-            PathFinderNode backPathNode = currentNode;
-
-            while (backPathNode.Equals(startNode) == false)
-            {
-                resultPath.Add(backPathNode);
-                backPathNode = backPathNode.parent;
-                if (backPathNode == null)
-                    return;
+                triangle.p3.neighbors.Add(node);
+                node.neighbors.Add(triangle.p3);
             }
 
-            resultPath.Add(startNode);
-            resultPath.Reverse();
+            /*
+            triangle.p2.neighbors.Add(node);
+            triangle.p3.neighbors.Add(node);
+
+            node.neighbors.Add(triangle.p2);
+            node.neighbors.Add(triangle.p3);*/
         }
 
-        public List<PathFinderNode> getPathFinderNodes()
+        private void RemoveNodeFromNavMesh(NavMesh nav, PathFinderNode node)
         {
-            return nodes;
+            foreach (var neighbors in node.neighbors)
+            {
+                neighbors.neighbors.Remove(node);
+            }
+            node.neighbors.Clear();
         }
 
-        public Dictionary<GraphicObj, List<PathFinderNode>> getCurrentPaths()
+        public void AddNode(PathFinderNode node)
         {
-            return pathDict;
+            navMeshes.ForEach(item => item.AddNode(node.Copy()));
         }
 
-        public void removeNode(PathFinderNode nodeToRemove)
+        public void GeneratesMeshes() 
         {
-            nodes.Remove(nodeToRemove);
+            navMeshes.ForEach(i => i.GenerateNavMesh());
+        }
+
+        public NavMesh GetNavMesh(PhysicObj obj)
+        {
+            return objNavMeshMapping[obj];
+        }
+
+        public List<PathFinderNode> GetFirstMesh()
+        {
+            if (!navMeshes.Any())
+                return new List<PathFinderNode>();
+            return navMeshes[4].Nodes;
         }
 
     }
