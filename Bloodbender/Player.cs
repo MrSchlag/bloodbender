@@ -28,6 +28,8 @@ namespace Bloodbender
         private float dashRestDuration = 1f;
         private float dashRestTime = 0f;
         private bool isInDashRest;
+        private bool isBlocked;
+        private float timerBlocked = 0f;
 
         private static float normalDashSpeed = 450f;
         private static float normalDashDuration = 0.25f;
@@ -67,7 +69,7 @@ namespace Bloodbender
             addAnimation(new Animation(texture1));
             addAnimation(new Animation(texture2, 8, 0.06f, 64, 0, 0, 0));
 
-            Animation attack1 = new Animation(textureAttack1, 9, 0.04f, 128, 0, 0, 0);
+            Animation attack1 = new Animation(textureAttack1, 9, 0.04f, 128, 0, 0, 0); //change animation speed? change blocking speed
             attack1.isLooping = false;
             attack1.offSet = new Vector2(0,32);
             addAnimation(attack1);
@@ -75,14 +77,30 @@ namespace Bloodbender
 
         public override bool Update(float elapsed)
         {
+            
             ContinueDash(elapsed);
-            InputSwitch(elapsed);
 
-            height = MathHelper.Clamp(height, 0.0f, 10000.0f);
+            if (isBlocked)
+            {
+                if (timerBlocked != 0f)
+                {
+                    if (timerBlocked < 0f)
+                        isBlocked = false;
+
+                    timerBlocked -= elapsed;
+                    return base.Update(elapsed);
+                }
+            }
 
             isSensorColliding();
             playerHitSensorFixMousePosRotation();
             checkSensorInteractions();
+
+            InputSwitch(elapsed);
+
+
+
+            height = MathHelper.Clamp(height, 0.0f, 10000.0f);
 
             return base.Update(elapsed);
         }
@@ -102,9 +120,10 @@ namespace Bloodbender
             if (getAnimation(2).isRunning)
                 return;
 
+            spriteEffect = SpriteEffects.None;
+
             if (gamePadState.IsConnected)
             {
-
                 body.LinearVelocity = new Vector2(gamePadState.ThumbSticks.Left.X * velocity * Bloodbender.pixelToMeter, -gamePadState.ThumbSticks.Left.Y * velocity * Bloodbender.pixelToMeter);
 
                 if (gamePadState.ThumbSticks.Left.X > 0)
@@ -121,16 +140,19 @@ namespace Bloodbender
                     dashSpeed = normalDashSpeed;
                     dashDuration = normalDashDuration;
                     dashRestDuration = normalDashRestDuration;
-                    StartDash();
+                    StartDash(body.LinearVelocity);
                 }
 
                 if (gamePadState.Triggers.Right == 1)
                 {
+                    playerHitSensorFixMousePosRotation();
+
                     dashSpeed = attackDashSpeed;
                     dashDuration = attackDashDuration;
                     dashRestDuration = attackDashRestDuration;
                     runAnimation(2);
-                    StartDash(false);
+                    StartDash(new Vector2((float)Math.Cos(angleWithMouse()), (float)Math.Sin(angleWithMouse())), false);
+                    block(0.04f * 9);
                     return;
                 }
                    
@@ -183,7 +205,6 @@ namespace Bloodbender
             {
                 spriteEffect = SpriteEffects.FlipHorizontally;
 
-
                 nbrArrowPressed += 1;
                 body.LinearVelocity += new Vector2(-velocity * Bloodbender.pixelToMeter, 0);
             }
@@ -195,16 +216,19 @@ namespace Bloodbender
                 dashSpeed = normalDashSpeed;
                 dashDuration = normalDashDuration;
                 dashRestDuration = normalDashRestDuration;
-                StartDash();
+                StartDash(body.LinearVelocity);
             }
 
             if (Bloodbender.ptr.inputHelper.IsNewMouseButtonPress(MouseButtons.LeftButton))
             {
+                playerHitSensorFixMousePosRotation();
+
                 dashSpeed = attackDashSpeed;
                 dashDuration = attackDashDuration;
                 dashRestDuration = attackDashRestDuration;
                 runAnimation(2);
-                StartDash(false);
+                StartDash(new Vector2((float)Math.Cos(angleWithMouse()), (float)Math.Sin(angleWithMouse())), false);
+                block(0.04f * 9);
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
@@ -213,16 +237,16 @@ namespace Bloodbender
                 height -= 50 * elapsed;
         }
 
-        private void StartDash(bool checkDashReset = true)
+        private void StartDash(Vector2 direction, bool checkDashReset = true)
         {
             if (checkDashReset)
                 if (isInDashRest)
                     return;
-            //if (body.LinearVelocity == Vector2.Zero)
-            //   return;
-            Vector2 linearVelocityNorm = new Vector2((float)Math.Cos(angleWithMouse()), (float)Math.Sin(angleWithMouse()));
-            linearVelocityNorm.Normalize();
-            body.LinearVelocity = linearVelocityNorm * dashSpeed * Bloodbender.pixelToMeter;
+            block(dashDuration);
+            if (body.LinearVelocity == Vector2.Zero)
+               return;
+            direction.Normalize();
+            body.LinearVelocity = direction * dashSpeed * Bloodbender.pixelToMeter;
             dashLinearVelocity = body.LinearVelocity;
  
             isInDash = true;
@@ -265,6 +289,7 @@ namespace Bloodbender
             if (mouseAngle > -piBy4 && mouseAngle < piBy4) // droite
             {
                 newAttackSensorAngle = 0;
+                spriteEffect = SpriteEffects.None;
             }
             /*
             else if (mouseAngle > piBy4 && mouseAngle < threePiBy4) // bas
@@ -276,6 +301,7 @@ namespace Bloodbender
             else if (mouseAngle < pi && mouseAngle > pi/2 || mouseAngle < -pi/2 && mouseAngle > -pi)
             {
                 newAttackSensorAngle = pi;
+                spriteEffect = SpriteEffects.FlipHorizontally;
             }
             /*
             else if (mouseAngle > -threePiBy4 && mouseAngle < -piBy4) // haut
@@ -315,7 +341,11 @@ namespace Bloodbender
             }
         }
 
-       
+        private void block(float timer = 0f)
+        {
+            timerBlocked = timer;
+            isBlocked = true;
+        }
 
         private void isSensorColliding()
         {

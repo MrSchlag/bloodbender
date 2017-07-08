@@ -50,12 +50,6 @@
     <None Include="App.config" />
     <None Include="map\sans-titre.tmx" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BloodbenderMapGenerator\BloodbenderMapGenerator.csproj">
-      <Project>{a8019e1a-b79a-489f-8415-45d170252258}</Project>
-      <Name>BloodbenderMapGenerator</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

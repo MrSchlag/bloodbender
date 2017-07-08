@@ -1,17 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bloodbender", "Bloodbender\Bloodbender.csproj", "{DA39620F-F474-4054-9652-6A0D70AFCDDF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Farseer Physics MonoGame", "Farseer Physics Engine 3.5\Farseer Physics MonoGame.csproj", "{0AAD36E3-51A5-4A07-AB60-5C8A66BD38B7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugView MonoGame", "Farseer Physics DebugView 3.5\DebugView MonoGame.csproj", "{566F1803-90B5-4947-8730-57F092FBB002}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodbenderMapTest", "BloodbenderMapTest\BloodbenderMapTest.csproj", "{B2D4CC62-8C0F-43F9-9B77-00637D370ABF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodbenderMapGenerator", "BloodbenderMapGenerator\BloodbenderMapGenerator.csproj", "{A8019E1A-B79A-489F-8415-45D170252258}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,30 +49,6 @@ Global
 		{566F1803-90B5-4947-8730-57F092FBB002}.Release|x64.Build.0 = Release|x64
 		{566F1803-90B5-4947-8730-57F092FBB002}.Release|x86.ActiveCfg = Release|x86
 		{566F1803-90B5-4947-8730-57F092FBB002}.Release|x86.Build.0 = Release|x86
-		{B2D4CC62-8C0F-43F9-9B77-00637D370ABF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2D4CC62-8C0F-43F9-9B77-00637D370ABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B2D4CC62-8C0F-43F9-9B77-00637D370ABF}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{B2D4CC62-8C0F-43F9-9B77-00637D370ABF}.Debug|x64.Build.0 = Debug|Any CPU
-		{B2D4CC62-8C0F-43F9-9B77-00637D370ABF}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{B2D4CC62-8C0F-43F9-9B77-00637D370ABF}.Debug|x86.Build.0 = Debug|Any CPU
-		{B2D4CC62-8C0F-43F9-9B77-00637D370ABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B2D4CC62-8C0F-43F9-9B77-00637D370ABF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B2D4CC62-8C0F-43F9-9B77-00637D370ABF}.Release|x64.ActiveCfg = Release|Any CPU
-		{B2D4CC62-8C0F-43F9-9B77-00637D370ABF}.Release|x64.Build.0 = Release|Any CPU
-		{B2D4CC62-8C0F-43F9-9B77-00637D370ABF}.Release|x86.ActiveCfg = Release|Any CPU
-		{B2D4CC62-8C0F-43F9-9B77-00637D370ABF}.Release|x86.Build.0 = Release|Any CPU
-		{A8019E1A-B79A-489F-8415-45D170252258}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A8019E1A-B79A-489F-8415-45D170252258}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A8019E1A-B79A-489F-8415-45D170252258}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{A8019E1A-B79A-489F-8415-45D170252258}.Debug|x64.Build.0 = Debug|Any CPU
-		{A8019E1A-B79A-489F-8415-45D170252258}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A8019E1A-B79A-489F-8415-45D170252258}.Debug|x86.Build.0 = Debug|Any CPU
-		{A8019E1A-B79A-489F-8415-45D170252258}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A8019E1A-B79A-489F-8415-45D170252258}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A8019E1A-B79A-489F-8415-45D170252258}.Release|x64.ActiveCfg = Release|Any CPU
-		{A8019E1A-B79A-489F-8415-45D170252258}.Release|x64.Build.0 = Release|Any CPU
-		{A8019E1A-B79A-489F-8415-45D170252258}.Release|x86.ActiveCfg = Release|Any CPU
-		{A8019E1A-B79A-489F-8415-45D170252258}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
