@@ -40,6 +40,9 @@ namespace MapGenerator
             roomFilesWithTopBotEntries = new List<String>(new string[]
             {
                 "../../../../map/room1.tmx",
+                "../../../../map/room2.tmx",
+                "../../../../map/room3.tmx",
+                "../../../../map/room4.tmx",
             });
             // rooms that goes from top to bot (or opposite)
             roomFilesWithLeftRightEntries = new List<String>(new string[]
@@ -106,6 +109,7 @@ namespace MapGenerator
             if (roomsFilesSelected != null)
             {
                 int roomIndex = rand.Next(0, roomsFilesSelected.Count);
+                Debug.WriteLine(roomsFilesSelected[roomIndex]);
                 Room room = rloader.load(roomsFilesSelected[roomIndex]);
                 if (room == null)
                     return null;
@@ -133,9 +137,9 @@ namespace MapGenerator
 
                 Debug.WriteLine("translateValue X " + translateValue);
                 if (entry.type == entryType.top)
-                   this.addRoomToList(newRoom, translateValue, -((lastRoom.Y) * lastRoom.tileSize));
+                   this.addRoomToList(newRoom, translateValue, -((newRoom.Y) * newRoom.tileSize));
                 else if (entry.type == entryType.bot)
-                   this.addRoomToList(newRoom, translateValue, ((lastRoom.Y) * lastRoom.tileSize));
+                   this.addRoomToList(newRoom, translateValue, ((newRoom.Y) * newRoom.tileSize));
             }
             else if (entry.type == entryType.left || entry.type == entryType.right)
             {
@@ -144,9 +148,9 @@ namespace MapGenerator
                 this.addRoomToList(newRoom, (lastRoom.X) * lastRoom.tileSize, 0);
                 Debug.WriteLine("translateValue Y " + translateValue);
                 if (entry.type == entryType.left)
-                    this.addRoomToList(newRoom, -(lastRoom.X) * lastRoom.tileSize, translateValue);
+                    this.addRoomToList(newRoom, -(newRoom.X) * newRoom.tileSize, translateValue);
                 else if (entry.type == entryType.right)
-                    this.addRoomToList(newRoom, (lastRoom.X) * lastRoom.tileSize, translateValue);
+                    this.addRoomToList(newRoom, (newRoom.X) * newRoom.tileSize, translateValue);
             }
         }
 

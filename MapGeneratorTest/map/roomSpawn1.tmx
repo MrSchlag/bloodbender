@@ -17,9 +17,6 @@
   <object id="92" x="288" y="608">
    <polyline points="0,0 96,0"/>
   </object>
-  <object id="96" x="96" y="32">
-   <polyline points="0,0 -32,0 -32,448 352,448 352,0 96,0"/>
-  </object>
  </objectgroup>
  <objectgroup color="#000000" name="player">
   <object id="95" x="288" y="608">
