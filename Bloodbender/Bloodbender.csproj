@@ -89,6 +89,7 @@
     <Compile Include="InputHelper.cs" />
     <Compile Include="MapBound.cs" />
     <Compile Include="components\IComponent.cs" />
+    <Compile Include="MapFactory.cs" />
     <Compile Include="ParticuleSystem\Particule.cs" />
     <Compile Include="ParticuleSystem\ParticuleSpawner.cs" />
     <Compile Include="ParticuleSystem\ParticuleSystem.cs" />
@@ -137,6 +138,10 @@
     <ProjectReference Include="..\Farseer Physics Engine 3.5\Farseer Physics MonoGame.csproj">
       <Project>{0aad36e3-51a5-4a07-ab60-5c8a66bd38b7}</Project>
       <Name>Farseer Physics MonoGame</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MapGenerator\MapGenerator.csproj">
+      <Project>{a8019e1a-b79a-489f-8415-45d170252258}</Project>
+      <Name>MapGenerator</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

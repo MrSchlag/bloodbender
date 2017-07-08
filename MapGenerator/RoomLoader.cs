@@ -133,12 +133,12 @@ namespace MapGenerator
         public List<Wall> loadWalls()
         {
             List<Wall> walls = new List<Wall>();
+            int objIndex = 0;
             foreach (TmxObject border_obj in tmxmap.ObjectGroups["wall"].Objects) {
                 Collection<TmxObjectPoint> bpoints = border_obj.Points;
                 Vector2 bvpoint1 = new Vector2();
                 Vector2 bvpoint2 = new Vector2();
                 int i = 0;
-
                 foreach (var point in bpoints)
                 {
                     if (i % 2 == 0)
@@ -149,13 +149,14 @@ namespace MapGenerator
                     {
                         Wall wall;
                         if (i % 2 == 0)
-                            wall = new Wall(bvpoint1, bvpoint2);
+                            wall = new Wall(bvpoint1, bvpoint2, objIndex);
                         else
-                            wall = new Wall(bvpoint2, bvpoint1);
+                            wall = new Wall(bvpoint2, bvpoint1, objIndex);
                         walls.Add(wall);
                     }
                     i++;
                 }
+                objIndex++;
             }
             return walls;
         }

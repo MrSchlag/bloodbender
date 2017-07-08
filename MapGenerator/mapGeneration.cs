@@ -53,15 +53,15 @@ namespace MapGenerator
             endRoomFilesWithLeftRightEntries = new List<String>(new string[]
             {
             });
-            rand = new Random();
-            rloader = new RoomLoader();
-            numberOfRooms = rand.Next(4, 10);
-            rooms = new List<Room>();
-            roomLinkers = new List<RoomLinker>();
         }
 
         public void newMap()
         {
+            rand = new Random();
+            rloader = new RoomLoader();
+            numberOfRooms = rand.Next(4, 10);
+            rooms = new List<Room>();
+            roomLinkers = new List<RoomLinker>(); 
             this.addRoomToList(selectRandomSpawn(), 0, 0);
             for (int i = 2; i <= 2 /*numberOfRooms*/; i++)
             {
@@ -193,6 +193,5 @@ namespace MapGenerator
             Visualizer visualizer = new Visualizer();
             visualizer.visualizeMap(wallList);
         }
-        
     }
 }
