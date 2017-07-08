@@ -49,7 +49,7 @@ namespace Bloodbender
 
             Fixture playerBoundsFix = createOctogoneFixture(32f, 32f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
 
-            playerHitSensorFix = createRectangleFixture(32.0f, 32.0f, new Vector2(32.0f, 0), new AdditionalFixtureData(this, HitboxType.ATTACK));
+            playerHitSensorFix = createRectangleFixture(70.0f, 60.0f, new Vector2(30f, 0), new AdditionalFixtureData(this, HitboxType.ATTACK));
 
             //set wether the fixture is a sensor or not (sensor: no response, no contact point)
             playerHitSensorFix.IsSensor = true;
@@ -262,14 +262,28 @@ namespace Bloodbender
             float threePiBy4 = 2.35619449019f;
             float newAttackSensorAngle = 0;
 
-            if (mouseAngle > -piBy4 && mouseAngle < piBy4) //trouver les angles corespondants avec des fraction de pi
+            if (mouseAngle > -piBy4 && mouseAngle < piBy4) // droite
+            {
                 newAttackSensorAngle = 0;
-            else if (mouseAngle > piBy4 && mouseAngle < threePiBy4)
+            }
+            /*
+            else if (mouseAngle > piBy4 && mouseAngle < threePiBy4) // bas
+            {
                 newAttackSensorAngle = pi / 2f;
-            else if ((mouseAngle > threePiBy4 && mouseAngle < pi) || (mouseAngle > -pi && mouseAngle < -threePiBy4))
+            }
+            */
+            //else if ((mouseAngle > threePiBy4 && mouseAngle < pi) || (mouseAngle > -pi && mouse@Angle < -threePiBy4)) // gauche
+            else if (mouseAngle < pi && mouseAngle > pi/2 || mouseAngle < -pi/2 && mouseAngle > -pi)
+            {
                 newAttackSensorAngle = pi;
-            else if (mouseAngle > -threePiBy4 && mouseAngle < -piBy4)
+            }
+            /*
+            else if (mouseAngle > -threePiBy4 && mouseAngle < -piBy4) // haut
+            {
                 newAttackSensorAngle = -pi / 2f;
+            }
+            */
+
             if (newAttackSensorAngle != attackSensorAngle)
             {
                 ((PolygonShape)playerHitSensorFix.Shape).Vertices.Rotate(newAttackSensorAngle - attackSensorAngle);
@@ -280,7 +294,8 @@ namespace Bloodbender
 
         private void checkSensorInteractions()
         {
-            if (!Keyboard.GetState().IsKeyDown(Keys.Space))
+            //if (!Keyboard.GetState().IsKeyDown(Keys.Space))
+            if (!Bloodbender.ptr.inputHelper.IsNewMouseButtonPress(MouseButtons.LeftButton))
                 return;
             AdditionalFixtureData fixInContactData;
             AdditionalFixtureData sensorData = (AdditionalFixtureData)playerHitSensorFix.UserData;
@@ -293,6 +308,9 @@ namespace Bloodbender
                     fixInContactData = (AdditionalFixtureData)fixInContact.UserData;
                     if (fixInContactData.physicParent is Totem)
                         ((Totem)fixInContactData.physicParent).generateProjectile(angleWithMouse());
+                    if (fixInContactData.physicParent is Enemy)
+                        ((Enemy)fixInContactData.physicParent).generateProjectile(angleWithMouse());
+
                 }
             }
         }
