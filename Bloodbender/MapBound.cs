@@ -1,20 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FarseerPhysics.Common.PolygonManipulation;
-using FarseerPhysics.Collision;
 using FarseerPhysics.Collision.Shapes;
-using FarseerPhysics.Common.TextureTools;
 using FarseerPhysics.Common;
 using FarseerPhysics.Dynamics;
-using FarseerPhysics.Dynamics.Contacts;
-using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using FarseerPhysics.Common.Decomposition;
+using Bloodbender.PathFinding;
 
 namespace Bloodbender
 {
@@ -67,7 +56,7 @@ namespace Bloodbender
 
         public void createPathFinderNodes()
         {
-            float pathNodeOffset = (float)Bloodbender.ptr.pathFinder.pathStep;
+            float pathNodeOffset = PathFinder.PathStep;
             int verticePos = 0;
 
             foreach (Vector2 vertex in mapVertices)
@@ -103,8 +92,14 @@ namespace Bloodbender
                 /* création des PathNode */
                 PathFinderNode node1 = new PathFinderNode(cornerSquare1[0]);
                 PathFinderNode node2 = new PathFinderNode(cornerSquare2[0]);
-                Bloodbender.ptr.pathFinder.addNode(node1);
-                Bloodbender.ptr.pathFinder.addNode(node2);
+                //Bloodbender.ptr.pathFinder.addNode(node1);
+                //Bloodbender.ptr.pathFinder.addNode(node2);
+
+                node1.DivergencePoint = vertex;
+                node2.DivergencePoint = vertex;
+                Bloodbender.ptr.pFinder.AddNode(node1);
+                Bloodbender.ptr.pFinder.AddNode(node2);
+
                 pathFinderNodes.Add(node1);
                 pathFinderNodes.Add(node2);
 

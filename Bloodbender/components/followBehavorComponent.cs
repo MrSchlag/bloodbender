@@ -15,7 +15,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Threading;
-
+using Bloodbender.PathFinding;
 
 namespace Bloodbender
 {
@@ -30,8 +30,9 @@ namespace Bloodbender
         float pathRequestRateCounter = 0f;
 
         //float ignoreNodeRadiusOffset = 5 * Bloodbender.pixelToMeter;
-        
+
         PathFinderNode nextNode;
+        List<PathFinderNode> path;
         
         float maxVertexDistance;
         float maxVertexDistanceOffset = 10 * Bloodbender.pixelToMeter;
@@ -43,6 +44,12 @@ namespace Bloodbender
             this.escapeZoneRadius = escapeZoneRadius;
             maxVertexDistance = maxLenghtCentroidVertex();
             nextNode = null;
+            target.getPosNode().TriangleChangedEvent += FollowBehaviorComponent_TriangleChangedEvent;
+        }
+
+        private void FollowBehaviorComponent_TriangleChangedEvent()
+        {
+            path = Bloodbender.ptr.pFinder.pathRequest(owner, target);
         }
 
         bool IComponent.Update(float elapsed)
@@ -51,27 +58,36 @@ namespace Bloodbender
             if (pathRequestRateCounter > pathRequestRate)
             {
                 pathRequestRateCounter = 0f;
-                nextNode = Bloodbender.ptr.pathFinder.pathRequest(owner, owner.getPosNode(), target.getPosNode());
-                
-                if (nextNode == null)
-                {
-                    owner.body.LinearVelocity = Vector2.Zero;
-                    return false;
-                }
+                Bloodbender.ptr.pFinder.UpdateTriangleForObj(target);
+            }
 
-                Vector2 posToNode = nextNode.position - owner.getPosNode().position;
-                Vector2 posToTarget = target.body.Position - owner.body.Position;
+            if (path == null)
+            {
+                owner.body.LinearVelocity = Vector2.Zero;
+                return false;
+            }
 
-                if (posToTarget.Length() * Bloodbender.meterToPixel > escapeZoneRadius)
-                {
-                    posToNode.Normalize();
-                    posToNode *= owner.velocity * Bloodbender.pixelToMeter;
-                    owner.body.LinearVelocity = posToNode;
-                }
-                else
-                {
-                    owner.body.LinearVelocity = Vector2.Zero;
-                }
+            var nextNode = path[1];
+
+            Vector2 posToNode = nextNode.position - owner.getPosNode().position;
+            Vector2 posToTarget = target.body.Position - owner.body.Position;
+
+            if (posToNode.Length() < 0.3)
+            {
+                path.RemoveAt(1);
+                posToNode = nextNode.position - owner.getPosNode().position;
+                posToTarget = target.body.Position - owner.body.Position;
+            }
+
+            if (posToTarget.Length() * Bloodbender.meterToPixel > escapeZoneRadius)
+            {
+                posToNode.Normalize();
+                posToNode *= owner.velocity * Bloodbender.pixelToMeter;
+                owner.body.LinearVelocity = posToNode;
+            }
+            else
+            {
+                owner.body.LinearVelocity = Vector2.Zero;
             }
 
             return true;

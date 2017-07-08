@@ -21,13 +21,21 @@ namespace Bloodbender
     {
         private Fixture playerHitSensorFix;
         private float attackSensorAngle;
-        private float dashSpeed = 1500f;
-        private float dashDuration = 0.05f;
+        private float dashSpeed = 450f;
+        private float dashDuration = 0.25f;
         private float dashTime = 0f;
-        private bool isInDash;
-        private float dashRestDuration = 2f;
-        private float dashRestTime = 4f;
+        private bool isInDash = false;
+        private float dashRestDuration = 1f;
+        private float dashRestTime = 0f;
         private bool isInDashRest;
+
+        private static float normalDashSpeed = 450f;
+        private static float normalDashDuration = 0.25f;
+        private static float normalDashRestDuration = 1f;
+        private static float attackDashSpeed = 350f;
+        private static float attackDashDuration = 0.02f;
+        private static float attackDashRestDuration = 0f;
+
         private Vector2 dashLinearVelocity = Vector2.Zero;
 
         public Player(Vector2 position) : base(position, PathFinderNodeType.CENTER)
@@ -37,6 +45,7 @@ namespace Bloodbender
 
             velocity = 200;
             attackSensorAngle = 0f;
+            Radius = 32f;
 
             Fixture playerBoundsFix = createOctogoneFixture(32f, 32f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
 
@@ -109,18 +118,25 @@ namespace Bloodbender
 
                 if (gamePadState.Triggers.Left == 1)
                 {
+                    dashSpeed = normalDashSpeed;
+                    dashDuration = normalDashDuration;
+                    dashRestDuration = normalDashRestDuration;
                     StartDash();
                 }
 
                 if (gamePadState.Triggers.Right == 1)
                 {
+                    dashSpeed = attackDashSpeed;
+                    dashDuration = attackDashDuration;
+                    dashRestDuration = attackDashRestDuration;
                     runAnimation(2);
+                    StartDash(false);
                     return;
                 }
                    
 
                 if (gamePadState.ThumbSticks.Left.X != 0 || gamePadState.ThumbSticks.Left.Y != 0)
-                {
+                {   
                     runAnimation(1);
                     return;
                 }
@@ -176,12 +192,20 @@ namespace Bloodbender
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
+                dashSpeed = normalDashSpeed;
+                dashDuration = normalDashDuration;
+                dashRestDuration = normalDashRestDuration;
                 StartDash();
-                
             }
 
             if (Bloodbender.ptr.inputHelper.IsNewMouseButtonPress(MouseButtons.LeftButton))
+            {
+                dashSpeed = attackDashSpeed;
+                dashDuration = attackDashDuration;
+                dashRestDuration = attackDashRestDuration;
                 runAnimation(2);
+                StartDash(false);
+            }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
                 height += 50 * elapsed;
@@ -189,14 +213,18 @@ namespace Bloodbender
                 height -= 50 * elapsed;
         }
 
-        private void StartDash()
+        private void StartDash(bool checkDashReset = true)
         {
-            if (body.LinearVelocity == Vector2.Zero || isInDashRest)
-                return;
-            Vector2 linearVelocityNorm = new Vector2(body.LinearVelocity.X, body.LinearVelocity.Y);
+            if (checkDashReset)
+                if (isInDashRest)
+                    return;
+            //if (body.LinearVelocity == Vector2.Zero)
+            //   return;
+            Vector2 linearVelocityNorm = new Vector2((float)Math.Cos(angleWithMouse()), (float)Math.Sin(angleWithMouse()));
             linearVelocityNorm.Normalize();
             body.LinearVelocity = linearVelocityNorm * dashSpeed * Bloodbender.pixelToMeter;
             dashLinearVelocity = body.LinearVelocity;
+ 
             isInDash = true;
             dashTime = 0f;
             dashRestTime = 0f;
