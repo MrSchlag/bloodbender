@@ -163,11 +163,12 @@ namespace Bloodbender
             enemy.addAnimation(new Animation(textureCarre2));
             
 
-            /*
+            
             Enemy enemy1 = new Enemy(new Vector2(700, 200), player);
             enemy1.addAnimation(new Animation(textureCarre2));
             Enemy enemy2 = new Enemy(new Vector2(700, 200), player);
             enemy2.addAnimation(new Animation(textureCarre2));
+            /*
             Enemy enemy3 = new Enemy(new Vector2(700, 200), player);
             enemy3.addAnimation(new Animation(textureCarre2));
             Enemy enemy4 = new Enemy(new Vector2(700, 200), player);
@@ -198,9 +199,10 @@ namespace Bloodbender
             listGraphicObj.Add(player);
             listGraphicObj.Add(enemy);
            
-            /*
+            
             listGraphicObj.Add(enemy1);
             listGraphicObj.Add(enemy2);
+            /*
             listGraphicObj.Add(enemy3);
             listGraphicObj.Add(enemy4);
             listGraphicObj.Add(enemy5);

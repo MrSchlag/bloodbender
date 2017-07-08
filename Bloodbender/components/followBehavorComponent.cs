@@ -50,6 +50,7 @@ namespace Bloodbender
         private void FollowBehaviorComponent_TriangleChangedEvent()
         {
             path = Bloodbender.ptr.pFinder.pathRequest(owner, target);
+            Console.WriteLine("enemy path trigger : {0}", path.GetHashCode());
         }
 
         bool IComponent.Update(float elapsed)

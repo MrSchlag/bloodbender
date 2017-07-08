@@ -10,20 +10,20 @@ namespace Bloodbender.PathFinding
     {
         List<PathFinderNode> openList;
         List<PathFinderNode> closedList;
-        List<PathFinderNode> resultPath;
+        //List<PathFinderNode> resultPath;
 
         public PathProcessor()
         {
             openList = new List<PathFinderNode>();
             closedList = new List<PathFinderNode>();
-            resultPath = new List<PathFinderNode>();
+            //resultPath = new List<PathFinderNode>();
         }
 
         private void Clear()
         {
             openList.Clear();
             closedList.Clear();
-            resultPath.Clear();
+            //resultPath.Clear();
         }
 
         public List<PathFinderNode> runDjikstra(PathFinderNode startNode, PathFinderNode endNode)
@@ -80,6 +80,7 @@ namespace Bloodbender.PathFinding
 
         private List<PathFinderNode> createPath(PathFinderNode currentNode, PathFinderNode startNode)
         {
+            var resultPath = new List<PathFinderNode>();
             PathFinderNode backPathNode = currentNode;
 
             while (backPathNode.Equals(startNode) == false)
