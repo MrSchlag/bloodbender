@@ -50,7 +50,6 @@ namespace Bloodbender
         private void FollowBehaviorComponent_TriangleChangedEvent()
         {
             path = Bloodbender.ptr.pFinder.pathRequest(owner, target);
-            Console.WriteLine("enemy path trigger : {0}", path.GetHashCode());
         }
 
         bool IComponent.Update(float elapsed)
@@ -64,9 +63,7 @@ namespace Bloodbender
 
             if (path == null)
             {
-                Console.WriteLine("No path found");
                 owner.body.LinearVelocity = Vector2.Zero;
-
                 return false;
             }
 
