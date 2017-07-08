@@ -217,12 +217,13 @@ namespace Bloodbender
             if (checkDashReset)
                 if (isInDashRest)
                     return;
-            if (body.LinearVelocity == Vector2.Zero)
-                return;
-            Vector2 linearVelocityNorm = new Vector2(body.LinearVelocity.X, body.LinearVelocity.Y);
+            //if (body.LinearVelocity == Vector2.Zero)
+            //   return;
+            Vector2 linearVelocityNorm = new Vector2((float)Math.Cos(angleWithMouse()), (float)Math.Sin(angleWithMouse()));
             linearVelocityNorm.Normalize();
             body.LinearVelocity = linearVelocityNorm * dashSpeed * Bloodbender.pixelToMeter;
             dashLinearVelocity = body.LinearVelocity;
+ 
             isInDash = true;
             dashTime = 0f;
             dashRestTime = 0f;
