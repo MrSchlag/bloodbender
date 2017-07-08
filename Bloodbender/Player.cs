@@ -45,6 +45,7 @@ namespace Bloodbender
 
             velocity = 200;
             attackSensorAngle = 0f;
+            Radius = 32f;
 
             Fixture playerBoundsFix = createOctogoneFixture(32f, 32f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
 
