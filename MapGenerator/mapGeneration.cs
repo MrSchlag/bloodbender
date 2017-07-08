@@ -127,20 +127,26 @@ namespace MapGenerator
             float translateValue = 0;
             if (entry.type == entryType.top || entry.type == entryType.bot)
             {
-                Debug.WriteLine("{0} - {1}", newRoom.entrySelected.ptA.X, entry.ptA.X);
+                // Debug.WriteLine("{0} - {1}", newRoom.entrySelected.ptA.X, entry.ptA.X);
                 translateValue = entry.ptA.X - newRoom.entrySelected.ptA.X;
-                this.addRoomToList(newRoom, 0, (lastRoom.Y + 3) * lastRoom.tileSize);
+                // this.addRoomToList(newRoom, 0, (lastRoom.Y) * lastRoom.tileSize);
 
                 Debug.WriteLine("translateValue X " + translateValue);
-                this.addRoomToList(newRoom, translateValue, (lastRoom.Y + 3) * lastRoom.tileSize);
+                if (entry.type == entryType.top)
+                   this.addRoomToList(newRoom, translateValue, -((lastRoom.Y) * lastRoom.tileSize));
+                else if (entry.type == entryType.bot)
+                   this.addRoomToList(newRoom, translateValue, ((lastRoom.Y) * lastRoom.tileSize));
             }
             else if (entry.type == entryType.left || entry.type == entryType.right)
             {
                 // Debug.WriteLine("yo");
                 translateValue = entry.ptA.Y - newRoom.entrySelected.ptA.Y;
-                // this.addRoomToList(newRoom, (lastRoom.X + 3) * lastRoom.tileSize, 0);
+                this.addRoomToList(newRoom, (lastRoom.X) * lastRoom.tileSize, 0);
                 Debug.WriteLine("translateValue Y " + translateValue);
-                this.addRoomToList(newRoom, (lastRoom.X + 3) * lastRoom.tileSize, translateValue);
+                if (entry.type == entryType.left)
+                    this.addRoomToList(newRoom, -(lastRoom.X) * lastRoom.tileSize, translateValue);
+                else if (entry.type == entryType.right)
+                    this.addRoomToList(newRoom, (lastRoom.X) * lastRoom.tileSize, translateValue);
             }
         }
 

@@ -10,6 +10,11 @@ namespace MapGenerator
 {
     class Visualizer
     {
+        float maxX = 0;
+        float minX = 0;
+        float maxY = 0;
+        float minY = 0;
+
         public void visualizeMap(List<Wall> wallList)
         {
             List<StringBuilder> lines = init(wallList);
@@ -17,15 +22,13 @@ namespace MapGenerator
             {
                 if (wall.ptA.X == wall.ptB.X)
                 {
-                    int i = (int)wall.ptA.Y / 32;
-                    int j = (int)wall.ptB.Y / 32;
+                    int i = (int)(wall.ptA.Y / 32 + Math.Abs(minY));
+                    int j = (int)(wall.ptB.Y / 32 + Math.Abs(minY));
                     if (i <= j)
                     {
                         while (i <= j)
                         {
-                            Debug.WriteLine(i + " " + j);
-                            Debug.WriteLine(wall.ptA.X / 32);
-                            lines[i][(int)wall.ptA.X / 32] = '-';
+                            lines[i][(int)(wall.ptA.X / 32 + Math.Abs(minX))] = '-';
                             i++;
                         }
                     }
@@ -33,7 +36,7 @@ namespace MapGenerator
                     {
                         while (i >= j)
                         {
-                            lines[i][(int)wall.ptA.X / 32] = '-';
+                            lines[i][(int)(wall.ptA.X / 32 + Math.Abs(minX))] = '-';
                             i--;
                         }
                     }
@@ -41,13 +44,13 @@ namespace MapGenerator
                 }
                 if (wall.ptA.Y == wall.ptB.Y)
                 {
-                    int i = (int)wall.ptA.X / 32;
-                    int j = (int)wall.ptB.X / 32;
+                    int i = (int)(wall.ptA.X / 32 + Math.Abs(minX));
+                    int j = (int)(wall.ptB.X / 32 + Math.Abs(minX));
                     if (i <= j)
                     {
                         while (i <= j)
                         {
-                            lines[(int)wall.ptA.Y / 32][i] = '-';
+                            lines[(int)(wall.ptA.Y / 32 + Math.Abs(minY))][i] = '-';
                             i++;
                         }
                     }
@@ -55,7 +58,8 @@ namespace MapGenerator
                     {
                         while (i > j)
                         {
-                            lines[(int)wall.ptA.Y / 32][i] = '-';
+                            // Debug.WriteLine(i + " " + j);
+                            lines[(int)(wall.ptA.Y / 32 + Math.Abs(minY))][i] = '-';
                             i--;
                         }
                     }
@@ -76,10 +80,10 @@ namespace MapGenerator
         {
             List<StringBuilder> lines = new List<StringBuilder>();
             String line = "";
-            float maxX = 0;
-            float minX = 0;
-            float maxY = 0;
-            float minY = 0;
+            maxX = 0;
+            minX = 0;
+            maxY = 0;
+            minY = 0;
             foreach (Wall wall in wallList)
             {
                 if (wall.ptA.X > maxX)
@@ -99,12 +103,12 @@ namespace MapGenerator
                 if (wall.ptB.Y < minY)
                     minY = wall.ptB.Y;
             }
-            maxX = (maxX / 32) + 15;
-            maxY = (maxY / 32) + 10;
-            minX = (minX / 32) - 15;
-            minY = (minY / 32) - 10;
-            Debug.WriteLine("{0}|{1}", minX, maxX);
-            Debug.WriteLine("{0}|{1}", minY, maxY);
+            maxX = (maxX / 32) + 3;
+            maxY = (maxY / 32) + 3;
+            minX = (minX / 32) - 3;
+            minY = (minY / 32) - 3;
+            Debug.WriteLine("X {0}|{1}", minX, maxX);
+            Debug.WriteLine("Y {0}|{1}", minY, maxY);
             for (int x = (int)minX; x <= maxX; x++)
                 line += "X";
             Debug.WriteLine(line.Length);
