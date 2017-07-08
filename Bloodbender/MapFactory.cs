@@ -22,10 +22,9 @@ namespace Bloodbender
                 MapBound mapBound = new MapBound();
                 foreach (Wall wall in room.wallList)
                 {
-                    Debug.WriteLine("{0} => {1}/{2} {3}/{4}", wall.objIndex, wall.ptA.X, wall.ptA.Y, wall.ptB.X, wall.ptB.Y);
+                    // Debug.WriteLine("{0} => {1}/{2} {3}/{4}", wall.objIndex, wall.ptA.X, wall.ptA.Y, wall.ptB.X, wall.ptB.Y);
                     if (wall.objIndex != objIndex)
                     {
-                        Debug.WriteLine("DIFFERENT");
                         mapBound.finilizeMap();
                         if (wall.objIndex != objIndex)
                             mapBound = new MapBound();
