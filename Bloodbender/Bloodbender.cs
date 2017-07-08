@@ -7,6 +7,7 @@ using FarseerPhysics.Dynamics;
 using FarseerPhysics.Factories;
 using FarseerPhysics;
 using System;
+using Bloodbender.PathFinding;
 
 namespace Bloodbender
 {
@@ -32,7 +33,7 @@ namespace Bloodbender
         public ShadowsRenderer shadowsRendering;
         public List<GraphicObj> listGraphicObj;
 
-        public PathFinder pathFinder;
+        public PathFinder pFinder;
 
         public float elapsed = 0.0f;
 
@@ -134,11 +135,15 @@ namespace Bloodbender
             debugNodeBusy = Content.Load<Texture2D>("debugPathFinderNode");
             debugNodeFree = Content.Load<Texture2D>("debugPathFinderNode2");
 
-            pathFinder = new PathFinder(2);
+            //pathFinder = new PathFinder(2);
+            pFinder = new PathFinder();
+            pFinder.BuildtNavMeshes(6, 10);
 
             MapBound mapBounds = new MapBound();
             mapBounds.addVertex(new Vector2(0, 0));
             mapBounds.addVertex(new Vector2(120, -50));
+            mapBounds.addVertex(new Vector2(350, -20));
+            mapBounds.addVertex(new Vector2(700, 0));
             mapBounds.addVertex(new Vector2(2000, 0));
             mapBounds.addVertex(new Vector2(1900, 500));
             mapBounds.addVertex(new Vector2(0, 500));
@@ -157,11 +162,12 @@ namespace Bloodbender
             enemy.addAnimation(new Animation(textureCarre2));
             
 
-            /*
+            
             Enemy enemy1 = new Enemy(new Vector2(700, 200), player);
             enemy1.addAnimation(new Animation(textureCarre2));
             Enemy enemy2 = new Enemy(new Vector2(700, 200), player);
             enemy2.addAnimation(new Animation(textureCarre2));
+            /*
             Enemy enemy3 = new Enemy(new Vector2(700, 200), player);
             enemy3.addAnimation(new Animation(textureCarre2));
             Enemy enemy4 = new Enemy(new Vector2(700, 200), player);
@@ -180,16 +186,22 @@ namespace Bloodbender
             Totem totem = new Totem(new Vector2(300, 300));
             totem.addAnimation(new Animation(textureTotem));
 
+            Totem totem2 = new Totem(new Vector2(700, 400));
+            totem2.addAnimation(new Animation(textureTotem));
+
+
             Sprinkler sprinkler = new Sprinkler(new Vector2(500, 300));
 
             listGraphicObj.Add(sprinkler);
             listGraphicObj.Add(totem);
+            listGraphicObj.Add(totem2);
             listGraphicObj.Add(player);
             listGraphicObj.Add(enemy);
            
-            /*
+            
             listGraphicObj.Add(enemy1);
             listGraphicObj.Add(enemy2);
+            /*
             listGraphicObj.Add(enemy3);
             listGraphicObj.Add(enemy4);
             listGraphicObj.Add(enemy5);
@@ -200,9 +212,10 @@ namespace Bloodbender
            */
             listGraphicObj.Add(pobj);
 
-            frameRateCounter = new FrameRateCounter(font);            
+            frameRateCounter = new FrameRateCounter(font);
 
             //pathFinder.pathRequest(new Vector2(41, 42), new Vector2(300, 300));
+            pFinder.GeneratesMeshes();
         }
 
         

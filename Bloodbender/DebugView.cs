@@ -1,12 +1,9 @@
-﻿using FarseerPhysics;
+﻿using Bloodbender.PathFinding;
+using FarseerPhysics;
 using FarseerPhysics.DebugView;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bloodbender
 {
@@ -24,28 +21,8 @@ namespace Bloodbender
 
         public void Update(float elapsed)
         {
-            Dictionary<GraphicObj, List <PathFinderNode>> pathstmp = (Bloodbender.ptr.pathFinder.getCurrentPaths());
-
-            bool reset = false;
-
-            foreach (KeyValuePair<GraphicObj, List<PathFinderNode>> key in pathstmp)
-            {
-
-
-                if (!paths.ContainsKey(key.Key))
-                {
-
-                    reset = true;
-
-                    //setPathParticuleSpawer(key);
-                }
-            }
-
-            //check suppression path
-
-            if (reset == true)
-                paths = new Dictionary<GraphicObj, List<PathFinderNode>>(Bloodbender.ptr.pathFinder.getCurrentPaths());
-
+         
+            paths = Bloodbender.ptr.pFinder.GetCurrentPaths();
 
             ps.Update(elapsed);
         }
@@ -67,7 +44,7 @@ namespace Bloodbender
 
             if ((Flags & DebugViewFlags.PathFinding) == DebugViewFlags.PathFinding)
             {
-                List<PathFinderNode> listNodes = Bloodbender.ptr.pathFinder.getPathFinderNodes();
+                List<PathFinderNode> listNodes = Bloodbender.ptr.pFinder.GetFirstMesh();
 
                 foreach (PathFinderNode n in listNodes)
                 {
@@ -80,8 +57,6 @@ namespace Bloodbender
                 }
 
                 Color color = new Color(0, 255, 0, 255);
-                //if (paths.Count > 0)
-                  //  color *= 1 / paths.Count;
 
                 foreach (KeyValuePair<GraphicObj, List<PathFinderNode>> key in paths)
                 {
