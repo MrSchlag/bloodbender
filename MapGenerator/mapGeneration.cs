@@ -30,7 +30,7 @@ namespace MapGenerator
             // spawn rooms with entry top or bot
             spawnRoomFilesWithTopBotEntries = new List<String>(new string[]
             {
-                "../../map/roomSpawn1.tmx",
+                "../../../../map/roomSpawn1.tmx",
             });
             // spawn rooms with entry left or right
             spawnRoomFilesWithLeftRightEntries = new List<String>(new string[]
@@ -39,7 +39,7 @@ namespace MapGenerator
             // rooms that goes from bot to top (or opposite)
             roomFilesWithTopBotEntries = new List<String>(new string[]
             {
-                "../../map/room1.tmx",
+                "../../../../map/room1.tmx",
             });
             // rooms that goes from top to bot (or opposite)
             roomFilesWithLeftRightEntries = new List<String>(new string[]
@@ -69,7 +69,7 @@ namespace MapGenerator
             }
             //this.addRoomToList(room1, 0, 0);
             //this.addRoomToList(room2, 0, (room2.Y + 3) * room2.tileSize);
-            this.visualizeMap();
+            // this.visualizeMap();
         }
 
         public Room selectRandomSpawn()
