@@ -4,17 +4,13 @@ using FarseerPhysics.Common;
 using FarseerPhysics.Dynamics;
 using Microsoft.Xna.Framework;
 using Bloodbender.PathFinding;
+using System.Collections.Generic;
 
 namespace Bloodbender
 {
     public class MapBound : PhysicObj
     {
         public Vertices mapVertices;
-
-        public float minX;
-        public float maxX;
-        public float minY;
-        public float maxY;
 
         public MapBound() : base(new Vector2(0, 0))
         {
@@ -24,6 +20,7 @@ namespace Bloodbender
             length = 100;
         }
 
+        /*
         public void addVertex(Vector2 vertex)
         {
             if (mapVertices.Count == 0)
@@ -43,11 +40,26 @@ namespace Bloodbender
                 maxY = vertex.Y;
             vertex *= Bloodbender.pixelToMeter;
             mapVertices.Add(vertex);
+        }*/
+
+        public void addVertex(Vector2 pt1, Vector2 pt2)
+        {
+            pt1 = pt1 * Bloodbender.pixelToMeter;
+            pt2 = pt2 * Bloodbender.pixelToMeter;
+
+            if (mapVertices.Contains(pt1))
+            {
+                mapVertices.Add(pt2);
+                return;
+            }
+
+            mapVertices.Add(pt1);
+            mapVertices.Add(pt2);
         }
 
-        public void finiliezMap()
+        public void finilizeMap()
         {
-            ChainShape chainShape = new ChainShape(mapVertices, true);
+            ChainShape chainShape = new ChainShape(mapVertices, false);
             Fixture chainShapeFix = body.CreateFixture(chainShape);
             chainShapeFix.UserData = new AdditionalFixtureData(this, HitboxType.BOUND);
             addFixtureToCheckedCollision(chainShapeFix);
