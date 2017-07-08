@@ -96,6 +96,9 @@ namespace Bloodbender.PathFinding
             triangle = nav.GetNodeTriangle(node);
             node.NodeTriangle = triangle;
 
+            if (triangle.p1 == null || triangle.p2 == null || triangle.p3 == null)
+                return;
+
             if (NavMesh.NodeToNodeRayCast(node, navMeshes[0].GetEquivalentNode(triangle.p1)))
             {
                 triangle.p1.neighbors.Add(node);
