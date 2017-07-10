@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace MapGenerator
         public List<Entities> entityList { get; set; }
         public Vector2 spawnPoint { get; set; }
         public Entry entrySelected { get; set; }
+        public Entry exitSelected { get; set; }
 
         public Room(int tileSize, int X, int Y, List<Wall> wallList, List<Entry> entryList, List<Entities> entityList, Vector2 spawnPoint)
         {
@@ -46,12 +48,27 @@ namespace MapGenerator
             foreach (Entry entry in entryList)
             {
                 if (entry.type == type)
+                {
+                    Debug.WriteLine("TYPE TO FIND {0} - INDEX FOUND/TYPE {0}/{1}", type, entryList.IndexOf(entry), entry.type); ;
                     entriesFound.Add(entry);
+                }  
             }
             if (entriesFound.Count == 0)
                 return null;
             int entryIndex = rand.Next(0, entriesFound.Count);
             return entriesFound[entryIndex];
+        }
+
+        public void selectRandomExit(Random rand)
+        {
+            List<Entry> exitsFound = new List<Entry>();
+            foreach (Entry entry in entryList)
+            {
+                if (entry.type == this.entrySelected.findOppositeEntryType())
+                    exitsFound.Add(entry);
+            }
+            int exitIndex = rand.Next(0, exitsFound.Count);
+            this.exitSelected = this.entryList[exitIndex];
         }
     }
 }

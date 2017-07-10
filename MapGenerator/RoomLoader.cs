@@ -35,6 +35,7 @@ namespace MapGenerator
                     spawnPoint = this.loadSpawnPoint();
                 if (walls.Count > 3 && entries.Count >= 1)
                 {
+                    // Debug.WriteLine("TILEWIDTH {0}", tmxmap.Width);
                     try
                     {
                         if (tmxmap.ObjectGroups["player"].Objects[0] != null)
