@@ -165,6 +165,7 @@ namespace Bloodbender
             PhysicObj pobj = new PhysicObj(BodyFactory.CreateRectangle(world, 32 * pixelToMeter, 32 * pixelToMeter, 1), // meterTopixel a la place de 32?
                 new Vector2(1280, 200));
             shadowsRendering.addShadow(new Shadow(pobj));
+            pobj.addAnimation(new Animation(textureCarre2));
             pobj.isRotationFixed(true);
 
             Player player = new Player(new Vector2(100, 100));
