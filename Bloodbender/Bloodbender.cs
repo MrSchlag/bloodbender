@@ -8,6 +8,9 @@ using FarseerPhysics.Factories;
 using FarseerPhysics;
 using System;
 using Bloodbender.PathFinding;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 
 namespace Bloodbender
 {
@@ -146,7 +149,8 @@ namespace Bloodbender
             mapBounds.addVertex(new Vector2(2000, 0));
             mapBounds.addVertex(new Vector2(1900, 500));
             mapBounds.addVertex(new Vector2(0, 500));
-            */
+            
+             */
             MapBound mapBounds = new MapBound();
             mapBounds.addVertex(new Vector2(0, 0), new Vector2(120, -50));
             mapBounds.addVertex(new Vector2(120, -50), new Vector2(350, -20));
@@ -162,8 +166,15 @@ namespace Bloodbender
             mapBounds2.addVertex(new Vector2(0, 250), new Vector2(0, 500));
             mapBounds2.finilizeMap();
             
+
+            /*
+            Debug.WriteLine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            MapFactory mFact = new MapFactory();
+            mFact.newMap();
+            */
+
             PhysicObj pobj = new PhysicObj(BodyFactory.CreateRectangle(world, 32 * pixelToMeter, 32 * pixelToMeter, 1), // meterTopixel a la place de 32?
-                new Vector2(1280, 200));
+            new Vector2(1280, 200));
             shadowsRendering.addShadow(new Shadow(pobj));
             pobj.addAnimation(new Animation(textureCarre2));
             pobj.isRotationFixed(true);
