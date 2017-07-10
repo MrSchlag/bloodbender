@@ -23,6 +23,13 @@ namespace Bloodbender
 
         public Enemy(Vector2 position, Player player) : base(position, PathFinderNodeType.CENTER)
         {
+            height = 32;
+
+            Animation anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("ennemy1"), 8, 0.1f, 32, 0, 0, 0);
+
+            anim.reset();
+            addAnimation(anim);
+
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
 
             velocity = 50;

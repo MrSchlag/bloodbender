@@ -165,19 +165,15 @@ namespace Bloodbender
             PhysicObj pobj = new PhysicObj(BodyFactory.CreateRectangle(world, 32 * pixelToMeter, 32 * pixelToMeter, 1), // meterTopixel a la place de 32?
                 new Vector2(1280, 200));
             shadowsRendering.addShadow(new Shadow(pobj));
-            pobj.addAnimation(new Animation(textureCarre2));
             pobj.isRotationFixed(true);
 
             Player player = new Player(new Vector2(100, 100));
             player.setLinearDamping(10);
 
             Enemy enemy = new Enemy(new Vector2(700, 200), player);
-            enemy.addAnimation(new Animation(textureCarre2));
             
             Enemy enemy1 = new Enemy(new Vector2(700, 200), player);
-            enemy1.addAnimation(new Animation(textureCarre2));
             Enemy enemy2 = new Enemy(new Vector2(700, 200), player);
-            enemy2.addAnimation(new Animation(textureCarre2));
             /*
             Enemy enemy3 = new Enemy(new Vector2(700, 200), player);
             enemy3.addAnimation(new Animation(textureCarre2));

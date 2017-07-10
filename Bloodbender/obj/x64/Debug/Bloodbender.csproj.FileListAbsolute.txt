@@ -46,3 +46,4 @@ E:\Programme - HomeMade\GIT\bloodbender\Bloodbender\obj\x64\Debug\Bloodbender.ex
 E:\Programme - HomeMade\GIT\bloodbender\Bloodbender\obj\x64\Debug\Bloodbender.pdb
 E:\Programme - HomeMade\GIT\bloodbender\Bloodbender\bin\x64\Debug\Content\Soldat\attack1.xnb
 E:\Programme - HomeMade\GIT\bloodbender\Bloodbender\bin\x64\Debug\Content\blood.xnb
+E:\Programme - HomeMade\GIT\bloodbender\Bloodbender\bin\x64\Debug\Content\ennemy1.xnb
