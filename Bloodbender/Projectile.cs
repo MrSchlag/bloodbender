@@ -23,10 +23,16 @@ namespace Bloodbender
         private float lifeTimeMax = 4.0f;
         private float lifeTime = 0.0f;
 
-        public Projectile(Vector2 position, float angle, float speed) : base(position)
+        public Projectile(Vector2 position) : base(position)
+        {
+            Animation anim = new Animation(Bloodbender.ptr.bouleRouge, 4, 0.05f, 32, 0, 0, 0);
+            anim.reset();
+            addAnimation(anim);
+        }
+        public Projectile(Vector2 position, float angle, float speed) : this(position)
         {
             //Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
-            
+
             float pixelToMeter = Bloodbender.pixelToMeter;
 
             body.Dispose();
@@ -44,7 +50,7 @@ namespace Bloodbender
             addFixtureToCheckedCollision(body.FixtureList[0]);
         }
 
-        public Projectile(Vector2 position, float radius, float angle, float speed) : base(position)
+        public Projectile(Vector2 position, float radius, float angle, float speed) : this(position)
         {
             body.Dispose();
             float pixelToMeter = Bloodbender.pixelToMeter;

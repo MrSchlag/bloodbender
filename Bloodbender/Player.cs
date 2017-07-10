@@ -243,7 +243,7 @@ namespace Bloodbender
                 if (isInDashRest)
                     return;
             block(dashDuration);
-            if (body.LinearVelocity == Vector2.Zero)
+            if (direction == Vector2.Zero)
                return;
             direction.Normalize();
             body.LinearVelocity = direction * dashSpeed * Bloodbender.pixelToMeter;

@@ -128,7 +128,7 @@ namespace Bloodbender
             Texture2D textureCarre = Content.Load<Texture2D>("carre");
             Texture2D textureCarre2 = Content.Load<Texture2D>("carre2");
             Texture2D textureTotem = Content.Load<Texture2D>("Totem");
-            bouleRouge = Content.Load<Texture2D>("bouleRouge");
+            bouleRouge = Content.Load<Texture2D>("blood");
             blood1 = Content.Load<Texture2D>("blood1");
             blood2 = Content.Load<Texture2D>("blood2");
             blood3 = Content.Load<Texture2D>("blood3");
