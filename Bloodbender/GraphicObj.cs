@@ -128,6 +128,11 @@ namespace Bloodbender
         {
             GC.SuppressFinalize(this);
         }
+
+        public double distanceWith(Vector2 position2)
+        {
+            return Math.Sqrt(Math.Pow((position.X - position2.X), 2) + Math.Pow((position.Y - position2.Y), 2));
+        }
     }
 
     public static class Vector2Extension

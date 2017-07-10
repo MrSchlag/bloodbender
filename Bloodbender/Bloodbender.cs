@@ -2,15 +2,12 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using FarseerPhysics.DebugView;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Factories;
 using FarseerPhysics;
 using System;
 using Bloodbender.PathFinding;
-using System.Reflection;
 
 namespace Bloodbender
 {
@@ -131,7 +128,7 @@ namespace Bloodbender
             Texture2D textureCarre = Content.Load<Texture2D>("carre");
             Texture2D textureCarre2 = Content.Load<Texture2D>("carre2");
             Texture2D textureTotem = Content.Load<Texture2D>("Totem");
-            bouleRouge = Content.Load<Texture2D>("bouleRouge");
+            bouleRouge = Content.Load<Texture2D>("blood");
             blood1 = Content.Load<Texture2D>("blood1");
             blood2 = Content.Load<Texture2D>("blood2");
             blood3 = Content.Load<Texture2D>("blood3");
@@ -150,24 +147,21 @@ namespace Bloodbender
             mapBounds.addVertex(new Vector2(1900, 500));
             mapBounds.addVertex(new Vector2(0, 500));
             */
-            //MapBound mapBounds = new MapBound();
-            //mapBounds.addVertex(new Vector2(0, 0), new Vector2(120, -50));
-            //mapBounds.addVertex(new Vector2(120, -50), new Vector2(350, -20));
-            //mapBounds.addVertex(new Vector2(350, -20), new Vector2(700, 0));
-            //mapBounds.addVertex(new Vector2(700, 0), new Vector2(2000, 0));
-            //mapBounds.addVertex(new Vector2(2000, 0), new Vector2(1900, 500));
-            //mapBounds.addVertex(new Vector2(1900, 500), new Vector2(0, 500));
-            //mapBounds.finilizeMap();
-
-
-            //MapBound mapBounds2 = new MapBound();
-            //mapBounds2.addVertex(new Vector2(0, 0), new Vector2(0, 250));
-            //mapBounds2.addVertex(new Vector2(0, 250), new Vector2(0, 500));
-            //mapBounds2.finilizeMap();
-            Debug.WriteLine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-            MapFactory mFact = new MapFactory();
-            mFact.newMap();
-
+            MapBound mapBounds = new MapBound();
+            mapBounds.addVertex(new Vector2(0, 0), new Vector2(120, -50));
+            mapBounds.addVertex(new Vector2(120, -50), new Vector2(350, -20));
+            mapBounds.addVertex(new Vector2(350, -20), new Vector2(700, 0));
+            mapBounds.addVertex(new Vector2(700, 0), new Vector2(2000, 0));
+            mapBounds.addVertex(new Vector2(2000, 0), new Vector2(1900, 500));
+            mapBounds.addVertex(new Vector2(1900, 500), new Vector2(0, 500));
+            mapBounds.finilizeMap();
+            
+            
+            MapBound mapBounds2 = new MapBound();
+            mapBounds2.addVertex(new Vector2(0, 0), new Vector2(0, 250));
+            mapBounds2.addVertex(new Vector2(0, 250), new Vector2(0, 500));
+            mapBounds2.finilizeMap();
+            
             PhysicObj pobj = new PhysicObj(BodyFactory.CreateRectangle(world, 32 * pixelToMeter, 32 * pixelToMeter, 1), // meterTopixel a la place de 32?
                 new Vector2(1280, 200));
             shadowsRendering.addShadow(new Shadow(pobj));
@@ -178,12 +172,9 @@ namespace Bloodbender
             player.setLinearDamping(10);
 
             Enemy enemy = new Enemy(new Vector2(700, 200), player);
-            enemy.addAnimation(new Animation(textureCarre2));
             
             Enemy enemy1 = new Enemy(new Vector2(700, 200), player);
-            enemy1.addAnimation(new Animation(textureCarre2));
             Enemy enemy2 = new Enemy(new Vector2(700, 200), player);
-            enemy2.addAnimation(new Animation(textureCarre2));
             /*
             Enemy enemy3 = new Enemy(new Vector2(700, 200), player);
             enemy3.addAnimation(new Animation(textureCarre2));
