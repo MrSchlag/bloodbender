@@ -20,15 +20,21 @@ namespace Bloodbender
     public class Enemy : PhysicObj
     {
         Fixture playerBoundsFix;
+        PhysicObj target;
+        float attackRate = 1.5f;
+        float timerAttack = 0;
 
         public Enemy(Vector2 position, Player player) : base(position, PathFinderNodeType.CENTER)
         {
             height = 32;
 
-            Animation anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("ennemy1"), 8, 0.1f, 32, 0, 0, 0);
-
+            Animation anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("Ennemy1/ennemy1"), 8, 0.1f, 32, 0, 0, 0);
             anim.reset();
             addAnimation(anim);
+
+            Animation attackAnimation = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("Ennemy1/ennemy1attack"), 6, 0.1f, 32, 0, 0, 0);
+            attackAnimation.isLooping = false;
+            addAnimation(attackAnimation);
 
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
 
@@ -39,12 +45,33 @@ namespace Bloodbender
             //add method to be called on collision, different denpending of fixture
             addFixtureToCheckedCollision(playerBoundsFix);
 
-            IComponent comp = new FollowBehaviorComponent(this, player, 80);
+            IComponent comp = new FollowBehaviorComponent(this, player, 32);
             addComponent(comp);
+
+            target = player;
         }
 
         public override bool Update(float elapsed)
         {
+            if (timerAttack > 0)
+                timerAttack -= elapsed;
+
+            if (distanceWith(target.position) < 40)
+            {
+                if (timerAttack <= 0)
+                {
+                    runAnimation(1);
+                    timerAttack = attackRate;
+                }
+                else
+                {
+                    if (!getAnimation(1).isRunning)
+                        runAnimation(0);
+                }
+            }
+            else
+                runAnimation(0);
+
             return base.Update(elapsed);
         }
 

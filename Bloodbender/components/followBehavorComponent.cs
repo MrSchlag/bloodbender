@@ -67,6 +67,9 @@ namespace Bloodbender
                 return false;
             }
 
+            if (path.Count() < 2) //fixe temporaire
+                return true;
+
             var nextNode = path[1];
 
             Vector2 posToNode = nextNode.position - owner.getPosNode().position;
