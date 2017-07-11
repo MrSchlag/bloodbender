@@ -43,6 +43,19 @@ namespace Bloodbender.PathFinding
                 if (_nodeTriangle != value)
                 {
                     _nodeTriangle = value;
+                    //TriangleChangedEvent?.Invoke();
+                }
+            }
+        }
+
+        public NodeTriangle NodeTriangleEvent
+        {
+            get { return _nodeTriangle; }
+            set
+            {
+                if (_nodeTriangle != value)
+                {
+                    _nodeTriangle = value;
                     TriangleChangedEvent?.Invoke();
                 }
             }

@@ -53,7 +53,7 @@ namespace Bloodbender.PathFinding
             {
                 foreach (var pair in objNavMeshMapping)
                 {
-                    AddNodeToNavMesh(pair.Value, pair.Key.getPosNode());
+                    AddNodeToNavMesh(pair.Value, pair.Key.getPosNode(), true);
                 }
                 timerEvent = 0;
             }
@@ -122,12 +122,16 @@ namespace Bloodbender.PathFinding
             AddNodeToNavMesh(GetNavMesh(obj), obj.getPosNode()); 
         }
 
-        private bool AddNodeToNavMesh(NavMesh nav, PathFinderNode node)
+        private bool AddNodeToNavMesh(NavMesh nav, PathFinderNode node, bool throwEvent = false)
         {
             NodeTriangle triangle;
 
             triangle = nav.GetNodeTriangle(node);
-            node.NodeTriangle = triangle;
+
+            if (throwEvent == true)
+                node.NodeTriangleEvent = triangle;
+            else
+                node.NodeTriangle = triangle;
 
             if (triangle.p1 == null || triangle.p2 == null || triangle.p3 == null)
                 return false;
