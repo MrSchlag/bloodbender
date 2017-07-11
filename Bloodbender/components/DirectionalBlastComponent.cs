@@ -69,7 +69,6 @@ namespace Bloodbender
             Vector2 mainProjPosition = spawnPositionOffset.Rotate(shootAngle) + owner.position;
 
             Projectile mainProj = new Projectile(mainProjPosition, mainProjRadius, shootAngle, projSpeed);
-            mainProj.addAnimation(new Animation(Bloodbender.ptr.bouleRouge));
             mainProj.body.IgnoreCollisionWith(owner.body);
             Bloodbender.ptr.listGraphicObj.Add(mainProj);
 
