@@ -25,8 +25,6 @@ namespace Bloodbender
             float angleLinearVelocityVector = (float)(Math.Atan2(owner.body.LinearVelocity.Y, owner.body.LinearVelocity.X) - Math.Atan2(1, 0) + Math.PI / 2);
             owner.setRotation(angleLinearVelocityVector);
 
-            Console.WriteLine(angleLinearVelocityVector);
-
             return true;
         }
     }
