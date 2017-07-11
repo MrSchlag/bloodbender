@@ -106,6 +106,11 @@ namespace Bloodbender.PathFinding
             neighbors.Clear();
         }
 
+        public void OnTriangleChanged()
+        {
+            TriangleChangedEvent?.Invoke();
+        }
+
         public event TargetChangeTriangle TriangleChangedEvent;
 
     }

@@ -6,15 +6,11 @@ using System.Threading.Tasks;
 using FarseerPhysics.Common.PolygonManipulation;
 using FarseerPhysics.Collision;
 using FarseerPhysics.Collision.Shapes;
-using FarseerPhysics.Common.TextureTools;
 using FarseerPhysics.Common;
 using FarseerPhysics.Dynamics;
-using FarseerPhysics.Dynamics.Contacts;
-using FarseerPhysics.Factories;
+
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System.Threading;
+
 using Bloodbender.PathFinding;
 
 namespace Bloodbender
@@ -26,14 +22,14 @@ namespace Bloodbender
 
         float escapeZoneRadius;
 
-        float pathRequestRate = 0.2f;
+        float pathRequestRate = 0.4f;
         float pathRequestRateCounter = 0f;
 
         //float ignoreNodeRadiusOffset = 5 * Bloodbender.pixelToMeter;
 
         PathFinderNode nextNode;
         List<PathFinderNode> path;
-        
+
         float maxVertexDistance;
         float maxVertexDistanceOffset = 10 * Bloodbender.pixelToMeter;
 
@@ -49,27 +45,31 @@ namespace Bloodbender
 
         private void FollowBehaviorComponent_TriangleChangedEvent()
         {
+            Console.WriteLine("event fired");
             path = Bloodbender.ptr.pFinder.pathRequest(owner, target);
+
+            if (path == null)
+                Console.WriteLine("Triangle hangler : {0}" + DateTime.Now);
         }
 
         bool IComponent.Update(float elapsed)
         {
             pathRequestRateCounter += elapsed;
-            if (pathRequestRateCounter > pathRequestRate)
-            {
-                pathRequestRateCounter = 0f;
-                Bloodbender.ptr.pFinder.UpdateTriangleForObj(target);
-            }
+            //if (pathRequestRateCounter > pathRequestRate)
+            //{
+            pathRequestRateCounter = 0f;
+            //var path = Bloodbender.ptr.pFinder.pathRequest(owner, target);
 
             if (path == null)
             {
+                //Console.WriteLine("bad");
                 owner.body.LinearVelocity = Vector2.Zero;
                 return false;
             }
-
             if (path.Count() < 2) //fixe temporaire
                 return true;
 
+            //Console.WriteLine("test");
             var nextNode = path[1];
 
             Vector2 posToNode = nextNode.position - owner.getPosNode().position;
@@ -92,6 +92,7 @@ namespace Bloodbender
             {
                 owner.body.LinearVelocity = Vector2.Zero;
             }
+            //}
 
             return true;
         }
@@ -123,7 +124,7 @@ namespace Bloodbender
         private bool ignoreThisNodeForWidth(PathFinderNode nextNode)
         {
             float maxLength = maxLenghtCentroidVertex();
-           
+
             return false;
         }
 

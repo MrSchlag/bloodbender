@@ -1,16 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Bloodbender.PathFinding
 {
     public class PathFinder
     {
-
         public static float PathStep = 2f;
         private List<NavMesh> navMeshes;
         private PathProcessor pathProc;
         private Dictionary<PhysicObj, NavMesh> objNavMeshMapping;
         public Dictionary<GraphicObj, List<PathFinderNode>> PathDict { get; set; }
+
+        private float timerEventDuration = 0.2f;
+        private float timerEvent = 0;
 
         public PathFinder()
         {
@@ -43,6 +47,19 @@ namespace Bloodbender.PathFinding
             }
         }
 
+        public void Update(float elapsed)
+        {
+            if (timerEvent > timerEventDuration)
+            {
+                foreach (var pair in objNavMeshMapping)
+                {
+                    AddNodeToNavMesh(pair.Value, pair.Key.getPosNode());
+                }
+                timerEvent = 0;
+            }
+            timerEvent += elapsed;
+        }
+
         public void UpdateTriangleForNode(PathFinderNode node)
         {
 
@@ -58,7 +75,7 @@ namespace Bloodbender.PathFinding
 
             AddNodeToNavMesh(GetNavMesh(startObj), startObj.getPosNode());
             AddNodeToNavMesh(GetNavMesh(startObj), endObj.getPosNode());
-
+                
             if (PathProcessor.isWayClearToNode(startObj, endObj.getPosNode()))
             {
                 startObj.getPosNode().neighbors.Add(endObj.getPosNode());
@@ -84,12 +101,28 @@ namespace Bloodbender.PathFinding
             return PathDict;
         }
 
+        private bool PathComparator(List<PathFinderNode> path1, List<PathFinderNode> path2)
+        {
+            if (path1 == null || path2 == null)
+                return false;
+            if (path1.Count != path2.Count)
+                return false;
+
+            for (int i = 0; i < path1.Count; i++)
+            {
+                if (path1[i] != path2[i])
+                    return false;
+            }
+
+            return true;
+        }
+
         public void UpdateTriangleForObj(PhysicObj obj)
         {
             AddNodeToNavMesh(GetNavMesh(obj), obj.getPosNode()); 
         }
 
-        private void AddNodeToNavMesh(NavMesh nav, PathFinderNode node)
+        private bool AddNodeToNavMesh(NavMesh nav, PathFinderNode node)
         {
             NodeTriangle triangle;
 
@@ -97,8 +130,8 @@ namespace Bloodbender.PathFinding
             node.NodeTriangle = triangle;
 
             if (triangle.p1 == null || triangle.p2 == null || triangle.p3 == null)
-                return;
-
+                return false;
+            
             if (NavMesh.NodeToNodeRayCast(node, navMeshes[0].GetEquivalentNode(triangle.p1)))
             {
                 triangle.p1.neighbors.Add(node);
@@ -117,6 +150,7 @@ namespace Bloodbender.PathFinding
                 node.neighbors.Add(triangle.p3);
             }
 
+            return true;
             /*
             triangle.p2.neighbors.Add(node);
             triangle.p3.neighbors.Add(node);

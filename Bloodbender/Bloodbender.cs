@@ -160,7 +160,6 @@ namespace Bloodbender
             mapBounds.addVertex(new Vector2(1900, 500), new Vector2(0, 500));
             mapBounds.finilizeMap();
             
-            
             MapBound mapBounds2 = new MapBound();
             mapBounds2.addVertex(new Vector2(0, 0), new Vector2(0, 250));
             mapBounds2.addVertex(new Vector2(0, 250), new Vector2(0, 500));
@@ -208,12 +207,16 @@ namespace Bloodbender
             Totem totem2 = new Totem(new Vector2(700, 400));
             totem2.addAnimation(new Animation(textureTotem));
 
+            Totem totem3 = new Totem(new Vector2(900, 300));
+            totem3.addAnimation(new Animation(textureTotem));
+
 
             Sprinkler sprinkler = new Sprinkler(new Vector2(500, 300));
 
             listGraphicObj.Add(sprinkler);
             listGraphicObj.Add(totem);
             listGraphicObj.Add(totem2);
+            listGraphicObj.Add(totem3);
             listGraphicObj.Add(player);
             listGraphicObj.Add(enemy);
            
@@ -312,7 +315,7 @@ namespace Bloodbender
                 }
             }
 
-
+            pFinder.Update(elapsed);
             shadowsRendering.Update(elapsed);
 
             if (inputHelper.IsNewKeyPress(Keys.F1))
