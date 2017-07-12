@@ -144,10 +144,6 @@ namespace MapGenerator
                 translateY += (newRoom.Y) * newRoom.tileSize;
                 Debug.WriteLine((newRoom.Y) * newRoom.tileSize + " " + (newRoom.Y + 10) * newRoom.tileSize, translateY);
                 Debug.WriteLine("EXIT TYPE " + lastRoom.exitSelected.type);
-                Debug.WriteLine("exit {0}/{1}-{0}{1} ========= entry {0}/{1}-{0}/{1}",
-                    lastRoom.exitSelected.ptA.X, lastRoom.exitSelected.ptA.Y, lastRoom.exitSelected.ptB.X, lastRoom.exitSelected.ptB.Y,
-                    newRoom.entrySelected.ptA.X, newRoom.entrySelected.ptA.Y, newRoom.entrySelected.ptB.X, newRoom.entrySelected.ptB.Y
-                );
                 if (lastRoom.exitSelected.type == entryType.top)
                    this.addRoomToMap(newRoom, translateX, -translateY, lastRoom.exitSelected);
                 else if (lastRoom.exitSelected.type == entryType.bot)
