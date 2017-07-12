@@ -65,8 +65,8 @@ namespace MapGenerator
             numberOfRooms = rand.Next(4, 10);
             rooms = new List<Room>();
             roomLinkers = new List<RoomLinker>(); 
-            this.addRoomToList(selectRandomSpawn(), 0, 0);
-            for (int i = 2; i <= 30 /*numberOfRooms*/; i++)
+            this.addRoomToMap(selectRandomSpawn(), 0, 0);
+            for (int i = 2; i <= 10 /*numberOfRooms*/; i++)
             {
                 this.addRandomRoom();
             }
@@ -126,27 +126,32 @@ namespace MapGenerator
             // Debug.WriteLine(entry.ptA.X + "/" + entry.ptA.Y + " - " + entry.ptB.X + "/" + entry.ptB.Y);
             // Debug.WriteLine(newRoom.entrySelected.ptA.X + " " + newRoom.entrySelected.ptA.Y);
 
-            float randomTranslate = rand.Next(0, 4);
+            float randomTranslate = rand.Next(-20, 20);
             int i = 0;
             if (lastRoom.exitSelected.type == entryType.top || newRoom.entrySelected.type == entryType.bot)
             {
                 float translateY = 0;
                 float translateX = 0;
-                // Debug.WriteLine("{0} - {1}", newRoom.entrySelected.ptA.X, entry.ptA.X);
-                translateX = lastRoom.exitSelected.ptA.X - newRoom.entrySelected.ptA.X;
+                translateX = lastRoom.exitSelected.ptA.X + (randomTranslate * lastRoom.tileSize) - newRoom.entrySelected.ptA.X;
 
                 foreach (Room room in this.rooms)
                 {
                     if (i > 0)
-                        translateY += room.Y * room.tileSize;
+                        translateY += (room.Y + 3) * room.tileSize;
                     i++;
                 }
-                translateY += newRoom.Y * newRoom.tileSize;
+                
+                translateY += (newRoom.Y) * newRoom.tileSize;
+                Debug.WriteLine((newRoom.Y) * newRoom.tileSize + " " + (newRoom.Y + 10) * newRoom.tileSize, translateY);
                 Debug.WriteLine("EXIT TYPE " + lastRoom.exitSelected.type);
+                Debug.WriteLine("exit {0}/{1}-{0}{1} ========= entry {0}/{1}-{0}/{1}",
+                    lastRoom.exitSelected.ptA.X, lastRoom.exitSelected.ptA.Y, lastRoom.exitSelected.ptB.X, lastRoom.exitSelected.ptB.Y,
+                    newRoom.entrySelected.ptA.X, newRoom.entrySelected.ptA.Y, newRoom.entrySelected.ptB.X, newRoom.entrySelected.ptB.Y
+                );
                 if (lastRoom.exitSelected.type == entryType.top)
-                   this.addRoomToList(newRoom, translateX, -translateY);
+                   this.addRoomToMap(newRoom, translateX, -translateY, lastRoom.exitSelected);
                 else if (lastRoom.exitSelected.type == entryType.bot)
-                   this.addRoomToList(newRoom, translateX, translateY);
+                   this.addRoomToMap(newRoom, translateX, translateY, lastRoom.exitSelected);
             }
             else if (lastRoom.exitSelected.type == entryType.left || lastRoom.exitSelected.type == entryType.right)
             {
@@ -160,13 +165,13 @@ namespace MapGenerator
                     i++;
                 }
                 if (lastRoom.exitSelected.type == entryType.left)
-                    this.addRoomToList(newRoom, -translateX, translateY);
+                    this.addRoomToMap(newRoom, -translateX, translateY, lastRoom.exitSelected);
                 else if (lastRoom.exitSelected.type == entryType.right)
-                    this.addRoomToList(newRoom, translateX, translateY);
+                    this.addRoomToMap(newRoom, translateX, translateY, lastRoom.exitSelected);
             }
         }
 
-        public void addRoomToList(Room room, float xTrans, float yTrans)
+        public void addRoomToMap(Room room, float xTrans, float yTrans, Entry exit = null)
         {
             if (room != null)
             {
@@ -192,9 +197,23 @@ namespace MapGenerator
                         room.spawnPoint = Vector2.Transform(room.spawnPoint, Matrix.CreateTranslation(xTrans, yTrans, 0));
                 }
                 rooms.Add(room);
+                if (exit != null)
+                {
+                    Debug.WriteLine("exit  {0} / {1} - {2} / {3}", exit.ptA.X, exit.ptA.Y, exit.ptB.X, exit.ptB.Y);
+                    this.createPathFromExitToEntry(exit, room.entrySelected);
+                }
             }
         }
 
+        public void createPathFromExitToEntry(Entry exit, Entry entry)
+        {
+            Debug.WriteLine("exit  {0} / {1} - {2} / {3}", exit.ptA.X, exit.ptA.Y, exit.ptB.X, exit.ptB.Y);
+            Debug.WriteLine("entry {0} / {1} - {2} / {3}", entry.ptA.X, entry.ptA.Y, entry.ptB.X, entry.ptB.Y);
+            if (exit.type == entryType.top)
+            {
+            }
+        }
+ 
         public void visualizeMap()
         {
             List<Wall> wallList = new List<Wall>();
