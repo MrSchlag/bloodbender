@@ -241,7 +241,15 @@ namespace Bloodbender
 
             listGraphicObj.Add(arbre);
 
-
+            GraphicObj giclesang = new GraphicObj(GraphicObj.OffSet.Center);
+            giclesang.position = new Vector2(100, 100);
+            giclesang.scale = new Vector2(1.25f, 1.25f);
+            Animation animglic = new Animation(Content.Load<Texture2D>("blood1hit"), 6, 0.1f, 32, 32, 0, 0);
+            animglic.forceDepth(1);
+            animglic.reset();
+            giclesang.addAnimation(animglic);
+            giclesang.runAnimation(0);
+            listGraphicObj.Add(giclesang);
         }
 
         
