@@ -40,7 +40,7 @@ namespace Bloodbender
 
             velocity = 50;
 
-            playerBoundsFix = createOctogoneFixture(32f, 32f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
+            playerBoundsFix = createOctogoneFixture(16f, 16f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
             Radius = 32f;
             //add method to be called on collision, different denpending of fixture
             addFixtureToCheckedCollision(playerBoundsFix);
