@@ -231,6 +231,17 @@ namespace Bloodbender
 
             //pathFinder.pathRequest(new Vector2(41, 42), new Vector2(300, 300));
             pFinder.GeneratesMeshes();
+
+
+            PhysicObj arbre = new PhysicObj(BodyFactory.CreateCircle(world, 16 * pixelToMeter, 1), new Vector2(400, 200));
+            arbre.body.BodyType = BodyType.Static;
+            arbre.addAnimation(new Animation(Content.Load<Texture2D>("tree1"), 128, 128));
+
+            arbre.scale = new Vector2(1.75f, 1.75f);
+
+            listGraphicObj.Add(arbre);
+
+
         }
 
         
