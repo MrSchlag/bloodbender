@@ -62,14 +62,12 @@ namespace Bloodbender
 
             if (path == null)
             {
-                //Console.WriteLine("bad");
                 owner.body.LinearVelocity = Vector2.Zero;
                 return false;
             }
             if (path.Count() < 2) //fixe temporaire
                 return true;
 
-            //Console.WriteLine("test");
             var nextNode = path[1];
 
             Vector2 posToNode = nextNode.position - owner.getPosNode().position;
@@ -92,7 +90,6 @@ namespace Bloodbender
             {
                 owner.body.LinearVelocity = Vector2.Zero;
             }
-            //}
 
             return true;
         }

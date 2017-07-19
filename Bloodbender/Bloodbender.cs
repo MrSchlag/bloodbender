@@ -11,6 +11,7 @@ using Bloodbender.PathFinding;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using Bloodbender.Scene;
 
 namespace Bloodbender
 {
@@ -37,6 +38,7 @@ namespace Bloodbender
         public List<GraphicObj> listGraphicObj;
 
         public PathFinder pFinder;
+        public Player player;
 
         public float elapsed = 0.0f;
 
@@ -49,6 +51,7 @@ namespace Bloodbender
         public Texture2D debugNodeFree;
         public Texture2D debugNodeBusy;
 
+        private TotemScene totemscene;
 
         private bool WindowSizeIsBeingChanged = false;
 
@@ -178,7 +181,7 @@ namespace Bloodbender
             //pobj.addAnimation(new Animation(textureCarre2));
             pobj.isRotationFixed(true);
 
-            Player player = new Player(new Vector2(100, 100));
+            player = new Player(new Vector2(100, 100));
             player.setLinearDamping(10);
 
             Enemy enemy = new Enemy(new Vector2(700, 200), player);
@@ -226,6 +229,13 @@ namespace Bloodbender
             listGraphicObj.Add(enemy9);
            */
             listGraphicObj.Add(pobj);
+
+            totemscene = new TotemScene();
+            totemscene.AddTotemPosition(new Vector2(400, 400));
+            totemscene.AddEnemySpawnPosition(new Vector2(800, 400));
+            totemscene.AddEnemySpawnPosition(new Vector2(800, 450));
+            totemscene.AddEnemySpawnPosition(new Vector2(800, 350));
+            totemscene.Run();
 
             frameRateCounter = new FrameRateCounter(font);
 
@@ -310,6 +320,8 @@ namespace Bloodbender
             world.Step(1f / 30f);
 
             camera.Update(elapsed);
+
+            totemscene.Update(elapsed);
 
             for (int i = 0; i < listGraphicObj.Count; ++i)
             {
