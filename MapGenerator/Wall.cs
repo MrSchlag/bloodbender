@@ -19,6 +19,12 @@ namespace MapGenerator
             this.ptB = ptB;
             this.objIndex = objIndex;
         }
-        
+
+        public Wall(Vector2 ptA, Vector2 ptB)
+        {
+            this.ptA = ptA;
+            this.ptB = ptB;
+            this.objIndex = objIndex;
+        }
     }
 }

@@ -49,7 +49,7 @@ namespace MapGenerator
             {
                 if (entry.type == type)
                 {
-                    Debug.WriteLine("TYPE TO FIND {0} - INDEX FOUND/TYPE {0}/{1}", type, entryList.IndexOf(entry), entry.type); ;
+                    // Debug.WriteLine("TYPE TO FIND {0} - INDEX FOUND/TYPE {0}/{1}", type, entryList.IndexOf(entry), entry.type); ;
                     entriesFound.Add(entry);
                 }  
             }

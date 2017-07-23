@@ -142,6 +142,9 @@ namespace Bloodbender
             pFinder = new PathFinder();
             pFinder.BuildtNavMeshes(6, 10);
 
+            Debug.WriteLine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            MapFactory mFact = new MapFactory();
+            mFact.newMap();
             /*mapBounds.addVertex(new Vector2(0, 0));
             mapBounds.addVertex(new Vector2(120, -50));
             mapBounds.addVertex(new Vector2(350, -20));
@@ -164,26 +167,23 @@ namespace Bloodbender
             //mapBounds2.addVertex(new Vector2(0, 0), new Vector2(0, 250));
             //mapBounds2.addVertex(new Vector2(0, 250), new Vector2(0, 500));
             //mapBounds2.finilizeMap();
-            Debug.WriteLine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-            MapFactory mFact = new MapFactory();
-            mFact.newMap();
 
-            PhysicObj pobj = new PhysicObj(BodyFactory.CreateRectangle(world, 32 * pixelToMeter, 32 * pixelToMeter, 1), // meterTopixel a la place de 32?
-                new Vector2(1280, 200));
-            shadowsRendering.addShadow(new Shadow(pobj));
-            pobj.addAnimation(new Animation(textureCarre2));
-            pobj.isRotationFixed(true);
+            //PhysicObj pobj = new PhysicObj(BodyFactory.CreateRectangle(world, 32 * pixelToMeter, 32 * pixelToMeter, 1), // meterTopixel a la place de 32?
+            //    new Vector2(1280, 200));
+            //shadowsRendering.addShadow(new Shadow(pobj));
+            //pobj.addAnimation(new Animation(textureCarre2));
+            //pobj.isRotationFixed(true);
 
-            Player player = new Player(new Vector2(100, 100));
+            Player player = new Player(new Vector2(200, 150));
             player.setLinearDamping(10);
 
-            Enemy enemy = new Enemy(new Vector2(700, 200), player);
-            enemy.addAnimation(new Animation(textureCarre2));
+            //Enemy enemy = new Enemy(new Vector2(700, 200), player);
+            //enemy.addAnimation(new Animation(textureCarre2));
             
-            Enemy enemy1 = new Enemy(new Vector2(700, 200), player);
-            enemy1.addAnimation(new Animation(textureCarre2));
-            Enemy enemy2 = new Enemy(new Vector2(700, 200), player);
-            enemy2.addAnimation(new Animation(textureCarre2));
+            //Enemy enemy1 = new Enemy(new Vector2(700, 200), player);
+            //enemy1.addAnimation(new Animation(textureCarre2));
+            //Enemy enemy2 = new Enemy(new Vector2(700, 200), player);
+            //enemy2.addAnimation(new Animation(textureCarre2));
             /*
             Enemy enemy3 = new Enemy(new Vector2(700, 200), player);
             enemy3.addAnimation(new Animation(textureCarre2));
@@ -200,24 +200,24 @@ namespace Bloodbender
             Enemy enemy9 = new Enemy(new Vector2(700, 200), player);
             enemy9.addAnimation(new Animation(textureCarre2));
            */
-            Totem totem = new Totem(new Vector2(300, 300));
-            totem.addAnimation(new Animation(textureTotem));
+            //Totem totem = new Totem(new Vector2(300, 300));
+            //totem.addAnimation(new Animation(textureTotem));
 
-            Totem totem2 = new Totem(new Vector2(700, 400));
-            totem2.addAnimation(new Animation(textureTotem));
+            //Totem totem2 = new Totem(new Vector2(700, 400));
+            //totem2.addAnimation(new Animation(textureTotem));
 
 
-            Sprinkler sprinkler = new Sprinkler(new Vector2(500, 300));
+            //Sprinkler sprinkler = new Sprinkler(new Vector2(500, 300));
 
-            listGraphicObj.Add(sprinkler);
-            listGraphicObj.Add(totem);
-            listGraphicObj.Add(totem2);
+            //listGraphicObj.Add(sprinkler);
+            //listGraphicObj.Add(totem);
+            //listGraphicObj.Add(totem2);
             listGraphicObj.Add(player);
-            listGraphicObj.Add(enemy);
+            //listGraphicObj.Add(enemy);
            
             
-            listGraphicObj.Add(enemy1);
-            listGraphicObj.Add(enemy2);
+            //listGraphicObj.Add(enemy1);
+            //listGraphicObj.Add(enemy2);
             /*
             listGraphicObj.Add(enemy3);
             listGraphicObj.Add(enemy4);
@@ -227,7 +227,7 @@ namespace Bloodbender
             listGraphicObj.Add(enemy8);
             listGraphicObj.Add(enemy9);
            */
-            listGraphicObj.Add(pobj);
+            // listGraphicObj.Add(pobj);
 
             frameRateCounter = new FrameRateCounter(font);
 

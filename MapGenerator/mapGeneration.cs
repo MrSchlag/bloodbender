@@ -60,13 +60,17 @@ namespace MapGenerator
 
         public void newMap()
         {
-            rand = new Random();
+            var seed = Guid.NewGuid().GetHashCode();
+            //var seed = -290832816;
+            // Debug.WriteLine("SEED " + seed);
+            rand = new Random(seed);
             rloader = new RoomLoader();
-            numberOfRooms = rand.Next(4, 10);
+            // numberOfRooms = rand.Next(5, 22);
+            numberOfRooms = 2;
             rooms = new List<Room>();
             roomLinkers = new List<RoomLinker>(); 
             this.addRoomToMap(selectRandomSpawn(), 0, 0);
-            for (int i = 2; i <= 10 /*numberOfRooms*/; i++)
+            for (int i = 2; i <= numberOfRooms; i++)
             {
                 this.addRandomRoom();
             }
@@ -91,7 +95,6 @@ namespace MapGenerator
             if (this.rooms.Count > 1)
                 lastRoom.selectRandomExit(rand);
             opEntryType = lastRoom.exitSelected.findOppositeEntryType();
-
             Room newRoom = this.findRandomRoomWithEntryType(opEntryType);
             if (newRoom == null)
                 return;
@@ -108,7 +111,7 @@ namespace MapGenerator
             if (roomsFilesSelected != null)
             {
                 int roomIndex = rand.Next(0, roomsFilesSelected.Count);
-                Debug.WriteLine("ROOM SELECTED PATH " + roomsFilesSelected[roomIndex]);
+                // Debug.WriteLine("ROOM SELECTED PATH " + roomsFilesSelected[roomIndex]);
                 Room room = rloader.load(roomsFilesSelected[roomIndex]);
                 if (room == null)
                     return null;
@@ -126,7 +129,8 @@ namespace MapGenerator
             // Debug.WriteLine(entry.ptA.X + "/" + entry.ptA.Y + " - " + entry.ptB.X + "/" + entry.ptB.Y);
             // Debug.WriteLine(newRoom.entrySelected.ptA.X + " " + newRoom.entrySelected.ptA.Y);
 
-            float randomTranslate = rand.Next(-20, 20);
+            // float randomTranslate = rand.Next(-40, 40);
+            float randomTranslate = 0;
             int i = 0;
             if (lastRoom.exitSelected.type == entryType.top || newRoom.entrySelected.type == entryType.bot)
             {
@@ -142,8 +146,8 @@ namespace MapGenerator
                 }
                 
                 translateY += (newRoom.Y) * newRoom.tileSize;
-                Debug.WriteLine((newRoom.Y) * newRoom.tileSize + " " + (newRoom.Y + 10) * newRoom.tileSize, translateY);
-                Debug.WriteLine("EXIT TYPE " + lastRoom.exitSelected.type);
+                // Debug.WriteLine((newRoom.Y) * newRoom.tileSize + " " + (newRoom.Y + 10) * newRoom.tileSize, translateY);
+                // Debug.WriteLine("EXIT TYPE " + lastRoom.exitSelected.type);
                 if (lastRoom.exitSelected.type == entryType.top)
                    this.addRoomToMap(newRoom, translateX, -translateY, lastRoom.exitSelected);
                 else if (lastRoom.exitSelected.type == entryType.bot)
@@ -173,7 +177,7 @@ namespace MapGenerator
             {
                 if (xTrans != 0  || yTrans != 0)
                 {
-                    Debug.WriteLine("translation {0}/{1}", xTrans, yTrans);
+                    // Debug.WriteLine("translation {0}/{1}", xTrans, yTrans);
                     foreach(Wall wall in room.wallList)
                     {
                         wall.ptA = Vector2.Transform(wall.ptA, Matrix.CreateTranslation(xTrans, yTrans, 0));
@@ -195,18 +199,9 @@ namespace MapGenerator
                 rooms.Add(room);
                 if (exit != null)
                 {
-                    Debug.WriteLine("exit  {0} / {1} - {2} / {3}", exit.ptA.X, exit.ptA.Y, exit.ptB.X, exit.ptB.Y);
-                    this.createPathFromExitToEntry(exit, room.entrySelected);
+                    RoomLinker roomLinker = new RoomLinker(exit, room.entrySelected);
+                    roomLinkers.Add(roomLinker);
                 }
-            }
-        }
-
-        public void createPathFromExitToEntry(Entry exit, Entry entry)
-        {
-            Debug.WriteLine("exit  {0} / {1} - {2} / {3}", exit.ptA.X, exit.ptA.Y, exit.ptB.X, exit.ptB.Y);
-            Debug.WriteLine("entry {0} / {1} - {2} / {3}", entry.ptA.X, entry.ptA.Y, entry.ptB.X, entry.ptB.Y);
-            if (exit.type == entryType.top)
-            {
             }
         }
  

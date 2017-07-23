@@ -176,7 +176,11 @@ namespace MapGenerator
                     if (itype != 4)
                     {
                         entryType type = (entryType)itype;
-                        Entry entry = new Entry(evpoint1, evpoint2, type);
+                        Entry entry;
+                        if (evpoint1.X > evpoint2.X || evpoint1.Y > evpoint2.Y)
+                            entry = new Entry(evpoint1, evpoint2, type);
+                        else
+                            entry = new Entry(evpoint1, evpoint2, type);
                         entries.Add(entry);
                     } else
                     {
