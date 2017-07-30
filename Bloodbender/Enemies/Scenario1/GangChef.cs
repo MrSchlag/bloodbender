@@ -24,9 +24,16 @@ namespace Bloodbender.Enemies.Scenario1
 
         public override bool Update(float elapsed)
         {
-            Console.WriteLine(angleWith(target));
+            Console.WriteLine(angleWith(target) * position);
 
             return base.Update(elapsed);
+        }
+
+        public Vector2 givePositionToMinion(float offSet)
+        {
+            Vector2 newPosition = new Vector2(0,0);
+
+            return newPosition;
         }
     }
 }
