@@ -18,7 +18,7 @@ namespace Bloodbender
         public float height = 0.0f;
         protected SpriteEffects spriteEffect = SpriteEffects.None;
         public Vector2 scale = Vector2.One;
-        private OffSet offSet;
+        protected OffSet offSet;
         public enum OffSet { Center, BottomCenterHorizontal, None };
 
         public bool shouldDie = false;

@@ -23,10 +23,14 @@ namespace Bloodbender
         PhysicObj target;
         float attackRate = 1.5f;
         float timerAttack = 0;
+        bool canGenerateProjectile = true;
+        bool canBeHitByPlayer = true;
+        bool canBeHitByProjectile = true;
+        float lifePoints = 3;
 
         public Enemy(Vector2 position, Player player) : base(position, PathFinderNodeType.CENTER)
         {
-            height = 32;
+            height = 0;
 
             Animation anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("Ennemy1/ennemy1"), 8, 0.1f, 32, 0, 0, 0);
             anim.reset();
@@ -72,6 +76,9 @@ namespace Bloodbender
             else
                 runAnimation(0);
 
+            if (lifePoints <= 0)
+                shouldDie = true;
+
             return base.Update(elapsed);
         }
 
@@ -80,12 +87,16 @@ namespace Bloodbender
             base.Draw(spriteBatch);
         }
 
-        public void generateProjectile(float angle)
+        public void takeHit(float angle)
         {
-            //System.Diagnostics.Debug.WriteLine("Totem touched by playerattacksensor");
-            Projectile proj = new Projectile(body.Position * Bloodbender.meterToPixel, angle, 400f);
-            body.FixtureList[0].IgnoreCollisionWith(proj.body.FixtureList[0]);
-            Bloodbender.ptr.listGraphicObj.Add(proj);
+            lifePoints -= 1;
+            if (canGenerateProjectile)
+            {
+                //System.Diagnostics.Debug.WriteLine("Totem touched by playerattacksensor");
+                Projectile proj = new Projectile(body.Position * Bloodbender.meterToPixel, angle, 400f);
+                body.FixtureList[0].IgnoreCollisionWith(proj.body.FixtureList[0]);
+                Bloodbender.ptr.listGraphicObj.Add(proj);
+            }
         }
     }
 }

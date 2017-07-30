@@ -25,6 +25,8 @@ namespace Bloodbender
 
         public Projectile(Vector2 position) : base(position)
         {
+            offSet = OffSet.Center;
+
             Animation anim = new Animation(Bloodbender.ptr.bouleRouge, 4, 0.05f, 32, 0, 0, 0);
             anim.reset();
             addAnimation(anim);

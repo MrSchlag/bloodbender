@@ -335,8 +335,7 @@ namespace Bloodbender
                     if (fixInContactData.physicParent is Totem)
                         ((Totem)fixInContactData.physicParent).generateProjectile(angleWithMouse());
                     if (fixInContactData.physicParent is Enemy)
-                        ((Enemy)fixInContactData.physicParent).generateProjectile(angleWithMouse());
-
+                        ((Enemy)fixInContactData.physicParent).takeHit(angleWithMouse());
                 }
             }
         }
