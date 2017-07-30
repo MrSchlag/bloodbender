@@ -45,7 +45,7 @@ namespace Bloodbender
 
         private void FollowBehaviorComponent_TriangleChangedEvent()
         {
-            Console.WriteLine("event fired");
+            //Console.WriteLine("event fired");
             path = Bloodbender.ptr.pFinder.pathRequest(owner, target);
 
             if (path == null)

@@ -13,6 +13,7 @@ using System.IO;
 using System.Reflection;
 using Bloodbender.Scene;
 using Bloodbender.Enemies.Scenario3;
+using Bloodbender.Enemies.Scenario1;
 
 namespace Bloodbender
 {
@@ -188,6 +189,9 @@ namespace Bloodbender
             Bat enemy = new Bat(new Vector2(700, 200), player);
             Bat enemy1 = new Bat(new Vector2(700, 200), player);
             Bat enemy2 = new Bat(new Vector2(700, 200), player);
+
+            GangChef gangChef = new GangChef(new Vector2(100, 100), player);
+            listGraphicObj.Add(gangChef);
             /*
             Enemy enemy3 = new Enemy(new Vector2(700, 200), player);
             Enemy enemy4 = new Enemy(new Vector2(700, 200), player);

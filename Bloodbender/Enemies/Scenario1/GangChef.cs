@@ -12,7 +12,21 @@ namespace Bloodbender.Enemies.Scenario1
     {
         public GangChef(Vector2 position, PhysicObj target) : base(position, target)
         {
-                
+            height = 0;
+
+            Animation anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("carre"), 32, 32);
+            addAnimation(anim);
+
+            Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
+
+            canAttack = false;
+        }
+
+        public override bool Update(float elapsed)
+        {
+            Console.WriteLine(angleWith(target));
+
+            return base.Update(elapsed);
         }
     }
 }

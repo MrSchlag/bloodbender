@@ -99,6 +99,16 @@ namespace Bloodbender
             return angle;
         }
 
+        public float angleWith(GraphicObj obj)
+        {
+            float deltaY = obj.position.Y - position.Y;
+            float deltaX = obj.position.X - position.X;
+
+            float angle = (float)(Math.Atan2(deltaY, deltaX));
+
+            return angle;
+        }
+
         public void setRotation(float rotation)
         {
             this.rotation = rotation;

@@ -26,6 +26,7 @@ namespace Bloodbender
         protected bool canGenerateProjectile = true;
         protected bool canBeHitByPlayer = true;
         protected bool canBeHitByProjectile = true;
+        protected bool canAttack = true;
         protected float lifePoints = 3;
 
         public Enemy(Vector2 position, PhysicObj player) : base(position, PathFinderNodeType.CENTER)
@@ -35,24 +36,29 @@ namespace Bloodbender
 
         public override bool Update(float elapsed)
         {
-            if (timerAttack > 0)
-                timerAttack -= elapsed;
-
-            if (distanceWith(target.position) < 40)
+            if (canAttack)
             {
-                if (timerAttack <= 0)
+                if (timerAttack > 0)
+                    timerAttack -= elapsed;
+
+                if (distanceWith(target.position) < 40)
                 {
-                    runAnimation(1);
-                    timerAttack = attackRate;
+                    if (timerAttack <= 0)
+                    {
+                        runAnimation(1);
+                        timerAttack = attackRate;
+                    }
+                    else
+                    {
+                        if (!getAnimation(1).isRunning)
+                            runAnimation(0);
+                    }
                 }
                 else
-                {
-                    if (!getAnimation(1).isRunning)
-                        runAnimation(0);
-                }
-            }
-            else
+                    runAnimation(0);
+            } else
                 runAnimation(0);
+
 
             if (lifePoints <= 0)
                 shouldDie = true;
