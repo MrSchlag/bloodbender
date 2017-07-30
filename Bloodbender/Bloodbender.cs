@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using Bloodbender.Scene;
+using Bloodbender.Enemies.Scenario3;
 
 namespace Bloodbender
 {
@@ -184,10 +185,9 @@ namespace Bloodbender
             player = new Player(new Vector2(100, 100));
             player.setLinearDamping(10);
 
-            Enemy enemy = new Enemy(new Vector2(700, 200), player);
-            
-            Enemy enemy1 = new Enemy(new Vector2(700, 200), player);
-            Enemy enemy2 = new Enemy(new Vector2(700, 200), player);
+            Bat enemy = new Bat(new Vector2(700, 200), player);
+            Bat enemy1 = new Bat(new Vector2(700, 200), player);
+            Bat enemy2 = new Bat(new Vector2(700, 200), player);
             /*
             Enemy enemy3 = new Enemy(new Vector2(700, 200), player);
             Enemy enemy4 = new Enemy(new Vector2(700, 200), player);

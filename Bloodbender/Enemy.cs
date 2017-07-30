@@ -19,39 +19,17 @@ namespace Bloodbender
 {
     public class Enemy : PhysicObj
     {
-        Fixture playerBoundsFix;
-        PhysicObj target;
-        float attackRate = 1.5f;
-        float timerAttack = 0;
-        bool canGenerateProjectile = true;
-        bool canBeHitByPlayer = true;
-        bool canBeHitByProjectile = true;
-        float lifePoints = 3;
+        protected Fixture playerBoundsFix;
+        protected PhysicObj target;
+        protected float attackRate = 1.5f;
+        protected float timerAttack = 0;
+        protected bool canGenerateProjectile = true;
+        protected bool canBeHitByPlayer = true;
+        protected bool canBeHitByProjectile = true;
+        protected float lifePoints = 3;
 
-        public Enemy(Vector2 position, Player player) : base(position, PathFinderNodeType.CENTER)
+        public Enemy(Vector2 position, PhysicObj player) : base(position, PathFinderNodeType.CENTER)
         {
-            height = 0;
-
-            Animation anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("Ennemy1/ennemy1"), 8, 0.1f, 32, 0, 0, 0);
-            anim.reset();
-            addAnimation(anim);
-
-            Animation attackAnimation = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("Ennemy1/ennemy1attack"), 6, 0.1f, 32, 0, 0, 0);
-            attackAnimation.isLooping = false;
-            addAnimation(attackAnimation);
-
-            Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
-
-            velocity = 50;
-
-            playerBoundsFix = createOctogoneFixture(16f, 16f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
-            Radius = 32f;
-            //add method to be called on collision, different denpending of fixture
-            addFixtureToCheckedCollision(playerBoundsFix);
-
-            IComponent comp = new FollowBehaviorComponent(this, player, 32);
-            addComponent(comp);
-
             target = player;
         }
 
@@ -89,7 +67,7 @@ namespace Bloodbender
 
         public void takeHit(float angle)
         {
-            lifePoints -= 1;
+            //lifePoints -= 1;
             if (canGenerateProjectile)
             {
                 //System.Diagnostics.Debug.WriteLine("Totem touched by playerattacksensor");

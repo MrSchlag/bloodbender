@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Bloodbender.Enemies.Scenario3;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -64,7 +65,7 @@ namespace Bloodbender.Scene
                 return;
             _intervalTimer = 0;
 
-            Enemy enemy = new Enemy(EnemySpawnList[_rnd.Next(0, EnemySpawnList.Count - 1)], Bloodbender.ptr.player);
+            Bat enemy = new Bat(EnemySpawnList[_rnd.Next(0, EnemySpawnList.Count - 1)], Bloodbender.ptr.player);
             Bloodbender.ptr.listGraphicObj.Add(enemy);
         }
     }
