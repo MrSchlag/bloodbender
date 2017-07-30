@@ -23,7 +23,7 @@ namespace Bloodbender.Enemies.Scenario1
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
 
             node = new PhysicObj(Vector2.Zero, PathFinderNodeType.CENTER);
-            node.createOctogoneFixture(10, 10, Vector2.Zero);
+            node.createOctogoneFixture(10, 10, Vector2.Zero).IsSensor = true;
             node.Radius = 0.0f;
 
             canAttack = false;

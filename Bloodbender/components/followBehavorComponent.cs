@@ -30,8 +30,13 @@ namespace Bloodbender
         PathFinderNode nextNode;
         List<PathFinderNode> path;
 
+        Vector2 previousTargetPosition;
+
         float maxVertexDistance;
         float maxVertexDistanceOffset = 10 * Bloodbender.pixelToMeter;
+
+        float timerCheck = 0;
+        float timerCheckLenght = 0.5f;
 
         public FollowBehaviorComponent(PhysicObj obj, PhysicObj target, float escapeZoneRadius)
         {
@@ -41,6 +46,9 @@ namespace Bloodbender
             maxVertexDistance = maxLenghtCentroidVertex();
             nextNode = null;
             target.getPosNode().TriangleChangedEvent += FollowBehaviorComponent_TriangleChangedEvent;
+
+            previousTargetPosition = target.body.Position;
+            previousTargetPosition += new Vector2(10,10);
         }
 
         private void FollowBehaviorComponent_TriangleChangedEvent()
@@ -54,6 +62,22 @@ namespace Bloodbender
 
         bool IComponent.Update(float elapsed)
         {
+            timerCheck += elapsed;
+
+            if (previousTargetPosition != target.body.Position)
+            {
+                FollowBehaviorComponent_TriangleChangedEvent();
+                previousTargetPosition = target.body.Position;
+            }
+            else if (timerCheck >= timerCheckLenght)
+            {
+                FollowBehaviorComponent_TriangleChangedEvent();
+                timerCheck = 0;
+            }
+
+            
+
+
             pathRequestRateCounter += elapsed;
             //if (pathRequestRateCounter > pathRequestRate)
             //{

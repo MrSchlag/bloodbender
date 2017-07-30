@@ -26,11 +26,11 @@ namespace Bloodbender.Enemies.Scenario1
 
             velocity = 50;
             playerBoundsFix = createOctogoneFixture(16f, 16f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
-            Radius = 2f;
+            Radius = 0f;
             //add method to be called on collision, different denpending of fixture
             addFixtureToCheckedCollision(playerBoundsFix);
 
-            IComponent comp = new FollowBehaviorComponent(this, chef.node, 10);
+            IComponent comp = new FollowBehaviorComponent(this, chef.node, 0);
             addComponent(comp);
 
             canAttack = false;
