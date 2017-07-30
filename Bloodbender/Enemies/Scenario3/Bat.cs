@@ -37,8 +37,6 @@ namespace Bloodbender.Enemies.Scenario3
 
         public override bool Update(float elapsed)
         {
-
-
             return base.Update(elapsed);
         }
     }

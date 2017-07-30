@@ -10,6 +10,9 @@ namespace Bloodbender.Enemies.Scenario1
 {
     class GangChef : Enemy
     {
+        float currentAngleWithTarget = 0;
+        float distanceMinions = 30;
+        public PhysicObj node;
         public GangChef(Vector2 position, PhysicObj target) : base(position, target)
         {
             height = 0;
@@ -19,21 +22,27 @@ namespace Bloodbender.Enemies.Scenario1
 
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
 
+            node = new PhysicObj(Vector2.Zero, PathFinderNodeType.CENTER);
+            node.createOctogoneFixture(10, 10, Vector2.Zero);
+            node.Radius = 0.0f;
+
             canAttack = false;
         }
 
         public override bool Update(float elapsed)
         {
-            Console.WriteLine(angleWith(target) * position);
+            currentAngleWithTarget = angleWith(target);
+
+            node.Update(elapsed);
+            node.body.Position = givePosition(0) * Bloodbender.pixelToMeter;
 
             return base.Update(elapsed);
         }
 
-        public Vector2 givePositionToMinion(float offSet)
+        public Vector2 givePosition(float offSet)
         {
-            Vector2 newPosition = new Vector2(0,0);
-
-            return newPosition;
+            //use offset
+            return new Vector2((float)(position.X + Math.Cos(currentAngleWithTarget) * distanceMinions), (float)(position.Y + Math.Sin(currentAngleWithTarget) * distanceMinions));
         }
     }
 }

@@ -142,7 +142,9 @@ namespace Bloodbender
         {
             float maxLenght = 0f;
             float lenght;
-            Vertices vertices = ((PolygonShape)owner.getBoundsFixture().Shape).Vertices;
+            var a = owner.getBoundsFixture();
+            var b = owner.getBoundsFixture()?.Shape;
+            Vertices vertices = ((PolygonShape)owner.getBoundsFixture()?.Shape)?.Vertices;
 
             if (vertices == null)
                 return 0f;

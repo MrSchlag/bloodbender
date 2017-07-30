@@ -52,7 +52,7 @@ namespace Bloodbender
         private float radius;
         public float Radius {
             get { return radius; }
-            protected set
+            set
             {
                 radius = value;
                 Bloodbender.ptr.pFinder.RegisterObj(this);
@@ -319,6 +319,8 @@ namespace Bloodbender
 
         public Fixture getBoundsFixture()
         {
+            if (body == null || body.FixtureList == null)
+                return null;
             foreach (Fixture fix in body.FixtureList)
             {
                 if (((AdditionalFixtureData)fix.UserData).type == HitboxType.BOUND)

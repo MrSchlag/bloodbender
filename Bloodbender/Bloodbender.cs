@@ -192,6 +192,9 @@ namespace Bloodbender
 
             GangChef gangChef = new GangChef(new Vector2(100, 100), player);
             listGraphicObj.Add(gangChef);
+            GangMinion gangMinion = new GangMinion(new Vector2(200, 200), gangChef, player);
+            listGraphicObj.Add(gangMinion);
+
             /*
             Enemy enemy3 = new Enemy(new Vector2(700, 200), player);
             Enemy enemy4 = new Enemy(new Vector2(700, 200), player);
@@ -239,7 +242,7 @@ namespace Bloodbender
             totemscene.AddEnemySpawnPosition(new Vector2(800, 400));
             totemscene.AddEnemySpawnPosition(new Vector2(800, 450));
             totemscene.AddEnemySpawnPosition(new Vector2(800, 350));
-            totemscene.Run();
+            //totemscene.Run();
 
             frameRateCounter = new FrameRateCounter(font);
 
