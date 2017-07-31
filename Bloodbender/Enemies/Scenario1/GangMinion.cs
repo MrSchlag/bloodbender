@@ -30,7 +30,7 @@ namespace Bloodbender.Enemies.Scenario1
             //add method to be called on collision, different denpending of fixture
             addFixtureToCheckedCollision(playerBoundsFix);
 
-            IComponent comp = new FollowBehaviorComponent(this, chef.node, 0);
+            IComponent comp = new FollowBehaviorComponent(this, chef.node, 3);
             addComponent(comp);
 
             canAttack = false;
