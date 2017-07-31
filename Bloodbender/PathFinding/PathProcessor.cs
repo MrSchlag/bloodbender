@@ -98,7 +98,9 @@ namespace Bloodbender.PathFinding
 
         public static bool isWayClearToNode(PhysicObj startObj, PathFinderNode node)
         {
-            Vertices objVertices = ((PolygonShape)startObj.getBoundsFixture().Shape).Vertices;
+            Vertices objVertices = ((PolygonShape)startObj.getBoundsFixture()?.Shape)?.Vertices;
+            if (objVertices == null)
+                return false;
             bool isVisible = true;
 
             foreach (Vector2 vertex in objVertices)

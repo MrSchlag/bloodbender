@@ -64,19 +64,16 @@ namespace Bloodbender
         {
             timerCheck += elapsed;
 
-            if (previousTargetPosition != target.body.Position)
-            {
-                FollowBehaviorComponent_TriangleChangedEvent();
-                previousTargetPosition = target.body.Position;
-            }
-            else if (timerCheck >= timerCheckLenght)
+            //if (previousTargetPosition != target.body.Position)
+            //{
+            //    FollowBehaviorComponent_TriangleChangedEvent();
+            //    previousTargetPosition = target.body.Position;
+            //}
+            if (timerCheck >= timerCheckLenght)
             {
                 FollowBehaviorComponent_TriangleChangedEvent();
                 timerCheck = 0;
             }
-
-            
-
 
             pathRequestRateCounter += elapsed;
             //if (pathRequestRateCounter > pathRequestRate)
@@ -89,15 +86,15 @@ namespace Bloodbender
                 owner.body.LinearVelocity = Vector2.Zero;
                 return false;
             }
-            if (path.Count() < 2) //fixe temporaire
-                return true;
+            //if (path.Count() < 2) //fixe temporaire
+            //    return true;
 
             var nextNode = path[1];
 
             Vector2 posToNode = nextNode.position - owner.getPosNode().position;
             Vector2 posToTarget = target.body.Position - owner.body.Position;
 
-            if (posToNode.Length() < 0.3)
+            if (path.Count > 2 && posToNode.Length() < 0.3)
             {
                 path.RemoveAt(1);
                 posToNode = nextNode.position - owner.getPosNode().position;
