@@ -47,21 +47,25 @@ namespace Bloodbender
             {
                 MapBound botMapBound = new MapBound();
                 MapBound topMapBound = new MapBound();
+                if (roomLinker.botWallList.Count > 0)
+                {
+                    foreach (Wall wall in roomLinker.botWallList)
+                    {
+                        Debug.WriteLine("OH {0}/{1} - {2}/{3}", wall.ptA.X, wall.ptA.Y, wall.ptB.X, wall.ptB.Y);
+                        botMapBound.addVertex(wall.ptA, wall.ptB);
+                    }
+                    botMapBound.finilizeMap();
+                }
 
-                // Debug.WriteLine(roomLinker.botWallList.Count);
-                // Debug.WriteLine(roomLinker.topWallList.Count);
-                foreach (Wall wall in roomLinker.botWallList)
+                if (roomLinker.topWallList.Count > 0)
                 {
-                    Debug.WriteLine("OH {0}/{1} - {2}/{3}", wall.ptA.X, wall.ptA.Y, wall.ptB.X, wall.ptB.Y);
-                    botMapBound.addVertex(wall.ptA, wall.ptB);
+                    foreach (Wall wall in roomLinker.topWallList)
+                    {
+                        Debug.WriteLine("AH {0}/{1} - {2}/{3}", wall.ptA.X, wall.ptA.Y, wall.ptB.X, wall.ptB.Y);
+                        topMapBound.addVertex(wall.ptA, wall.ptB);
+                    }
+                    topMapBound.finilizeMap();
                 }
-                foreach (Wall wall in roomLinker.topWallList)
-                {
-                    Debug.WriteLine("AH {0}/{1} - {2}/{3}", wall.ptA.X, wall.ptA.Y, wall.ptB.X, wall.ptB.Y);
-                    topMapBound.addVertex(wall.ptA, wall.ptB);
-                }
-                botMapBound.finilizeMap();
-                topMapBound.finilizeMap();
             }
         }
     }

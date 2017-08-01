@@ -129,8 +129,8 @@ namespace MapGenerator
             // Debug.WriteLine(entry.ptA.X + "/" + entry.ptA.Y + " - " + entry.ptB.X + "/" + entry.ptB.Y);
             // Debug.WriteLine(newRoom.entrySelected.ptA.X + " " + newRoom.entrySelected.ptA.Y);
 
-            // float randomTranslate = rand.Next(-40, 40);
-            float randomTranslate = 0;
+            float randomTranslate = rand.Next(-40, 40);
+            // float randomTranslate = 0;
             int i = 0;
             if (lastRoom.exitSelected.type == entryType.top || newRoom.entrySelected.type == entryType.bot)
             {
@@ -141,7 +141,7 @@ namespace MapGenerator
                 foreach (Room room in this.rooms)
                 {
                     if (i > 0)
-                        translateY += (room.Y + 3) * room.tileSize;
+                        translateY += (room.Y + 10) * room.tileSize;
                     i++;
                 }
                 
