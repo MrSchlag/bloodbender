@@ -11,7 +11,7 @@ namespace Bloodbender.Enemies.Scenario3
     class Bat : Enemy
     {
         public Bat(Vector2 position, PhysicObj target) : base(position, target)
-            {
+        {
             height = 32;
 
             Animation anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("Ennemy1/ennemy1"), 8, 0.1f, 32, 0, 0, 0);
