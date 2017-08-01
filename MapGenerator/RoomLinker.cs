@@ -55,14 +55,15 @@ namespace MapGenerator
             //{
                 Vector2 fVecA = exit.ptA;
                 //to be removed
-                Vector2 mVecA = new Vector2(exit.ptA.X, exit.ptA.Y - diffPath - 1);
-                Vector2 lVecA = new Vector2(exit.ptA.X, exit.ptA.Y - diffPath);
+                Debug.WriteLine(exit.ptA.Y + " " + (exit.ptA.Y - diffPath));
+                Vector2 mVecA = new Vector2(exit.ptA.X, exit.ptA.Y - diffPath);
+                Vector2 lVecA = new Vector2(exit.ptA.X, exit.ptA.Y - diffPath - 20);
                 botWallList.Add(new Wall(fVecA, mVecA));
                 botWallList.Add(new Wall(mVecA, lVecA));
                 Vector2 fVecB = exit.ptB;
                 //to be removed
-                Vector2 mVecB = new Vector2(exit.ptB.X, exit.ptB.Y - entryLength - diffPath - 1);
-                Vector2 lVecB = new Vector2(exit.ptB.X, exit.ptB.Y - entryLength - diffPath);
+                Vector2 mVecB = new Vector2(exit.ptB.X, exit.ptB.Y - entryLength - diffPath);
+                Vector2 lVecB = new Vector2(exit.ptB.X, exit.ptB.Y - entryLength - diffPath - 20);
                 topWallList.Add(new Wall(fVecB, mVecB));
                 topWallList.Add(new Wall(mVecB, lVecB));
             //} else
