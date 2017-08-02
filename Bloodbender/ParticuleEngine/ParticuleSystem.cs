@@ -1,15 +1,12 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Bloodbender
+namespace Bloodbender.ParticuleEngine
 {
     public class ParticuleSystem
     {
-        public List<ParticuleSpawner> particuleSpawners = null;
+        private List<ParticuleSpawner> particuleSpawners = null;
         public ParticuleSystem()
         {
             particuleSpawners = new List<ParticuleSpawner>();
@@ -33,6 +30,21 @@ namespace Bloodbender
             {
                 particuleSpawner.Draw(spriteBatch);
             }
+        }
+
+        public void addParticuleSpawner(ParticuleSpawner particuleSpawner)
+        {
+            particuleSpawners.Add(particuleSpawner);
+        }
+
+        public void removeParticuleSpawner(ParticuleSpawner particuleSpawner)
+        {
+            particuleSpawners.Remove(particuleSpawner);
+        }
+
+        public void removeAtParticuleSpawner(int index)
+        {
+            particuleSpawners.RemoveAt(index);
         }
     }
 }

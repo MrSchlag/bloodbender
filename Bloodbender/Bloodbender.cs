@@ -14,6 +14,7 @@ using System.Reflection;
 using Bloodbender.Scene;
 using Bloodbender.Enemies.Scenario3;
 using Bloodbender.Enemies.Scenario1;
+using Bloodbender.ParticuleEngine;
 
 namespace Bloodbender
 {
@@ -64,6 +65,10 @@ namespace Bloodbender
         EventHandler<EventArgs> eventResize;
 
         int width = 1280, height = 720, savedWidth = 0, savedHeight = 0;
+
+
+        ParticuleSystem particuleSystem;
+
 
         public Bloodbender()
         {
@@ -119,6 +124,10 @@ namespace Bloodbender
             this.Window.AllowUserResizing = true;
             eventResize = new EventHandler<EventArgs>(Window_ClientSizeChanged);
             this.Window.ClientSizeChanged += eventResize;
+
+
+            particuleSystem = new ParticuleSystem();
+            particuleSystem.addParticuleSpawner(new SnowSpawner(new Vector2(100, 100)));
 
             base.Initialize();
         }
@@ -346,6 +355,8 @@ namespace Bloodbender
                 }
             }
 
+            particuleSystem.Update(elapsed);
+
             pFinder.Update(elapsed);
             shadowsRendering.Update(elapsed);
 
@@ -424,6 +435,7 @@ namespace Bloodbender
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.GetView());
             foreach (GraphicObj obj in listGraphicObj)
                 obj.Draw(spriteBatch);
+            particuleSystem.Draw(spriteBatch);
             spriteBatch.End();
 
 
