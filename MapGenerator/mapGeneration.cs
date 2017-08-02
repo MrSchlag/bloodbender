@@ -65,8 +65,8 @@ namespace MapGenerator
             // Debug.WriteLine("SEED " + seed);
             rand = new Random(seed);
             rloader = new RoomLoader();
-            // numberOfRooms = rand.Next(5, 22);
-            numberOfRooms = 2;
+            numberOfRooms = rand.Next(5, 22);
+            // numberOfRooms = 3;
             rooms = new List<Room>();
             roomLinkers = new List<RoomLinker>(); 
             this.addRoomToMap(selectRandomSpawn(), 0, 0);
@@ -137,14 +137,13 @@ namespace MapGenerator
                 float translateY = 0;
                 float translateX = 0;
                 translateX = lastRoom.exitSelected.ptA.X + (randomTranslate * lastRoom.tileSize) - newRoom.entrySelected.ptA.X;
-
                 foreach (Room room in this.rooms)
                 {
                     if (i > 0)
-                        translateY += (room.Y + 10) * room.tileSize;
+                        translateY += ((room.Y + 5) * room.tileSize);
+                    translateY += 5 * room.tileSize;
                     i++;
                 }
-                
                 translateY += (newRoom.Y) * newRoom.tileSize;
                 // Debug.WriteLine((newRoom.Y) * newRoom.tileSize + " " + (newRoom.Y + 10) * newRoom.tileSize, translateY);
                 // Debug.WriteLine("EXIT TYPE " + lastRoom.exitSelected.type);
