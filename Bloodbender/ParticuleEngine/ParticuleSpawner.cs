@@ -25,7 +25,8 @@ namespace Bloodbender.ParticuleEngine
         {
             foreach (Particule particule in particules)
             {
-                particule.Draw(spriteBatch);
+                if (!particule.inWait)
+                    particule.Draw(spriteBatch);
             }
         }
     }

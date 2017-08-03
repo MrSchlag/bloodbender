@@ -15,7 +15,7 @@ namespace Bloodbender.ParticuleEngine
         public SnowSpawner(Vector2 position) : this(position, null, Vector2.Zero) { }
         public SnowSpawner(Vector2 position, GraphicObj target, Vector2 offSetPosition) : base(position, target, offSetPosition)
         {
-            timeSpawn = 1f;
+            timeSpawn = 2f;
         }
         public override bool Update(float elapsed)
         {
@@ -48,6 +48,8 @@ namespace Bloodbender.ParticuleEngine
                 cookParticule(newParticule);
             }
 
+            Console.WriteLine(particules.Count);
+
             base.Update(elapsed);
 
             return true;
@@ -55,8 +57,9 @@ namespace Bloodbender.ParticuleEngine
 
         private void cookParticule(SnowParticule particule)
         {
-            particule.speed = 10;
-            particule.distanceMax = 100;
+            particule.inWait = false;
+            particule.speed = 100;
+            particule.distanceMax = 50;
             particule.angle = (float)(5 * Math.PI / 6);
             particule.position = position;
             particule.referencePosition = position;

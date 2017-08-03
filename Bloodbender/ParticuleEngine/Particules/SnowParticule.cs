@@ -27,7 +27,10 @@ namespace Bloodbender.ParticuleEngine.Particules
             intermediatePosition.X += speed * elapsed;
 
             if (intermediatePosition.X >= distanceMax)
+            {
+                inWait = true;
                 return false;
+            }
 
             position = intermediatePosition + referencePosition;
 
