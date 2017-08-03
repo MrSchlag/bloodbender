@@ -5,11 +5,7 @@ namespace Bloodbender.ParticuleEngine
 {
     public abstract class Particule : GraphicObj
     {
-        public Particule() : base(OffSet.Center)
-        {
-
-        }
-
-        public abstract void reset();
+        public float speed;
+        public Particule(Vector2 position, float speed) : base(OffSet.Center) { this.position = position; this.speed = speed; }
     }
 }

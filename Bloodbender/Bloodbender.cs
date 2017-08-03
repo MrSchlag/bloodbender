@@ -125,10 +125,6 @@ namespace Bloodbender
             eventResize = new EventHandler<EventArgs>(Window_ClientSizeChanged);
             this.Window.ClientSizeChanged += eventResize;
 
-
-            particuleSystem = new ParticuleSystem();
-            particuleSystem.addParticuleSpawner(new SnowSpawner(new Vector2(100, 100)));
-
             base.Initialize();
         }
 
@@ -276,6 +272,10 @@ namespace Bloodbender
             giclesang.addAnimation(animglic);
             giclesang.runAnimation(0);
             listGraphicObj.Add(giclesang);
+
+
+            particuleSystem = new ParticuleSystem();
+            particuleSystem.addParticuleSpawner(new SnowSpawner(new Vector2(100, 100), player, Vector2.Zero));
         }
 
         
