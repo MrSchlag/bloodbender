@@ -143,6 +143,11 @@ namespace Bloodbender
         {
             return Math.Sqrt(Math.Pow((position.X - position2.X), 2) + Math.Pow((position.Y - position2.Y), 2));
         }
+
+        public int getNumberAnimation()
+        {
+            return animations.Count;
+        }
     }
 
     public static class Vector2Extension

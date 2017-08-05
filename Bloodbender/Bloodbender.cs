@@ -23,6 +23,8 @@ namespace Bloodbender
     {
         public static Bloodbender ptr { get; set; }
 
+        public Random rdn;
+
         public GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
         public MouseState mouse;
@@ -74,6 +76,8 @@ namespace Bloodbender
         public Bloodbender()
         {
             ptr = this;
+
+            rdn = new Random();
 
             mouse = Mouse.GetState();
             graphics = new GraphicsDeviceManager(this);
@@ -276,7 +280,7 @@ namespace Bloodbender
 
 
             particuleSystem = new ParticuleSystem();
-            particuleSystem.addParticuleSpawner(new SnowSpawner(new Vector2(100, 100), 0, player, Vector2.Zero));
+            particuleSystem.addParticuleSpawner(new SnowSpawner(new Vector2(100, 100), 0, player, new Vector2(50,-150)));
         }
 
         

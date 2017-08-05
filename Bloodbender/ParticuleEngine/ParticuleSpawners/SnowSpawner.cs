@@ -14,8 +14,9 @@ namespace Bloodbender.ParticuleEngine.ParticuleSpawners
         public SnowSpawner(Vector2 position, RadianAngle angle) : this(position, angle, null, Vector2.Zero) { }
         public SnowSpawner(Vector2 position, RadianAngle angle, GraphicObj target, Vector2 offSetPosition) : base(position, angle, target, offSetPosition)
         {
-            timeSpawn = 0.2f;
+            timeSpawn = 0.02f;
             this.angle = 2;
+            numberParticuleToPop = 3;
         }
         protected override void createParticule()
         {
@@ -27,11 +28,15 @@ namespace Bloodbender.ParticuleEngine.ParticuleSpawners
         protected override void cookParticule()
         {
             particuleToCook.inWait = false;
-            particuleToCook.speed = 100;
-            particuleToCook.distanceMax = 100;
+            particuleToCook.speed = 200;
+            particuleToCook.distanceMax = 300;
             particuleToCook.angle = angle;
+
             particuleToCook.position = position;
-            particuleToCook.referencePosition = position;
+            particuleToCook.position.X += Bloodbender.ptr.rdn.Next(-150, 151);
+            particuleToCook.position = RadianAngle.rotate(position, particuleToCook.position, (float)(angle + (Math.PI / 2)));
+
+            particuleToCook.referencePosition = particuleToCook.position;
             particuleToCook.intermediatePosition = Vector2.Zero;
         }
     }

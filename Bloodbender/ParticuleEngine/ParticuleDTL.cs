@@ -30,7 +30,7 @@ namespace Bloodbender.ParticuleEngine.Particules
             position = intermediatePosition + referencePosition;
 
             position = RadianAngle.rotate(referencePosition, position, angle);
-            
+
             return true;
         }
     }

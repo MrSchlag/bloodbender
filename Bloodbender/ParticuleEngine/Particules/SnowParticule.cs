@@ -13,7 +13,8 @@ namespace Bloodbender.ParticuleEngine.Particules
         public SnowParticule() : this(Vector2.Zero, 0, 0, 0) { }
         public SnowParticule(Vector2 position, float speed, float distanceMax, RadianAngle angle) : base(position, speed, distanceMax, angle)
         {
-            Animation anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("blood3"), 16, 16);
+            Animation anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("blood3"), 4, 4);
+            anim.forceDepth(1);
             addAnimation(anim);
         }
 
