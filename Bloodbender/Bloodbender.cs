@@ -15,6 +15,7 @@ using Bloodbender.Scene;
 using Bloodbender.Enemies.Scenario3;
 using Bloodbender.Enemies.Scenario1;
 using Bloodbender.ParticuleEngine;
+using Bloodbender.ParticuleEngine.ParticuleSpawners;
 
 namespace Bloodbender
 {
@@ -275,7 +276,7 @@ namespace Bloodbender
 
 
             particuleSystem = new ParticuleSystem();
-            particuleSystem.addParticuleSpawner(new SnowSpawner(new Vector2(100, 100), player, Vector2.Zero));
+            particuleSystem.addParticuleSpawner(new SnowSpawner(new Vector2(100, 100), 0, player, Vector2.Zero));
         }
 
         

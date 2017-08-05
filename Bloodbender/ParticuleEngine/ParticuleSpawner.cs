@@ -5,20 +5,28 @@ using System.Collections.Generic;
 
 namespace Bloodbender.ParticuleEngine
 {
-    public class ParticuleSpawner : GraphicObj
+    abstract public class ParticuleSpawner : GraphicObj
     {
         public List<Particule> particules = null;
         public GraphicObj target = null;
         public Vector2 offSetPosition;
+        public RadianAngle angle;
 
-        public ParticuleSpawner(Vector2 position) : this(position, null, Vector2.Zero) { }
-        public ParticuleSpawner(Vector2 position, GraphicObj target, Vector2 offSetPosition)
+        protected int numberParticuleToPop = 1;
+        protected int tryToPopParticule = 0;
+        protected float timer;
+        protected float timeSpawn = 1f;
+
+        public ParticuleSpawner(Vector2 position) : this(position, 0, null, Vector2.Zero) { }
+        public ParticuleSpawner(Vector2 position, RadianAngle angle) : this(position, angle, null, Vector2.Zero) { }
+        public ParticuleSpawner(Vector2 position, RadianAngle angle, GraphicObj target, Vector2 offSetPosition)
         {
             particules = new List<Particule>();
 
             this.position = position;
             this.target = target;
             this.offSetPosition = offSetPosition;
+            this.angle = angle;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -29,5 +37,9 @@ namespace Bloodbender.ParticuleEngine
                     particule.Draw(spriteBatch);
             }
         }
+
+        protected abstract void createParticule();
+
+        protected abstract void cookParticule();
     }
 }
