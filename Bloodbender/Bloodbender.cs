@@ -14,12 +14,16 @@ using System.Reflection;
 using Bloodbender.Scene;
 using Bloodbender.Enemies.Scenario3;
 using Bloodbender.Enemies.Scenario1;
+using Bloodbender.ParticuleEngine;
+using Bloodbender.ParticuleEngine.ParticuleSpawners;
 
 namespace Bloodbender
 {
     public class Bloodbender : Game
     {
         public static Bloodbender ptr { get; set; }
+
+        public Random rdn;
 
         public GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
@@ -65,9 +69,15 @@ namespace Bloodbender
 
         int width = 1280, height = 720, savedWidth = 0, savedHeight = 0;
 
+
+        ParticuleSystem particuleSystem;
+
+
         public Bloodbender()
         {
             ptr = this;
+
+            rdn = new Random();
 
             mouse = Mouse.GetState();
             graphics = new GraphicsDeviceManager(this);
@@ -268,6 +278,10 @@ namespace Bloodbender
             giclesang.addAnimation(animglic);
             giclesang.runAnimation(0);
             listGraphicObj.Add(giclesang);
+
+
+            particuleSystem = new ParticuleSystem();
+            particuleSystem.addParticuleSpawner(new SnowSpawner(new Vector2(100, 100), 0, player, new Vector2(50,-150)));
         }
 
         
@@ -347,6 +361,8 @@ namespace Bloodbender
                 }
             }
 
+            particuleSystem.Update(elapsed);
+
             pFinder.Update(elapsed);
             shadowsRendering.Update(elapsed);
 
@@ -425,6 +441,7 @@ namespace Bloodbender
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.GetView());
             foreach (GraphicObj obj in listGraphicObj)
                 obj.Draw(spriteBatch);
+            particuleSystem.Draw(spriteBatch);
             spriteBatch.End();
 
 

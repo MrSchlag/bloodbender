@@ -93,10 +93,14 @@
     <Compile Include="MapBound.cs" />
     <Compile Include="components\IComponent.cs" />
     <Compile Include="MapFactory.cs" />
-    <Compile Include="ParticuleSystem\Particule.cs" />
-    <Compile Include="ParticuleSystem\ParticuleSpawner.cs" />
-    <Compile Include="ParticuleSystem\ParticuleSystem.cs" />
-    <Compile Include="ParticuleSystem\Particules\GreenCercle.cs" />
+    <Compile Include="ParticuleEngine\Particule.cs" />
+    <Compile Include="ParticuleEngine\ParticuleSpawner.cs" />
+    <Compile Include="ParticuleEngine\ParticuleSpawners\SnowSpawner.cs" />
+    <Compile Include="ParticuleEngine\ParticuleSystem.cs" />
+    <Compile Include="ParticuleEngine\Particules\GreenCercle.cs" />
+    <Compile Include="ParticuleEngine\ParticuleDTL.cs" />
+    <Compile Include="ParticuleEngine\ParticuleSpawnerDTL.cs" />
+    <Compile Include="ParticuleEngine\Particules\SnowParticule.cs" />
     <Compile Include="PathFinding\NavMesh.cs" />
     <Compile Include="PathFinding\NodeTriangle.cs" />
     <Compile Include="PathFinding\PathFinder.cs" />
@@ -112,6 +116,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RadianAngle.cs" />
     <Compile Include="ResolutionIndependentRenderer.cs" />
     <Compile Include="Scene\IScene.cs" />
     <Compile Include="Scene\TotemScene.cs" />

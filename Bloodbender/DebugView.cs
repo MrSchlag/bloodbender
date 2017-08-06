@@ -4,6 +4,7 @@ using FarseerPhysics.DebugView;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using Bloodbender.ParticuleEngine;
 
 namespace Bloodbender
 {
@@ -16,7 +17,7 @@ namespace Bloodbender
         {
             ps = new ParticuleSystem();
 
-            AppendFlags(DebugViewFlags.PathFinding);
+            //AppendFlags(DebugViewFlags.PathFinding);
         }
 
         public void Update(float elapsed)
@@ -30,12 +31,6 @@ namespace Bloodbender
         private void setPathParticuleSpawer(KeyValuePair<GraphicObj, List<PathFinderNode>> key)
         {
 
-            ParticuleSpawner particuleSpawner = new ParticuleSpawner(60, key.Key.position);
-
-            MoveTo comp = new MoveTo(particuleSpawner, key.Value, 600);
-            particuleSpawner.addComponent(comp);
-
-            ps.particuleSpawners.Add(particuleSpawner);
         }
 
         protected override void DrawDebugData()

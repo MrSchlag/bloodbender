@@ -11,7 +11,7 @@ namespace Bloodbender.Enemies.Scenario1
     class GangChef : Enemy
     {
         float currentAngleWithTarget = 0;
-        float distanceMinions = 30;
+        float distanceMinions = 80;
         public PhysicObj node;
         public GangChef(Vector2 position, PhysicObj target) : base(position, target)
         {
