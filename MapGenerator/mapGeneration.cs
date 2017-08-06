@@ -60,9 +60,7 @@ namespace MapGenerator
 
         public void newMap()
         {
-            var seed = Guid.NewGuid().GetHashCode();
-            //var seed = -290832816;
-            // Debug.WriteLine("SEED " + seed);
+            int seed = Guid.NewGuid().GetHashCode();
             rand = new Random(seed);
             rloader = new RoomLoader();
             numberOfRooms = rand.Next(5, 22);
@@ -74,7 +72,8 @@ namespace MapGenerator
             {
                 this.addRandomRoom();
             }
-            this.visualizeMap();
+            this.saveMap(seed);
+            // this.visualizeMap();
         }
 
         public Room selectRandomSpawn()
@@ -203,7 +202,25 @@ namespace MapGenerator
                 }
             }
         }
- 
+
+        public void saveMap(int seed)
+        {
+            string path = "./../../../../map/save.txt";
+            if (!File.Exists(path))
+            {
+                using (StreamWriter sw = File.CreateText(path))
+                {
+                    sw.WriteLine("// Map seeds savings");
+                    sw.Close();
+                }
+            }
+            using (StreamWriter sw = File.AppendText(path))
+            {
+                sw.WriteLine(seed.ToString());
+                sw.Close();
+            }
+        }
+
         public void visualizeMap()
         {
             List<Wall> wallList = new List<Wall>();

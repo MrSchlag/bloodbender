@@ -16,11 +16,13 @@ namespace Bloodbender
         public void newMap()
         {
             mGen.newMap();
-            this.roomLinkersFactory();
-            this.roomWallsFactory();
+            this.loadRoomLinkers();
+            this.loadRoomWalls();
+            this.loadPlayer();
+            this.loadEntities();
         }
 
-        public void roomWallsFactory()
+        public void loadRoomLinkers()
         {
             foreach (Room room in mGen.rooms)
             {
@@ -41,7 +43,7 @@ namespace Bloodbender
             }
         }
 
-        public void roomLinkersFactory()
+        public void loadRoomWalls()
         {
             foreach (RoomLinker roomLinker in mGen.roomLinkers)
             {
@@ -51,7 +53,7 @@ namespace Bloodbender
                 {
                     foreach (Wall wall in roomLinker.botWallList)
                     {
-                        Debug.WriteLine("OH {0}/{1} - {2}/{3}", wall.ptA.X, wall.ptA.Y, wall.ptB.X, wall.ptB.Y);
+                        // Debug.WriteLine("OH {0}/{1} - {2}/{3}", wall.ptA.X, wall.ptA.Y, wall.ptB.X, wall.ptB.Y);
                         botMapBound.addVertex(wall.ptA, wall.ptB);
                     }
                     botMapBound.finilizeMap();
@@ -61,12 +63,22 @@ namespace Bloodbender
                 {
                     foreach (Wall wall in roomLinker.topWallList)
                     {
-                        Debug.WriteLine("AH {0}/{1} - {2}/{3}", wall.ptA.X, wall.ptA.Y, wall.ptB.X, wall.ptB.Y);
+                        // Debug.WriteLine("AH {0}/{1} - {2}/{3}", wall.ptA.X, wall.ptA.Y, wall.ptB.X, wall.ptB.Y);
                         topMapBound.addVertex(wall.ptA, wall.ptB);
                     }
                     topMapBound.finilizeMap();
                 }
             }
+        }
+
+        public void loadPlayer()
+        {
+
+        }
+
+        public void loadEntities()
+        {
+
         }
     }
 }

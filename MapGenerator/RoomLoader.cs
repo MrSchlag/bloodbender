@@ -25,29 +25,21 @@ namespace MapGenerator
                 List<Entities> entities = new List<Entities>();
                 Vector2 spawnPoint = new Vector2();
 
-                if (this.checkWallExist())
+                if (tmxmap.ObjectGroups.Contains("wall"))
                     walls = this.loadWalls();
-                if (this.checkEntryExist())
+                if (tmxmap.ObjectGroups.Contains("entry"))
                     entries = this.loadEntries();
-                if (this.checkEntityExist())
+                if (tmxmap.ObjectGroups.Contains("entity"))
                     entities = this.loadEntities();
-                if (this.checkSpawnExist())
+                if (tmxmap.ObjectGroups.Contains("player"))
                     spawnPoint = this.loadSpawnPoint();
                 if (walls.Count > 3 && entries.Count >= 1)
                 {
-                    // Debug.WriteLine("TILEWIDTH {0}", tmxmap.Width);
-                    try
-                    {
-                        if (tmxmap.ObjectGroups["player"].Objects[0] != null)
-                            return new Room(tmxmap.TileWidth, tmxmap.Width, tmxmap.Height, walls, entries, entities, spawnPoint);
-                    }
-                    catch (Exception e)
-                    {
+                    if (tmxmap.ObjectGroups.Contains("player"))
+                        return new Room(tmxmap.TileWidth, tmxmap.Width, tmxmap.Height, walls, entries, entities, spawnPoint);
+                    else
                         return new Room(tmxmap.TileWidth, tmxmap.Width, tmxmap.Height, walls, entries, entities);
-                    }
-                    
-                } else
-                {
+                } else {
                     if (walls.Count < 3)
                         Debug.WriteLine("Room doesn't have enough walls to make a polygon");
                     else if (entries.Count < 1)
@@ -67,68 +59,6 @@ namespace MapGenerator
             {
                 Debug.WriteLine("Invalid room file path");
             }
-        }
-
-        public bool checkWallExist()
-        {
-            try
-            {
-                if (tmxmap.ObjectGroups["wall"].Objects != null)
-                {
-                    return true;
-                }
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public bool checkEntryExist()
-        {
-            try
-            {
-                if (tmxmap.ObjectGroups["entry"].Objects != null)
-                {
-                    return true;
-                }
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public bool checkEntityExist()
-        {
-            try
-            {
-                if (tmxmap.ObjectGroups["entity"].Objects != null)
-                {
-                    return true;
-                }
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public bool checkSpawnExist()
-        {
-            try
-            {
-                if (tmxmap.ObjectGroups["player"].Objects != null)
-                    return true;
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-            return true;
         }
 
         public List<Wall> loadWalls()
