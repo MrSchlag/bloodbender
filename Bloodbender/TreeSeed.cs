@@ -49,8 +49,8 @@ namespace Bloodbender
         {
             var tree = new GraphicObj();
             tree.position = body.Position * Bloodbender.meterToPixel;
-            tree.position.Y += -90;
-            tree.position.X += 20;
+            tree.position.Y += -128;
+            tree.position.X += -64;
             tree.addAnimation(new Animation(Bloodbender.ptr.Content.Load<Texture2D>("tree1")));
             Bloodbender.ptr.listGraphicObj.Add(tree);
         }
@@ -69,7 +69,7 @@ namespace Bloodbender
 
         public void Run()
         {
-            body.LinearVelocity = new Vector2(_linearVelocity.X, _linearVelocity.Y);
+            body.LinearVelocity = new Vector2(_linearVelocity.X + rnd.Next(-30, 30), _linearVelocity.Y + rnd.Next(-30, 30));
         }
     }
 }
