@@ -14,6 +14,7 @@ namespace Bloodbender
         private float _minStopTime;
         private Vector2 _linearVelocity;
         private static Random rnd = new Random();
+        private bool _planted;
 
         public TreeSeed(Vector2 position, Vector2 direction, int minStopTime) : base(position * Bloodbender.meterToPixel, PathFinderNodeType.OTHER)
         {
@@ -35,11 +36,11 @@ namespace Bloodbender
 
         public override bool Update(float elapsed)
         {
-            if (_stopTimer != -1 && _stopTimer > _stopTime)
+            if (_planted == false && _stopTimer > _stopTime)
             {
                 body.LinearVelocity = Vector2.Zero;
                 AddTree();
-                _stopTimer = -1;
+                _planted = true;
             }
             _stopTimer += elapsed;
             return true;
