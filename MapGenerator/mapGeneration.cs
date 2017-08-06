@@ -222,7 +222,7 @@ namespace MapGenerator
         }
 
         public void visualizeMap()
-        {
+        { 
             List<Wall> wallList = new List<Wall>();
             foreach (Room room in rooms)
             {

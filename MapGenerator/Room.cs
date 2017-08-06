@@ -21,6 +21,11 @@ namespace MapGenerator
         public Entry entrySelected { get; set; }
         public Entry exitSelected { get; set; }
 
+        public float minX { get; set; }
+        public float minY { get; set; }
+        public float maxX { get; set; }
+        public float maxY { get; set; }
+
         public Room(int tileSize, int X, int Y, List<Wall> wallList, List<Entry> entryList, List<Entities> entityList, Vector2 spawnPoint)
         {
             this.tileSize = tileSize;
@@ -31,7 +36,7 @@ namespace MapGenerator
             this.entityList = entityList;
             this.spawnPoint = spawnPoint;
         }
-
+        
         public Room(int tileSize, int X, int Y, List<Wall> wallList, List<Entry> entryList, List<Entities> entityList)
         {
             this.tileSize = tileSize;

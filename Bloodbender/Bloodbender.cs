@@ -144,7 +144,7 @@ namespace Bloodbender
 
             Debug.WriteLine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             MapFactory mFact = new MapFactory();
-            mFact.newMap();
+            mFact.newMap(listGraphicObj);
             /*mapBounds.addVertex(new Vector2(0, 0));
             mapBounds.addVertex(new Vector2(120, -50));
             mapBounds.addVertex(new Vector2(350, -20));
@@ -174,8 +174,8 @@ namespace Bloodbender
             //pobj.addAnimation(new Animation(textureCarre2));
             //pobj.isRotationFixed(true);
 
-            Player player = new Player(new Vector2(200, 150));
-            player.setLinearDamping(10);
+            //Player player = new Player(new Vector2(200, 150));
+            //player.setLinearDamping(10);
 
             //Enemy enemy = new Enemy(new Vector2(700, 200), player);
             //enemy.addAnimation(new Animation(textureCarre2));
@@ -212,7 +212,7 @@ namespace Bloodbender
             //listGraphicObj.Add(sprinkler);
             //listGraphicObj.Add(totem);
             //listGraphicObj.Add(totem2);
-            listGraphicObj.Add(player);
+            //listGraphicObj.Add(player);
             //listGraphicObj.Add(enemy);
            
             

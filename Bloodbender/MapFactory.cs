@@ -13,23 +13,35 @@ namespace Bloodbender
     {
         MapGeneration mGen = new MapGeneration();
 
-        public void newMap()
+        public float minX { get; set; }
+        public float minY { get; set; }
+        public float maxX { get; set; }
+        public float maxY { get; set; }
+
+    public void newMap(List<GraphicObj> listGraphicObj)
         {
+            minX = 0;
+            minY = 0;
+            maxX = 0;
+            maxY = 0;
             mGen.newMap();
-            this.loadRoomLinkers();
             this.loadRoomWalls();
-            this.loadPlayer();
-            this.loadEntities();
+            this.loadRoomLinkers();
+            this.loadPlayer(listGraphicObj);
+            this.loadEntities(listGraphicObj);
         }
 
-        public void loadRoomLinkers()
+        public void loadRoomWalls()
         {
             foreach (Room room in mGen.rooms)
             {
+                int indexWall = 0;
                 int objIndex = 0;
                 MapBound mapBound = new MapBound();
                 foreach (Wall wall in room.wallList)
                 {
+                    this.updateMinMaxMap(wall);
+                    this.updateMinMaxRoom(room, wall, indexWall == 0);
                     if (wall.objIndex != objIndex)
                     {
                         mapBound.finilizeMap();
@@ -38,12 +50,15 @@ namespace Bloodbender
                         objIndex++;
                     }
                     mapBound.addVertex(wall.ptA, wall.ptB);
+                    indexWall++;
                 }
                 mapBound.finilizeMap();
+                // Debug.WriteLine("ROOM {0}/{1} - {2}/{3}", room.minX, room.minY, room.maxX, room.maxY);
             }
+            // Debug.WriteLine("MAP {0}/{1} - {2}/{3}", minX, minY, maxX, maxY);
         }
 
-        public void loadRoomWalls()
+        public void loadRoomLinkers()
         {
             foreach (RoomLinker roomLinker in mGen.roomLinkers)
             {
@@ -71,13 +86,68 @@ namespace Bloodbender
             }
         }
 
-        public void loadPlayer()
+        public void loadPlayer(List<GraphicObj> listGraphicObj)
+        {
+            Player player = new Player(mGen.rooms[0].spawnPoint);
+            player.setLinearDamping(10);
+            listGraphicObj.Add(player);
+        }
+
+        public void loadEntities(List<GraphicObj> listGraphicObj)
         {
 
         }
 
-        public void loadEntities()
+        public void updateMinMaxMap(Wall wall)
         {
+            if (wall.ptA.X > maxX)
+                maxX = wall.ptA.X;
+            if (wall.ptA.X < minX)
+                minX = wall.ptA.X;
+            if (wall.ptB.X > maxX)
+                maxX = wall.ptB.X;
+            if (wall.ptB.X < minX)
+                minX = wall.ptB.X;
+            if (wall.ptA.Y > maxY)
+                maxY = wall.ptA.Y;
+            if (wall.ptA.Y < minY)
+                minY = wall.ptA.Y;
+            if (wall.ptB.Y > maxY)
+                maxY = wall.ptB.Y;
+            if (wall.ptB.Y < minY)
+                minY = wall.ptB.Y;
+        }
+
+        public void updateMinMaxRoom(Room room, Wall wall, Boolean firstUpdate)
+        {
+            if (firstUpdate)
+            {
+                room.maxX = wall.ptA.X;
+                room.minX = wall.ptA.X;
+                room.maxX = wall.ptB.X;
+                room.minX = wall.ptB.X;
+                room.maxY = wall.ptA.Y;
+                room.minY = wall.ptA.Y;
+                room.maxY = wall.ptB.Y;
+                room.minY = wall.ptB.Y;
+            } else {
+                if (wall.ptA.X > room.maxX)
+                    room.maxX = wall.ptA.X;
+                if (wall.ptA.X < room.minX)
+                    room.minX = wall.ptA.X;
+                if (wall.ptB.X > room.maxX)
+                    room.maxX = wall.ptB.X;
+                if (wall.ptB.X < room.minX)
+                    room.minX = wall.ptB.X;
+                if (wall.ptA.Y > room.maxY)
+                    room.maxY = wall.ptA.Y;
+                if (wall.ptA.Y < room.minY)
+                    room.minY = wall.ptA.Y;
+                if (wall.ptB.Y > room.maxY)
+                    room.maxY = wall.ptB.Y;
+                if (wall.ptB.Y < room.minY)
+                    room.minY = wall.ptB.Y;
+            }
 
         }
     }
