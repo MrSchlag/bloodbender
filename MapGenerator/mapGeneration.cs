@@ -60,18 +60,19 @@ namespace MapGenerator
 
         public void newMap()
         {
-            rand = new Random();
+            int seed = Guid.NewGuid().GetHashCode();
+            rand = new Random(seed);
             rloader = new RoomLoader();
-            numberOfRooms = rand.Next(4, 10);
+            numberOfRooms = rand.Next(5, 22);
+            // numberOfRooms = 3;
             rooms = new List<Room>();
             roomLinkers = new List<RoomLinker>(); 
-            this.addRoomToList(selectRandomSpawn(), 0, 0);
-            for (int i = 2; i <= 2 /*numberOfRooms*/; i++)
+            this.addRoomToMap(selectRandomSpawn(), 0, 0);
+            for (int i = 2; i <= numberOfRooms; i++)
             {
                 this.addRandomRoom();
             }
-            //this.addRoomToList(room1, 0, 0);
-            //this.addRoomToList(room2, 0, (room2.Y + 3) * room2.tileSize);
+            this.saveMap(seed);
             // this.visualizeMap();
         }
 
@@ -80,23 +81,23 @@ namespace MapGenerator
             int spawnIndex = rand.Next(0, spawnRoomFilesWithTopBotEntries.Count);
             // Debug.WriteLine("SPAWN INDEX" + spawnIndex + " " + spawnRoomFilesWithTopBotEntries.Count);
             Room spawn = rloader.load(spawnRoomFilesWithTopBotEntries[spawnIndex]);
+            spawn.exitSelected = spawn.entryList[0];
             return spawn;
         }
 
         public void addRandomRoom()
         {
-            // Debug.WriteLine("ZOBI");
             Room lastRoom = rooms[rooms.Count - 1];
             int entryIndex = rand.Next(0, lastRoom.entryList.Count);
             // Debug.WriteLine("ROOM INDEX " + entryIndex + " " + lastRoom.entryList.Count);
-            entryType opEntryType = lastRoom.entryList[entryIndex].findOppositeEntryType();
-            if (opEntryType == entryType.undefined)
-                return;
-            // Debug.WriteLine(lastRoom.entryList[entryIndex].type + " " + opEntryType);
+            entryType opEntryType = entryType.undefined;
+            if (this.rooms.Count > 1)
+                lastRoom.selectRandomExit(rand);
+            opEntryType = lastRoom.exitSelected.findOppositeEntryType();
             Room newRoom = this.findRandomRoomWithEntryType(opEntryType);
             if (newRoom == null)
                 return;
-            this.positionNewRoom(lastRoom.entryList[entryIndex], newRoom, lastRoom);
+            this.positionNewRoom(newRoom, lastRoom);
         }
 
         public Room findRandomRoomWithEntryType(entryType type)
@@ -109,7 +110,7 @@ namespace MapGenerator
             if (roomsFilesSelected != null)
             {
                 int roomIndex = rand.Next(0, roomsFilesSelected.Count);
-                Debug.WriteLine(roomsFilesSelected[roomIndex]);
+                // Debug.WriteLine("ROOM SELECTED PATH " + roomsFilesSelected[roomIndex]);
                 Room room = rloader.load(roomsFilesSelected[roomIndex]);
                 if (room == null)
                     return null;
@@ -122,46 +123,59 @@ namespace MapGenerator
             return null;
         }
 
-        public void positionNewRoom(Entry entry, Room newRoom, Room lastRoom)
+        public void positionNewRoom(Room newRoom, Room lastRoom)
         {
             // Debug.WriteLine(entry.ptA.X + "/" + entry.ptA.Y + " - " + entry.ptB.X + "/" + entry.ptB.Y);
             // Debug.WriteLine(newRoom.entrySelected.ptA.X + " " + newRoom.entrySelected.ptA.Y);
 
-            float randomTranslate = rand.Next(0, 4);
-            float translateValue = 0;
-            if (entry.type == entryType.top || entry.type == entryType.bot)
+            float randomTranslate = rand.Next(-40, 40);
+            // float randomTranslate = 0;
+            int i = 0;
+            if (lastRoom.exitSelected.type == entryType.top || newRoom.entrySelected.type == entryType.bot)
             {
-                // Debug.WriteLine("{0} - {1}", newRoom.entrySelected.ptA.X, entry.ptA.X);
-                translateValue = entry.ptA.X - newRoom.entrySelected.ptA.X;
-                // this.addRoomToList(newRoom, 0, (lastRoom.Y) * lastRoom.tileSize);
-
-                Debug.WriteLine("translateValue X " + translateValue);
-                if (entry.type == entryType.top)
-                   this.addRoomToList(newRoom, translateValue, -((newRoom.Y) * newRoom.tileSize));
-                else if (entry.type == entryType.bot)
-                   this.addRoomToList(newRoom, translateValue, ((newRoom.Y) * newRoom.tileSize));
+                float translateY = 0;
+                float translateX = 0;
+                translateX = lastRoom.exitSelected.ptA.X + (randomTranslate * lastRoom.tileSize) - newRoom.entrySelected.ptA.X;
+                foreach (Room room in this.rooms)
+                {
+                    if (i > 0)
+                        translateY += ((room.Y + 5) * room.tileSize);
+                    translateY += 5 * room.tileSize;
+                    i++;
+                }
+                translateY += (newRoom.Y) * newRoom.tileSize;
+                // Debug.WriteLine((newRoom.Y) * newRoom.tileSize + " " + (newRoom.Y + 10) * newRoom.tileSize, translateY);
+                // Debug.WriteLine("EXIT TYPE " + lastRoom.exitSelected.type);
+                if (lastRoom.exitSelected.type == entryType.top)
+                   this.addRoomToMap(newRoom, translateX, -translateY, lastRoom.exitSelected);
+                else if (lastRoom.exitSelected.type == entryType.bot)
+                   this.addRoomToMap(newRoom, translateX, translateY, lastRoom.exitSelected);
             }
-            else if (entry.type == entryType.left || entry.type == entryType.right)
+            else if (lastRoom.exitSelected.type == entryType.left || lastRoom.exitSelected.type == entryType.right)
             {
-                // Debug.WriteLine("yo");
-                translateValue = entry.ptA.Y - newRoom.entrySelected.ptA.Y;
-                this.addRoomToList(newRoom, (lastRoom.X) * lastRoom.tileSize, 0);
-                Debug.WriteLine("translateValue Y " + translateValue);
-                if (entry.type == entryType.left)
-                    this.addRoomToList(newRoom, -(newRoom.X) * newRoom.tileSize, translateValue);
-                else if (entry.type == entryType.right)
-                    this.addRoomToList(newRoom, (newRoom.X) * newRoom.tileSize, translateValue);
+                float translateY = 0;
+                float translateX = 0;
+                translateY = lastRoom.exitSelected.ptA.Y - newRoom.entrySelected.ptA.Y;
+                foreach (Room room in this.rooms)
+                {
+                    if (i > 0)
+                        translateX += room.X * room.tileSize;
+                    i++;
+                }
+                if (lastRoom.exitSelected.type == entryType.left)
+                    this.addRoomToMap(newRoom, -translateX, translateY, lastRoom.exitSelected);
+                else if (lastRoom.exitSelected.type == entryType.right)
+                    this.addRoomToMap(newRoom, translateX, translateY, lastRoom.exitSelected);
             }
         }
 
-        public void addRoomToList(Room room, float xTrans, float yTrans)
+        public void addRoomToMap(Room room, float xTrans, float yTrans, Entry exit = null)
         {
-            // Debug.WriteLine("madafuc");
             if (room != null)
             {
                 if (xTrans != 0  || yTrans != 0)
                 {
-                    Debug.WriteLine("{0}/{1}", xTrans, yTrans);
+                    // Debug.WriteLine("translation {0}/{1}", xTrans, yTrans);
                     foreach(Wall wall in room.wallList)
                     {
                         wall.ptA = Vector2.Transform(wall.ptA, Matrix.CreateTranslation(xTrans, yTrans, 0));
@@ -181,11 +195,34 @@ namespace MapGenerator
                         room.spawnPoint = Vector2.Transform(room.spawnPoint, Matrix.CreateTranslation(xTrans, yTrans, 0));
                 }
                 rooms.Add(room);
+                if (exit != null)
+                {
+                    RoomLinker roomLinker = new RoomLinker(exit, room.entrySelected);
+                    roomLinkers.Add(roomLinker);
+                }
+            }
+        }
+
+        public void saveMap(int seed)
+        {
+            string path = "./../../../../map/save.txt";
+            if (!File.Exists(path))
+            {
+                using (StreamWriter sw = File.CreateText(path))
+                {
+                    sw.WriteLine("// Map seeds savings");
+                    sw.Close();
+                }
+            }
+            using (StreamWriter sw = File.AppendText(path))
+            {
+                sw.WriteLine(seed.ToString());
+                sw.Close();
             }
         }
 
         public void visualizeMap()
-        {
+        { 
             List<Wall> wallList = new List<Wall>();
             foreach (Room room in rooms)
             {

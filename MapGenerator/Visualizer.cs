@@ -58,21 +58,18 @@ namespace MapGenerator
                     {
                         while (i > j)
                         {
-                            // Debug.WriteLine(i + " " + j);
                             lines[(int)(wall.ptA.Y / 32 + Math.Abs(minY))][i] = '-';
                             i--;
                         }
                     }
                 }
             }
-            using (StreamWriter writer = new StreamWriter("../../map/visualizer.txt"))
+            using (StreamWriter writer = new StreamWriter("../../../../map/visualizer.txt"))
             {
                 foreach (StringBuilder line in lines)
                 {
-                    Debug.WriteLine(line.ToString());
                     writer.WriteLine(line.ToString());
                 }
-
             }
         }
 
@@ -107,14 +104,10 @@ namespace MapGenerator
             maxY = (maxY / 32) + 3;
             minX = (minX / 32) - 3;
             minY = (minY / 32) - 3;
-            Debug.WriteLine("X {0}|{1}", minX, maxX);
-            Debug.WriteLine("Y {0}|{1}", minY, maxY);
             for (int x = (int)minX; x <= maxX; x++)
                 line += "X";
-            Debug.WriteLine(line.Length);
             for (int y = (int)minY; y <= maxY; y++)
                 lines.Add(new StringBuilder(line));
-            Debug.WriteLine(lines.Count);
             return lines;
         }
     }
