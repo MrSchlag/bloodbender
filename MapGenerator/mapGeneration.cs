@@ -63,7 +63,7 @@ namespace MapGenerator
             int seed = Guid.NewGuid().GetHashCode();
             rand = new Random(seed);
             rloader = new RoomLoader();
-            numberOfRooms = rand.Next(5, 22);
+            numberOfRooms = rand.Next(3, 5);
             // numberOfRooms = 3;
             rooms = new List<Room>();
             roomLinkers = new List<RoomLinker>(); 
