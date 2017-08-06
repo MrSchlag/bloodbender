@@ -15,13 +15,11 @@ namespace Bloodbender
 
         private Vector2 _center;
 
-        private List<TreeSeed> seeds;
         private Random rnd;
 
         public TreePlanter(float minX, float maxX, float minY, float maxY)
         {
             rnd = new Random();
-            seeds = new List<TreeSeed>();
 
             _minX = minX - 5;
             _maxX = maxX + 5;
@@ -31,12 +29,10 @@ namespace Bloodbender
             _center.X = _maxX - _minX;
             _center.Y = _maxY - _minY;
             SetInitialSeedPosition(2f);
-            //Run();
         }
 
         private void SetInitialSeedPosition(float step)
         {
-
             for (float y = _minY; y < _maxY; y += step)
             {
                 for (float x = _minX; x < _maxX; x += step)
@@ -44,25 +40,6 @@ namespace Bloodbender
                     AddTree(x + rnd.Next(-100, 100) / 10f, y + rnd.Next(-100, 100) / 10f);
                 }
             }
-
-
-            /*
-            for (float y = _minY; y < _maxY; y += step)
-            {
-                var seed = new TreeSeed(new Vector2(_minX, y), new Vector2(1, 0), 0);
-                seeds.Add(seed);
-                seed = new TreeSeed(new Vector2(_maxX, y), new Vector2(-1, 0), 0);
-                seeds.Add(seed);
-            }
-            
-            for (float x = _minX + step; x < _maxX - step; x += step)
-            {
-                var seed = new TreeSeed(new Vector2(x, _minY), new Vector2(0, 1), 0);
-                seeds.Add(seed);
-                seed = new TreeSeed(new Vector2(x, _maxY), new Vector2(0, -1), 50);
-                seeds.Add(seed);
-            }*/
-
         }
 
         private void AddTree(float x, float y)
@@ -91,12 +68,5 @@ namespace Bloodbender
             return false;
         }
 
-        private void Run()
-        {
-            foreach (var seed in seeds)
-            {
-                seed.Run();
-            }
-        }
     }
 }
