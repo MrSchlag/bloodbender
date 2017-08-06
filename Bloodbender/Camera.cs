@@ -246,7 +246,7 @@ namespace Bloodbender
             _positionTracking = false;
             _rotationTracking = false;
 
-            _currentZoom = 1f;
+            _currentZoom = 1.45f;
 
             SetView();
         }
@@ -333,6 +333,10 @@ namespace Bloodbender
                     }
                 }
             }
+
+            _currentPosition = _targetPosition;
+
+            /*
             Vector2 delta = _targetPosition - _currentPosition;
             float distance = delta.Length();
 
@@ -383,10 +387,10 @@ namespace Bloodbender
             _currentPosition += dep;
             */
 
-            _currentPosition += 100f * delta * inertia * elapsed;
-            _currentRotation += 80f * rotDelta * rotInertia * elapsed;
+            //_currentPosition += 100f * delta * inertia * elapsed;
+            //_currentRotation += 80f * rotDelta * rotInertia * elapsed;
 
-
+            
             SetView();
         }
 

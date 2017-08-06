@@ -12,6 +12,8 @@ namespace Bloodbender.ParticuleEngine
         public Vector2 offSetPosition;
         public RadianAngle angle;
 
+        public bool followCamera = false;
+
         protected int numberParticuleToPop = 1;
         protected int tryToPopParticule = 0;
         protected float timer;
