@@ -409,6 +409,7 @@ namespace Bloodbender
             {
                 if (listGraphicObj[i].shouldDie == true)
                 {
+
                     listGraphicObj[i].Dispose();
                     listGraphicObj.RemoveAt(i);
                     --i;

@@ -21,13 +21,7 @@ namespace Bloodbender
 
         public void Update(float elapsed)
         {
-            foreach (Shadow obj in listShadows)
-            {
-                if (!obj.Update(elapsed))
-                {
-                    //supprimer la shadow ici
-                }
-            }
+            listShadows.RemoveAll(item => item.Update(elapsed) == false);
         }
 
         public void LoadContent()
@@ -79,6 +73,9 @@ namespace Bloodbender
         public override bool Update(float elapsed)
         {
             // lire la position et le scale du graphique obj ici et non pas ds le draw
+
+            if (graphicObj.shouldDie)
+                return false;
 
             return base.Update(elapsed);
         }
