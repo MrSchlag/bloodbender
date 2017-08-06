@@ -47,10 +47,10 @@ namespace Bloodbender
 
         private void AddTree()
         {
-            var tree = new GraphicObj();
+            var tree = new GraphicObj(OffSet.BottomCenterHorizontal);
             tree.position = body.Position * Bloodbender.meterToPixel;
-            tree.position.Y += -128;
-            tree.position.X += -64;
+            //tree.position.Y += -128;
+            //tree.position.X += -64;
             tree.addAnimation(new Animation(Bloodbender.ptr.Content.Load<Texture2D>("tree1")));
             Bloodbender.ptr.listGraphicObj.Add(tree);
         }
