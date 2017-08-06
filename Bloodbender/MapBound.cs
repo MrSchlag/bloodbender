@@ -112,7 +112,7 @@ namespace Bloodbender
                 Bloodbender.ptr.pFinder.AddNode(node1);
                 Bloodbender.ptr.pFinder.AddNode(node2);
 
-                pathFinderNodes.Add(node1);
+                    pathFinderNodes.Add(node1);
                 pathFinderNodes.Add(node2);
 
                 verticePos++;

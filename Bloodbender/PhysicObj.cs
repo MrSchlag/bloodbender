@@ -87,6 +87,7 @@ namespace Bloodbender
             body.LinearDamping = 0.02f;
             body.AngularDamping = 1;
 
+            
             pathFinderNodes = new List<PathFinderNode>();
             pathNodeType = nodeType;
             if (nodeType == PathFinderNodeType.CENTER)

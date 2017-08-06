@@ -169,7 +169,8 @@ namespace Bloodbender
             mapBounds2.addVertex(new Vector2(0, 0), new Vector2(0, 250));
             mapBounds2.addVertex(new Vector2(0, 250), new Vector2(0, 500));
             mapBounds2.finilizeMap();
-            
+
+            var treeplanter = new TreePlanter(0, 2000 * pixelToMeter, -50 * pixelToMeter, 500 * pixelToMeter);
 
             /*
             Debug.WriteLine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
