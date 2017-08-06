@@ -105,6 +105,8 @@ namespace Bloodbender.PathFinding
                 neighboorToRemove.Clear();
                 foreach (var neighboor in node.neighbors)
                 {
+                    if (neighboor.position.X == node.position.X && neighboor.position.Y == node.position.Y)
+                        continue;
                     if (!NodeToNodeRayCast(node, neighboor))
                         neighboorToRemove.Add(neighboor);
                 }
