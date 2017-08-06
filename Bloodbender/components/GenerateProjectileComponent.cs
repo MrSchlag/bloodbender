@@ -50,5 +50,9 @@ namespace Bloodbender
 
             Bloodbender.ptr.listGraphicObj.Add(proj);
         }
+
+        public void Remove()
+        {
+        }
     }
 }

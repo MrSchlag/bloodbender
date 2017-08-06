@@ -136,6 +136,11 @@ namespace Bloodbender
 
         public virtual void Dispose()
         {
+            foreach (var component in components)
+            {
+                component.Remove();
+            }
+            components.Clear();
             GC.SuppressFinalize(this);
         }
 

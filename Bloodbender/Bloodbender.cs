@@ -403,7 +403,6 @@ namespace Bloodbender
             for (int i = 0; i < listGraphicObj.Count; ++i)
             {
                 listGraphicObj[i].Update(elapsed);
-                
             }
 
             for (int i = 0; i < listGraphicObj.Count; ++i)

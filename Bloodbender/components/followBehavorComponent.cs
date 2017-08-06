@@ -51,9 +51,16 @@ namespace Bloodbender
             previousTargetPosition += new Vector2(10,10);
         }
 
+        public void Remove()
+        {
+            target.getPosNode().TriangleChangedEvent -= FollowBehaviorComponent_TriangleChangedEvent;
+        }
+
         private void FollowBehaviorComponent_TriangleChangedEvent()
         {
-            //Console.WriteLine("event fired");
+            ////Console.WriteLine("event fired");
+            //if (owner.shouldDie == true)
+            //    return;
             path = Bloodbender.ptr.pFinder.pathRequest(owner, target);
 
             if (path == null)
@@ -62,6 +69,9 @@ namespace Bloodbender
 
         bool IComponent.Update(float elapsed)
         {
+            //if (owner.shouldDie == true)
+            //    return false;
+
             timerCheck += elapsed;
 
             //if (previousTargetPosition != target.body.Position)
@@ -214,5 +224,6 @@ namespace Bloodbender
         {
             this.target = target;
         }
+
     }
 }

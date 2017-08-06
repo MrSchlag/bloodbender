@@ -9,5 +9,7 @@ namespace Bloodbender
     public interface IComponent
     {
         bool Update(float elapsed);
+        void Remove();
     }
+
 }
