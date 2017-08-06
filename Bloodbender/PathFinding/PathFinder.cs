@@ -96,6 +96,15 @@ namespace Bloodbender.PathFinding
             return null;
         }
 
+        public void RemoveObjFromNavMesh(PhysicObj obj)
+        {
+            obj.getPosNode().neighbors.Remove(obj.getPosNode());
+            RemoveNodeFromNavMesh(GetNavMesh(obj), obj.getPosNode());
+
+            objNavMeshMapping.Remove(obj);
+            PathDict.Remove(obj);
+        }
+
         public Dictionary<GraphicObj, List<PathFinderNode>> GetCurrentPaths()
         {
             return PathDict;

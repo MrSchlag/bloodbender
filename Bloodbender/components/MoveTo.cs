@@ -79,5 +79,9 @@ namespace Bloodbender
 
             return true;
         }
+
+        public void Remove()
+        {
+        }
     }
 }

@@ -96,5 +96,9 @@ namespace Bloodbender
                 Bloodbender.ptr.listGraphicObj.Add(decorationProj);
             }
         }
+
+        public void Remove()
+        {
+        }
     }
 }

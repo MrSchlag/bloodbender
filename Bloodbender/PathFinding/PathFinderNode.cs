@@ -117,6 +117,7 @@ namespace Bloodbender.PathFinding
                 neighbour.neighbors.Remove(this);
             }
             neighbors.Clear();
+            Bloodbender.ptr.pFinder.RemoveObjFromNavMesh(owner);
         }
 
         public void OnTriangleChanged()
