@@ -50,8 +50,6 @@ namespace Bloodbender
         {
             var tree = new GraphicObj(OffSet.BottomCenterHorizontal);
             tree.position = body.Position * Bloodbender.meterToPixel;
-            //tree.position.Y += -128;
-            //tree.position.X += -64;
             tree.addAnimation(new Animation(Bloodbender.ptr.Content.Load<Texture2D>("tree1")));
             Bloodbender.ptr.listGraphicObj.Add(tree);
         }
@@ -62,7 +60,7 @@ namespace Bloodbender
                 body.LinearVelocity = Vector2.Zero;
             else
             {
-                _stopTime = rnd.Next((int)_minStopTime, 200 + (int)_minStopTime) / 1000f;
+                _stopTime = rnd.Next((int)_minStopTime, 100 + (int)_minStopTime) / 1000f;
                 _stopTimer = 0;
             }
             return true;

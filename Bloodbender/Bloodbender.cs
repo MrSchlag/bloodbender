@@ -83,7 +83,7 @@ namespace Bloodbender
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-          
+
             graphics.PreferredBackBufferWidth = width;
             graphics.PreferredBackBufferHeight = height;
 

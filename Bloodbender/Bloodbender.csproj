@@ -86,6 +86,7 @@
     <Compile Include="DebugView.cs" />
     <Compile Include="Enemies\Scenario1\GangChef.cs" />
     <Compile Include="Enemies\Scenario1\GangMinion.cs" />
+    <Compile Include="Enemies\Scenario2\Partner.cs" />
     <Compile Include="Enemies\Scenario3\Bat.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="FrameRateCounter.cs" />
@@ -134,10 +135,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="SharpNoise, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpNoise.0.11.0\lib\net45\SharpNoise.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -177,13 +174,8 @@
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
     <None Include="ClassDiagram3.cd" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Enemies\Scenario2\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

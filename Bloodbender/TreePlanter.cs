@@ -30,7 +30,7 @@ namespace Bloodbender
 
             _center.X = _maxX - _minX;
             _center.Y = _maxY - _minY;
-            SetInitialSeedPosition(0.4f);
+            SetInitialSeedPosition(0.3f);
             Run();
         }
 
