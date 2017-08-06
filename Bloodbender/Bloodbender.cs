@@ -20,6 +20,7 @@ using SharpNoise.Builders;
 using SharpNoise.Utilities.Imaging;
 using SharpNoise;
 using SharpNoise.Modules;
+using System.Drawing.Imaging;
 
 namespace Bloodbender
 {
@@ -80,7 +81,7 @@ namespace Bloodbender
         PlaneNoiseMapBuilder builder;
         ImageRenderer testRenderer;
         SharpNoise.Utilities.Imaging.Image testTextureImage;
-        Texture2D renderedmap;
+        RenderTarget2D renderedmap;
 
 
 
@@ -140,20 +141,6 @@ namespace Bloodbender
             this.Window.AllowUserResizing = true;
             eventResize = new EventHandler<EventArgs>(Window_ClientSizeChanged);
             this.Window.ClientSizeChanged += eventResize;
-
-            width = 4000;
-            height = 4000;
-
-            builder = new PlaneNoiseMapBuilder();
-            builder.DestNoiseMap = new NoiseMap();
-            builder.SourceModule = new Perlin();
-            builder.SetBounds(0, 100.0, 0, 100.0);
-
-            // for second tiled picture
-            //builder.SetBounds(6.0, 10.0, 1.0, 5.0);
-
-            builder.SetDestSize(width, height);
-            builder.Build();
 
             base.Initialize();
         }
@@ -317,9 +304,36 @@ namespace Bloodbender
             particuleSystem.addParticuleSpawner(new SnowSpawner(new Vector2(100, 100), 0, player, new Vector2(150,-350)));
 
 
+            var noiseSource = new Perlin
+            {
+                Seed = new Random().Next()
+            };
+            var noiseMap = new NoiseMap();
+            var noiseMapBuilder = new PlaneNoiseMapBuilder
+            {
+                DestNoiseMap = noiseMap,
+                SourceModule = noiseSource
+            };
+
+            noiseMapBuilder.SetDestSize(2000, 1000);
+            noiseMapBuilder.SetBounds(0, 50, 0, 25);
+
+            // for second tiled picture
+            //builder.SetBounds(6.0, 10.0, 1.0, 5.0);
+
+            noiseMapBuilder.Build();
+
             testTextureImage = new SharpNoise.Utilities.Imaging.Image();
 
-            testRenderer = new ImageRenderer();
+            testRenderer = new ImageRenderer
+            {
+                SourceNoiseMap = noiseMap,
+                DestinationImage = testTextureImage,
+                EnableLight = true,
+                LightContrast = 1.0,
+                LightBrightness = 2.3
+            };
+
             testRenderer.ClearGradient();
 
             testRenderer.AddGradientPoint(0.0000, new SharpNoise.Utilities.Imaging.Color(170, 180, 240, 255)); // deeps
@@ -336,15 +350,19 @@ namespace Bloodbender
             //testRenderer.AddGradientPoint(0.9000, new SharpNoise.Utilities.Imaging.Color(103, 120, 228, 255)); // rock
             //testRenderer.AddGradientPoint(1.0000, new SharpNoise.Utilities.Imaging.Color(91, 110, 225, 255)); // snow
 
-            testRenderer.EnableLight = true;
-            testRenderer.LightContrast = 1.0;
-            testRenderer.LightBrightness = 2.3;
-
-            testRenderer.SourceNoiseMap = builder.DestNoiseMap;
-            testRenderer.DestinationImage = testTextureImage;
             testRenderer.Render();
 
             renderedmap = createTexture(testRenderer);
+
+            /*
+            GraphicsDevice.SetRenderTarget(renderedmap);
+
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null);
+            //priteBatch.Draw(Content.Load<Texture2D>("bouleRouge"), new Vector2(500, 500));
+            spriteBatch.End();
+
+            GraphicsDevice.SetRenderTarget(null);
+            */
         }
 
         
@@ -498,7 +516,7 @@ namespace Bloodbender
             resolutionIndependence.BeginDraw();
 
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.GetView());
-            spriteBatch.Draw(renderedmap, new Vector2(-1000, -1000), Microsoft.Xna.Framework.Color.White);
+            spriteBatch.Draw(renderedmap, new Vector2(-300, -300), Microsoft.Xna.Framework.Color.White);
             spriteBatch.End();
 
 
@@ -535,26 +553,13 @@ namespace Bloodbender
             return new Vector2(mouse.X, mouse.Y);
         }
 
-        private Texture2D createTexture(ImageRenderer Renderer)
+        private RenderTarget2D createTexture(ImageRenderer Renderer)
         {
-            Texture2D texture = new Texture2D(GraphicsDevice, Renderer.DestinationImage.Width, Renderer.DestinationImage.Height);
-
+            RenderTarget2D texture = new RenderTarget2D(GraphicsDevice, Renderer.DestinationImage.Width, Renderer.DestinationImage.Height);
             Microsoft.Xna.Framework.Color[] imageColorData = new Microsoft.Xna.Framework.Color[Renderer.DestinationImage.Width * Renderer.DestinationImage.Height];
 
-            int colorIndex;
-            int picindex = 0; //Renderer.DestinationImage.Height * Renderer.DestinationImage.Width - 1;
-
-            for (int i = 0; i < Renderer.DestinationImage.Width; i++)
-            {
-                // need 2 color indexes here !
-                for (int j = 0; j < Renderer.DestinationImage.Height; j++)
-                //for (int j = Renderer.DestinationImage.Height - 1; j >= 0 ; j--)
-                {
-                    colorIndex = i + j * Renderer.DestinationImage.Width;
-                    imageColorData[colorIndex] = new Microsoft.Xna.Framework.Color(Renderer.DestinationImage.Data[picindex].Red, Renderer.DestinationImage.Data[picindex].Green, Renderer.DestinationImage.Data[picindex].Blue);
-                    picindex++;
-                }
-            }
+            for (int i = 0; i < Renderer.DestinationImage.Height * Renderer.DestinationImage.Width; ++i)
+                imageColorData[i] = new Microsoft.Xna.Framework.Color(Renderer.DestinationImage.Data[i].Red, Renderer.DestinationImage.Data[i].Green, Renderer.DestinationImage.Data[i].Blue);
 
             texture.SetData(imageColorData);
 
