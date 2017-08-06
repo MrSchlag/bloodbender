@@ -16,6 +16,8 @@ using Bloodbender.Enemies.Scenario3;
 using Bloodbender.Enemies.Scenario1;
 using Bloodbender.ParticuleEngine;
 using Bloodbender.ParticuleEngine.ParticuleSpawners;
+using SharpNoise.Builders;
+using SharpNoise.Utilities.Imaging;
 
 namespace Bloodbender
 {
@@ -48,7 +50,7 @@ namespace Bloodbender
 
         public float elapsed = 0.0f;
 
-        public Color BackgroundColor = Color.CornflowerBlue;
+        public Microsoft.Xna.Framework.Color BackgroundColor = Microsoft.Xna.Framework.Color.CornflowerBlue;
 
         public Texture2D bouleRouge;
         public Texture2D blood1;
@@ -71,6 +73,11 @@ namespace Bloodbender
 
 
         ParticuleSystem particuleSystem;
+
+
+        PlaneNoiseMapBuilder builder;
+        ImageRenderer testRenderer;
+        SharpNoise.Utilities.Imaging.Image testTextureImage;
 
 
         public Bloodbender()
@@ -435,7 +442,7 @@ namespace Bloodbender
             resolutionIndependence.BeginDraw();
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-            spriteBatch.Draw(shadowsRendering.getTarget(), Vector2.Zero, null, new Color(255, 255, 255, 100), 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.00001f);
+            spriteBatch.Draw(shadowsRendering.getTarget(), Vector2.Zero, null, new Microsoft.Xna.Framework.Color(255, 255, 255, 100), 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.00001f);
             spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.GetView());

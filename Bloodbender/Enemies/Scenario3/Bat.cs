@@ -12,7 +12,7 @@ namespace Bloodbender.Enemies.Scenario3
     {
         public Bat(Vector2 position, PhysicObj target) : base(position, target)
         {
-            height = 32;
+            height = 0;
 
             Animation anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("Ennemy1/ennemy1"), 8, 0.1f, 32, 0, 0, 0);
             anim.reset();
@@ -37,6 +37,7 @@ namespace Bloodbender.Enemies.Scenario3
 
         public override bool Update(float elapsed)
         {
+            
             return base.Update(elapsed);
         }
     }
