@@ -22,7 +22,7 @@ namespace MapGenerator
             {
                 List<Wall> walls = new List<Wall>();
                 List<Entry> entries = new List<Entry>();
-                List<Entities> entities = new List<Entities>();
+                List<Entity> entities = new List<Entity>();
                 Vector2 spawnPoint = new Vector2();
 
                 if (tmxmap.ObjectGroups.Contains("wall"))
@@ -121,9 +121,17 @@ namespace MapGenerator
             return entries;
         }
 
-        public List<Entities> loadEntities()
+        public List<Entity> loadEntities()
         {
-            return new List<Entities>();
+            TmxList<TmxObject> elist = tmxmap.ObjectGroups["entity"].Objects;
+            List<Entity> entities = new List<Entity>();
+
+            foreach (var entity_obj in elist)
+            {
+                Vector2 entposition = new Vector2((float)entity_obj.X, (float)entity_obj.Y);
+                entities.Add(new Entity(entposition));
+            }
+            return entities;
         }
 
         public Vector2 loadSpawnPoint() {

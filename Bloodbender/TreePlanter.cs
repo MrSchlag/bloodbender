@@ -30,7 +30,7 @@ namespace Bloodbender
 
             _center.X = _maxX - _minX;
             _center.Y = _maxY - _minY;
-            SetInitialSeedPosition(2f);
+            SetInitialSeedPosition(1.3f);
             //Run();
         }
 
@@ -41,7 +41,7 @@ namespace Bloodbender
             {
                 for (float x = _minX; x < _maxX; x += step)
                 {
-                    AddTree(x + rnd.Next(-100, 100) / 10f, y + rnd.Next(-100, 100) / 10f);
+                    AddTree(x + rnd.Next(-30, 30) / 10f, y + rnd.Next(-60, 60) / 10f);
                 }
             }
 

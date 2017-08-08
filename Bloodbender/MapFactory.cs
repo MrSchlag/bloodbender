@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using MapGenerator;
 using Microsoft.Xna.Framework;
+using Bloodbender.Enemies.Scenario3;
 
 namespace Bloodbender
 {
@@ -18,12 +19,15 @@ namespace Bloodbender
         public float maxX { get; set; }
         public float maxY { get; set; }
 
-    public void newMap(List<GraphicObj> listGraphicObj)
+        public Player player { get; set; }
+
+        public void newMap(List<GraphicObj> listGraphicObj)
         {
             minX = 0;
             minY = 0;
             maxX = 0;
             maxY = 0;
+            player = null;
             mGen.newMap();
             this.loadRoomWalls();
             this.loadRoomLinkers();
@@ -88,14 +92,21 @@ namespace Bloodbender
 
         public void loadPlayer(List<GraphicObj> listGraphicObj)
         {
-            Player player = new Player(mGen.rooms[0].spawnPoint);
+            this.player = new Player(mGen.rooms[0].spawnPoint);
             player.setLinearDamping(10);
             listGraphicObj.Add(player);
         }
 
         public void loadEntities(List<GraphicObj> listGraphicObj)
         {
-
+            foreach (Room room in mGen.rooms)
+            {
+                foreach (Entity entity in room.entityList)
+                {
+                    Bat enemy = new Bat(entity.position, player);
+                    listGraphicObj.Add(enemy);
+                }
+            }
         }
 
         public void updateMinMaxMap(Wall wall)
