@@ -58,27 +58,16 @@ namespace Bloodbender
 
         private void FollowBehaviorComponent_TriangleChangedEvent()
         {
-            ////Console.WriteLine("event fired");
-            //if (owner.shouldDie == true)
-            //    return;
             path = Bloodbender.ptr.pFinder.pathRequest(owner, target);
 
             if (path == null)
-                Console.WriteLine("Triangle hangler : {0}" + DateTime.Now);
+                Console.WriteLine("Triangle hangler : {0} with {1}", DateTime.Now, target.position);
         }
 
         bool IComponent.Update(float elapsed)
         {
-            //if (owner.shouldDie == true)
-            //    return false;
-
             timerCheck += elapsed;
 
-            //if (previousTargetPosition != target.body.Position)
-            //{
-            //    FollowBehaviorComponent_TriangleChangedEvent();
-            //    previousTargetPosition = target.body.Position;
-            //}
             if (timerCheck >= timerCheckLenght)
             {
                 FollowBehaviorComponent_TriangleChangedEvent();
@@ -86,18 +75,13 @@ namespace Bloodbender
             }
 
             pathRequestRateCounter += elapsed;
-            //if (pathRequestRateCounter > pathRequestRate)
-            //{
             pathRequestRateCounter = 0f;
-            //var path = Bloodbender.ptr.pFinder.pathRequest(owner, target);
 
             if (path == null)
             {
                 owner.body.LinearVelocity = Vector2.Zero;
                 return false;
             }
-            //if (path.Count() < 2) //fixe temporaire
-            //    return true;
 
             var nextNode = path[1];
 
