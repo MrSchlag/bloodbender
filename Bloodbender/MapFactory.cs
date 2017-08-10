@@ -91,6 +91,7 @@ namespace Bloodbender
             Player player = new Player(mGen.rooms[0].spawnPoint);
             player.setLinearDamping(10);
             listGraphicObj.Add(player);
+            Bloodbender.ptr.player = player;
         }
 
         public void loadEntities(List<GraphicObj> listGraphicObj)
