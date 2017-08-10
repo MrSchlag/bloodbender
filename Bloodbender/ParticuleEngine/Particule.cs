@@ -7,6 +7,6 @@ namespace Bloodbender.ParticuleEngine
     {
         public float speed;
         public bool inWait;
-        public Particule(Vector2 position, float speed) : base(OffSet.Center) { this.position = position; this.speed = speed; }
+        public Particule(Vector2 position, float speed, OffSet offset = OffSet.Center) : base(offset) { this.position = position; this.speed = speed; }
     }
 }

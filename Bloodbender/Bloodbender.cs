@@ -75,7 +75,7 @@ namespace Bloodbender
         int width = 1280, height = 720, savedWidth = 0, savedHeight = 0;
 
 
-        ParticuleSystem particuleSystem;
+        public ParticuleSystem particuleSystem;
 
 
         PlaneNoiseMapBuilder builder;
@@ -164,6 +164,8 @@ namespace Bloodbender
             blood3 = Content.Load<Texture2D>("blood3");
             debugNodeBusy = Content.Load<Texture2D>("debugPathFinderNode");
             debugNodeFree = Content.Load<Texture2D>("debugPathFinderNode2");
+
+            particuleSystem = new ParticuleSystem();
 
             //pathFinder = new PathFinder(2);
             pFinder = new PathFinder();
@@ -300,8 +302,10 @@ namespace Bloodbender
             //listGraphicObj.Add(giclesang);
 
 
-            particuleSystem = new ParticuleSystem();
+
             particuleSystem.addParticuleSpawner(new SnowSpawner(new Vector2(100, 100), 0, player, new Vector2(150,-350)));
+            
+
 
 
             var noiseSource = new Perlin
@@ -524,7 +528,7 @@ namespace Bloodbender
             spriteBatch.Draw(shadowsRendering.getTarget(), Vector2.Zero, null, new Microsoft.Xna.Framework.Color(255, 255, 255, 100), 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.00001f);
             spriteBatch.End();
 
-            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.GetView());
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null, null, camera.GetView());
 
             //spriteBatch.Draw(renderedmap, new Vector2(100, 100), Microsoft.Xna.Framework.Color.White);
 

@@ -21,11 +21,11 @@ namespace Bloodbender.ParticuleEngine.Particules
 
         public override bool Update(float elapsed)
         {
-            if (intermediatePosition.X >= distanceMax)
-            {
-                inWait = true;
+            if (inWait == true)
                 return false;
-            }
+
+            if (intermediatePosition.X >= distanceMax)
+                inWait = true;
 
             position = intermediatePosition + referencePosition;
 

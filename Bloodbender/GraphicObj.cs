@@ -16,7 +16,8 @@ namespace Bloodbender
         protected float rotation = 0.0f;
         protected int currentAnimation = 0;
         public float height = 0.0f;
-        protected SpriteEffects spriteEffect = SpriteEffects.None;
+        public SpriteEffects spriteEffect = SpriteEffects.None;
+        public Color color = Color.White;
         public Vector2 scale = Vector2.One;
         protected OffSet offSet;
         public enum OffSet { Center, BottomCenterHorizontal, None };
@@ -45,7 +46,7 @@ namespace Bloodbender
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (Bloodbender.ptr.camera.isInView(position) && animations.Count > 0) // Permet de draw que les elements present ds la vue
-                animations[currentAnimation].Draw(spriteBatch, position, rotation, spriteEffect, scale, height);
+                animations[currentAnimation].Draw(spriteBatch, position, rotation, spriteEffect, scale, color, height);
         }
 
         public void addComponent(IComponent component)

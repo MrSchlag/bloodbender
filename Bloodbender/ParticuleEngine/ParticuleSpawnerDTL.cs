@@ -21,7 +21,7 @@ namespace Bloodbender.ParticuleEngine
                 if (particuleFollowSpawner)
                     particule.referencePosition -= diffPosition;
 
-                if (!particule.Update(elapsed) && tryToPopParticule >= 1)
+                if (!particule.Update(elapsed) && tryToPopParticule >= 1 && canSpawn)
                 {
                     tryToPopParticule--;
                     particuleToCook = particule;
@@ -29,7 +29,7 @@ namespace Bloodbender.ParticuleEngine
                 }
             }
 
-            while (tryToPopParticule >= 1)
+            while (tryToPopParticule >= 1 && canSpawn)
             {
                 tryToPopParticule--;
                 createParticule();

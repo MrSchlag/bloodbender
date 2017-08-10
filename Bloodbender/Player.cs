@@ -14,6 +14,7 @@ using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Bloodbender.ParticuleEngine.ParticuleSpawners;
 
 namespace Bloodbender
 {
@@ -39,6 +40,8 @@ namespace Bloodbender
         private static float attackDashRestDuration = 0f;
 
         private Vector2 dashLinearVelocity = Vector2.Zero;
+
+        DashSpawner dashSpawner;
 
         public Player(Vector2 position) : base(position, PathFinderNodeType.CENTER)
         {
@@ -73,6 +76,10 @@ namespace Bloodbender
             attack1.isLooping = false;
             attack1.offSet = new Vector2(0,32);
             addAnimation(attack1);
+
+            dashSpawner = new DashSpawner(new Vector2(0, 0), 0, this, new Vector2(0, 0));
+            Bloodbender.ptr.particuleSystem.addParticuleSpawner(dashSpawner);
+            dashSpawner.canSpawn = false;
         }
 
         public override bool Update(float elapsed)
@@ -242,6 +249,7 @@ namespace Bloodbender
             if (checkDashReset)
                 if (isInDashRest)
                     return;
+            dashSpawner.canSpawn = true;
             block(dashDuration);
             if (direction == Vector2.Zero)
                 return;
@@ -265,6 +273,7 @@ namespace Bloodbender
                 }
                 else
                 {
+                    dashSpawner.canSpawn = false;
                     dashTime = 0f;
                     isInDash = false;
                     isInDashRest = true;

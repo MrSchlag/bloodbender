@@ -18,6 +18,7 @@ namespace Bloodbender.ParticuleEngine
         protected int tryToPopParticule = 0;
         protected float timer;
         protected float timeSpawn = 1f;
+        public bool canSpawn = true;
 
         public ParticuleSpawner(Vector2 position) : this(position, 0, null, Vector2.Zero) { }
         public ParticuleSpawner(Vector2 position, RadianAngle angle) : this(position, angle, null, Vector2.Zero) { }
@@ -42,6 +43,6 @@ namespace Bloodbender.ParticuleEngine
 
         protected abstract void createParticule();
 
-        protected abstract void cookParticule();
+        protected abstract void cookParticule();//should be in each particule
     }
 }

@@ -19,7 +19,6 @@ namespace Bloodbender
         public Vector2 origin = Vector2.Zero;
         public Vector2 offSet = Vector2.Zero;
         public float depth { get; set; } = 0.0f;
-        public Color color = Color.White;
 
         protected int framesNumber; // nombre de frame dans l'animation
         public float[] framesLength { get; set; } // array to represent the lenght in second of each frame
@@ -89,7 +88,7 @@ namespace Bloodbender
             return true;
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, float rotation, SpriteEffects spriteEffect, Vector2 scale, float height = 0.0f)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, float rotation, SpriteEffects spriteEffect, Vector2 scale, Color color, float height = 0.0f)
         {
             rectangleSource.X = frameWidth * currentFrame + frameWidth * column;
 
