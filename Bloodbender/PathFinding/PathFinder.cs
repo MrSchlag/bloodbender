@@ -2,6 +2,9 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using QuickGraph.Algorithms;
+using QuickGraph;
+using System;
 
 namespace Bloodbender.PathFinding
 {
@@ -75,24 +78,40 @@ namespace Bloodbender.PathFinding
 
             AddNodeToNavMesh(GetNavMesh(startObj), startObj.getPosNode());
             AddNodeToNavMesh(GetNavMesh(startObj), endObj.getPosNode());
-                
+              
             if (PathProcessor.isWayClearToNode(startObj, endObj.getPosNode()))
             {
-                startObj.getPosNode().neighbors.Add(endObj.getPosNode());
-                endObj.getPosNode().neighbors.Add(startObj.getPosNode());
+                //startObj.getPosNode().neighbors.Add(endObj.getPosNode());
+                //endObj.getPosNode().neighbors.Add(startObj.getPosNode());
+                return new List<PathFinderNode>() { startObj.getPosNode(), endObj.getPosNode() };
+                //GetNavMesh(startObj).graph.AddEdge(new Edge<PathFinderNode>(startObj.getPosNode(), endObj.getPosNode()));
             }
 
-            startObj.getPosNode().reset();
-            endObj.getPosNode().reset();
-            navMeshes.ForEach(nav => nav.Nodes.ForEach(node => node.reset()));
+            //startObj.getPosNode().reset();
+            //endObj.getPosNode().reset();
+            //navMeshes.ForEach(nav => nav.Nodes.ForEach(node => node.reset()));
 
-            var resultPath = pathProc.runDjikstra(startObj.getPosNode(), endObj.getPosNode());
+            //var resultPath = pathProc.runDjikstra(startObj.getPosNode(), endObj.getPosNode());
+            //var res = GetNavMesh(startObj).graph.ShortestPathsDijkstra(GetNavMesh(startObj).verticesDistance, startObj.getPosNode());
+            var res = GetNavMesh(startObj).graph.ShortestPathsDijkstra(GetNavMesh(startObj).verticesDistance, startObj.getPosNode());
 
-            if (resultPath != null)
+            IEnumerable<Edge<PathFinderNode>> path;
+            if (res(endObj.getPosNode(), out path))
             {
-                PathDict[startObj] = resultPath;
-                return resultPath;
+                var list = path.ToList();
+                var list2 = new List<PathFinderNode>();
+                foreach (var edge in list)
+                {
+                    list2.Add(edge.Source);
+                }
+                return list2;
             }
+
+            //if (resultPath != null)
+            //{
+            //    PathDict[startObj] = resultPath;
+            //    return resultPath;
+            //}
             return null;
         }
 
@@ -144,23 +163,28 @@ namespace Bloodbender.PathFinding
 
             if (triangle.p1 == null || triangle.p2 == null || triangle.p3 == null)
                 return false;
-            
+
+            nav.graph.AddVertex(node);
+
             if (NavMesh.NodeToNodeRayCast(node, navMeshes[0].GetEquivalentNode(triangle.p1)))
             {
                 triangle.p1.neighbors.Add(node);
                 node.neighbors.Add(triangle.p1);
+                nav.graph.AddEdge(new Edge<PathFinderNode>(node, triangle.p1));
             }
 
             if (NavMesh.NodeToNodeRayCast(node, navMeshes[0].GetEquivalentNode(triangle.p2)))
             {
                 triangle.p2.neighbors.Add(node);
                 node.neighbors.Add(triangle.p2);
+                nav.graph.AddEdge(new Edge<PathFinderNode>(node, triangle.p2));
             }
 
             if (NavMesh.NodeToNodeRayCast(node, navMeshes[0].GetEquivalentNode(triangle.p3)))
             {
                 triangle.p3.neighbors.Add(node);
                 node.neighbors.Add(triangle.p3);
+                nav.graph.AddEdge(new Edge<PathFinderNode>(node, triangle.p3));
             }
 
             return true;
@@ -174,10 +198,17 @@ namespace Bloodbender.PathFinding
 
         private void RemoveNodeFromNavMesh(NavMesh nav, PathFinderNode node)
         {
-            foreach (var neighbors in node.neighbors)
+            foreach (var neighbor in node.neighbors)
             {
-                neighbors.neighbors.Remove(node);
+                Edge<PathFinderNode> edge = null;
+                if (nav.graph.TryGetEdge(node, neighbor, out edge))
+                {
+                    nav.graph.RemoveEdge(edge);  
+                }
+                neighbor.neighbors.Remove(node);
             }
+            if (nav.graph.ContainsVertex(node)) 
+                nav.graph.RemoveVertex(node);
             node.neighbors.Clear();
         }
 

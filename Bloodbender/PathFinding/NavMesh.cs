@@ -1,10 +1,7 @@
-﻿using FarseerPhysics.Common;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using FarseerPhysics.Common.Decomposition;
 using System;
-using Triangulator.Geometry;
-using System.Linq;
+using QuickGraph;
 
 namespace Bloodbender.PathFinding
 {
@@ -13,10 +10,15 @@ namespace Bloodbender.PathFinding
         public List<PathFinderNode> Nodes { get; set; }
         public float RadiusOffset { get; set; }
         private List<NodeTriangle> allTriangle { get; set; }
+        public UndirectedGraph<PathFinderNode, Edge<PathFinderNode>> graph;
+        public Func<Edge<PathFinderNode>, double> verticesDistance;
 
         public NavMesh(List<PathFinderNode> nodes)
         {
             allTriangle = new List<NodeTriangle>();
+
+            GraphInit();
+
             Nodes = nodes;
         }
 
@@ -25,6 +27,20 @@ namespace Bloodbender.PathFinding
             allTriangle = new List<NodeTriangle>();
             Nodes = new List<PathFinderNode>();
             RadiusOffset = radiusOffset;
+            GraphInit();
+        }
+
+        private void GraphInit()
+        {
+            graph = new UndirectedGraph<PathFinderNode, Edge<PathFinderNode>>(true);
+            verticesDistance = new Func<Edge<PathFinderNode>, double>((edge) =>
+            {
+                var source = ((Edge<PathFinderNode>)edge).Source.position;
+                var target = ((Edge<PathFinderNode>)edge).Target.position;
+                var dist = target - source;
+
+                return dist.Length();
+            });
         }
 
         public void ResetNodes()
@@ -52,22 +68,31 @@ namespace Bloodbender.PathFinding
                 PathFinderNode node1 = GetNodeFromPosition(vertices[triangle.p1]);
                 PathFinderNode node2 = GetNodeFromPosition(vertices[triangle.p2]);
                 PathFinderNode node3 = GetNodeFromPosition(vertices[triangle.p3]);
+                graph.AddVertex(node1);
+                graph.AddVertex(node2);
+                graph.AddVertex(node3);
+
 
                 node1.neighbors.Add(node2);
                 node1.neighbors.Add(node3);
+                graph.AddEdge(new Edge<PathFinderNode>(node1, node2));
+                graph.AddEdge(new Edge<PathFinderNode>(node1, node3));
 
                 node2.neighbors.Add(node1);
                 node2.neighbors.Add(node3);
-                
+                graph.AddEdge(new Edge<PathFinderNode>(node2, node1));
+                graph.AddEdge(new Edge<PathFinderNode>(node2, node3));
+
                 node3.neighbors.Add(node1);
                 node3.neighbors.Add(node2);
+                graph.AddEdge(new Edge<PathFinderNode>(node3, node1));
+                graph.AddEdge(new Edge<PathFinderNode>(node3, node2));
 
                 NodeTriangle nodeTriangle = new NodeTriangle();
                 nodeTriangle.p1 = node1;
                 nodeTriangle.p2 = node2;
                 nodeTriangle.p3 = node3;
 
-                //if (CheckTriangleValidity(nodeTriangle))
                 allTriangle.Add(nodeTriangle);
             }
             DeleteInvalidLink();
@@ -110,7 +135,13 @@ namespace Bloodbender.PathFinding
                     if (!NodeToNodeRayCast(node, neighboor))
                         neighboorToRemove.Add(neighboor);
                 }
-                neighboorToRemove.ForEach(i => node.neighbors.Remove(i));
+                neighboorToRemove.ForEach(i => 
+                {
+                    Edge<PathFinderNode> edge = null;
+                    node.neighbors.Remove(i);
+                    if (graph.TryGetEdge(node, i, out edge))
+                        graph.RemoveEdge(edge);
+                });
             }
         }
 
