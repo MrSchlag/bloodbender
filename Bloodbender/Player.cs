@@ -249,10 +249,10 @@ namespace Bloodbender
             if (checkDashReset)
                 if (isInDashRest)
                     return;
-            dashSpawner.canSpawn = true;
             block(dashDuration);
             if (direction == Vector2.Zero)
                 return;
+            dashSpawner.canSpawn = true;
             direction.Normalize();
             body.LinearVelocity = direction * dashSpeed * Bloodbender.pixelToMeter;
             dashLinearVelocity = body.LinearVelocity;
