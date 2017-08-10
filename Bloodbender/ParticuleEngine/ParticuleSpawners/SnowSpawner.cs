@@ -14,6 +14,8 @@ namespace Bloodbender.ParticuleEngine.ParticuleSpawners
         public SnowSpawner(Vector2 position, RadianAngle angle) : this(position, angle, null, Vector2.Zero) { }
         public SnowSpawner(Vector2 position, RadianAngle angle, GraphicObj target, Vector2 offSetPosition) : base(position, angle, target, offSetPosition)
         {
+            particuleFollowSpawner = true;
+
             timeSpawn = 0.02f;
             this.angle = 2.25f;
             numberParticuleToPop = 5;
@@ -40,7 +42,6 @@ namespace Bloodbender.ParticuleEngine.ParticuleSpawners
         }
         protected override void createParticule()
         {
-            tryToPopParticule--;
             particuleToCook = new SnowParticule(); //TEMPLATE??
             particules.Add(particuleToCook);
         }

@@ -30,7 +30,7 @@ namespace MapGenerator
             // spawn rooms with entry top or bot
             spawnRoomFilesWithTopBotEntries = new List<String>(new string[]
             {
-                "../../../../map/roomSpawn1.tmx",
+                "../../../map/roomSpawn1.tmx",
             });
             // spawn rooms with entry left or right
             spawnRoomFilesWithLeftRightEntries = new List<String>(new string[]
@@ -205,7 +205,7 @@ namespace MapGenerator
 
         public void saveMap(int seed)
         {
-            string path = "./../../../../map/save.txt";
+            string path = "./../../../map/save.txt";
             if (!File.Exists(path))
             {
                 using (StreamWriter sw = File.CreateText(path))

@@ -10,6 +10,7 @@ namespace Bloodbender.ParticuleEngine
     {
         protected ParticuleDTL particuleToCook;
         protected Vector2 diffPosition;
+        protected bool particuleFollowSpawner = false;
         public ParticuleSpawnerDTL(Vector2 position) : this(position, 0, null, Vector2.Zero) { }
         public ParticuleSpawnerDTL(Vector2 position, RadianAngle angle) : this(position, angle, null, Vector2.Zero) { }
         public ParticuleSpawnerDTL(Vector2 position, RadianAngle angle, GraphicObj target, Vector2 offSetPosition) : base(position, angle, target, offSetPosition) { }
@@ -17,7 +18,8 @@ namespace Bloodbender.ParticuleEngine
         {
             foreach (ParticuleDTL particule in particules)
             {
-                particule.referencePosition -= diffPosition;
+                if (particuleFollowSpawner)
+                    particule.referencePosition -= diffPosition;
 
                 if (!particule.Update(elapsed) && tryToPopParticule >= 1)
                 {
@@ -29,6 +31,7 @@ namespace Bloodbender.ParticuleEngine
 
             while (tryToPopParticule >= 1)
             {
+                tryToPopParticule--;
                 createParticule();
                 cookParticule();
             }
