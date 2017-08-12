@@ -44,17 +44,28 @@ namespace Bloodbender
 
         public void addVertex(Vector2 pt1, Vector2 pt2)
         {
-            pt1 = pt1 * Bloodbender.pixelToMeter;
-            pt2 = pt2 * Bloodbender.pixelToMeter;
-
-            if (mapVertices.Contains(pt1))
+            var dist = pt2 - pt1;
+            if (dist.Length() > 300)
             {
-                mapVertices.Add(pt2);
-                return;
+                var midPoint = (pt1 + pt2) / 2;
+                addVertex(pt1, midPoint);
+                addVertex(midPoint, pt2);
             }
+            else
+            {
 
-            mapVertices.Add(pt1);
-            mapVertices.Add(pt2);
+                pt1 = pt1 * Bloodbender.pixelToMeter;
+                pt2 = pt2 * Bloodbender.pixelToMeter;
+
+                if (mapVertices.Contains(pt1))
+                {
+                    mapVertices.Add(pt2);
+                    return;
+                }
+
+                mapVertices.Add(pt1);
+                mapVertices.Add(pt2);
+            }
         }
 
         public void finilizeMap()
