@@ -76,7 +76,7 @@ namespace Bloodbender
 
 
         public ParticuleSystem particuleSystem;
-
+        public SnowMarkSpawner snowMarkSpawner;
 
         ImageRenderer imageRendererNoise;
         SharpNoise.Utilities.Imaging.Image textureImageNoise;
@@ -301,9 +301,8 @@ namespace Bloodbender
 
 
             particuleSystem.addParticuleSpawner(new SnowSpawner(new Vector2(100, 100), 0, player, new Vector2(150,-350)));
-            
 
-
+            snowMarkSpawner = new SnowMarkSpawner(new Vector2(0, 0), 0, player, new Vector2(0, 0));
 
             var noiseSource = new Perlin
             {
@@ -424,6 +423,7 @@ namespace Bloodbender
             }
 
             particuleSystem.Update(elapsed);
+            snowMarkSpawner.Update(elapsed);
 
             pFinder.Update(elapsed);
             shadowsRendering.Update(elapsed);
@@ -504,13 +504,15 @@ namespace Bloodbender
             
             spriteBatch.End();
 
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null, null, camera.GetView());
+            snowMarkSpawner.Draw(spriteBatch);
+            spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             spriteBatch.Draw(shadowsRendering.getTarget(), Vector2.Zero, null, new Microsoft.Xna.Framework.Color(255, 255, 255, 100), 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0.00001f);
             spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null, null, camera.GetView());
-
             foreach (GraphicObj obj in listGraphicObj)
                 obj.Draw(spriteBatch);
             particuleSystem.Draw(spriteBatch);

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bloodbender.ParticuleEngine
 {
-    abstract class ParticuleSpawnerTTL : ParticuleSpawner
+    public abstract class ParticuleSpawnerTTL : ParticuleSpawner
     {
         protected ParticuleTTL particuleToCook;
         protected Vector2 diffPosition;

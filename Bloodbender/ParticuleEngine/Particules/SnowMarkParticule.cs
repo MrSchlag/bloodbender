@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Bloodbender.ParticuleEngine.Particules
 {
-    class SnowMarkParticule : ParticuleTTL
+    public class SnowMarkParticule : ParticuleTTL
     {
         Animation anim;
         public SnowMarkParticule() : this(Vector2.Zero, 0, 0, 0) { }

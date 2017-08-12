@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Bloodbender.ParticuleEngine.ParticuleSpawners
 {
-    class SnowMarkSpawner : ParticuleSpawnerTTL
+    public class SnowMarkSpawner : ParticuleSpawnerTTL
     {
         bool switchPosition;
         public SnowMarkSpawner(Vector2 position) : this(position, 0, null, Vector2.Zero) { }

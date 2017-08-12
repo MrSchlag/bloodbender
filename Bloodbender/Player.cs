@@ -42,7 +42,6 @@ namespace Bloodbender
         private Vector2 dashLinearVelocity = Vector2.Zero;
 
         DashSpawner dashSpawner;
-        SnowMarkSpawner snowMarkSpawner;
 
         public Player(Vector2 position) : base(position, PathFinderNodeType.CENTER)
         {
@@ -81,9 +80,6 @@ namespace Bloodbender
             dashSpawner = new DashSpawner(new Vector2(0, 0), 0, this, new Vector2(0, 0));
             Bloodbender.ptr.particuleSystem.addParticuleSpawner(dashSpawner);
             dashSpawner.canSpawn = false;
-
-            snowMarkSpawner = new SnowMarkSpawner(new Vector2(0, 0), 0, this, new Vector2(0, 0));
-            Bloodbender.ptr.particuleSystem.addParticuleSpawner(snowMarkSpawner);
         }
 
         public override bool Update(float elapsed)
@@ -116,9 +112,9 @@ namespace Bloodbender
             Vector2 blAbs = MathUtils.Abs(body.LinearVelocity);
 
             if (blAbs.X + blAbs.Y >= 6.25f)
-                snowMarkSpawner.canSpawn = true;
+                Bloodbender.ptr.snowMarkSpawner.canSpawn = true;
             else
-                snowMarkSpawner.canSpawn = false;
+                Bloodbender.ptr.snowMarkSpawner.canSpawn = false;
 
             return base.Update(elapsed);
         }
