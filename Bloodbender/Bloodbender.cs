@@ -78,10 +78,9 @@ namespace Bloodbender
         public ParticuleSystem particuleSystem;
 
 
-        PlaneNoiseMapBuilder builder;
-        ImageRenderer testRenderer;
-        SharpNoise.Utilities.Imaging.Image testTextureImage;
-        RenderTarget2D renderedmap;
+        ImageRenderer imageRendererNoise;
+        SharpNoise.Utilities.Imaging.Image textureImageNoise;
+        Texture2D renderedmap;
 
 
 
@@ -202,8 +201,6 @@ namespace Bloodbender
             //var treeplanter = new TreePlanter(mapFactory.minX, 2000 * pixelToMeter, -50 * pixelToMeter, 500 * pixelToMeter);
             var treeplanter = new TreePlanter(mapFactory.minX * pixelToMeter, mapFactory.maxX * pixelToMeter, mapFactory.minY * pixelToMeter, mapFactory.maxY * pixelToMeter);
 
-
-
             /*
             Debug.WriteLine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             MapFactory mFact = new MapFactory();
@@ -316,57 +313,37 @@ namespace Bloodbender
             var noiseMapBuilder = new PlaneNoiseMapBuilder
             {
                 DestNoiseMap = noiseMap,
-                SourceModule = noiseSource
+                SourceModule = noiseSource,
+                EnableSeamless = true
             };
 
-            noiseMapBuilder.SetDestSize(2000, 1000);
-            noiseMapBuilder.SetBounds(0, 50, 0, 25);
-
-            // for second tiled picture
-            //builder.SetBounds(6.0, 10.0, 1.0, 5.0);
+            //noiseMapBuilder.SetDestSize(300, 300);
+            //noiseMapBuilder.SetBounds(-4.5, 4.5, -4.5, 4.5);
+            noiseMapBuilder.SetDestSize(256, 256);
+            noiseMapBuilder.SetBounds(2, 6, 1, 5);
 
             noiseMapBuilder.Build();
 
-            testTextureImage = new SharpNoise.Utilities.Imaging.Image();
+            textureImageNoise = new SharpNoise.Utilities.Imaging.Image();
 
-            testRenderer = new ImageRenderer
+            imageRendererNoise = new ImageRenderer
             {
                 SourceNoiseMap = noiseMap,
-                DestinationImage = testTextureImage,
+                DestinationImage = textureImageNoise,
                 EnableLight = true,
                 LightContrast = 1.0,
-                LightBrightness = 2.3
+                LightBrightness = 2.3,
+                EnableWrap = true
             };
 
-            testRenderer.ClearGradient();
+            imageRendererNoise.ClearGradient();
 
-            testRenderer.AddGradientPoint(0.0000, new SharpNoise.Utilities.Imaging.Color(170, 180, 240, 255)); // deeps
-            testRenderer.AddGradientPoint(1.000, new SharpNoise.Utilities.Imaging.Color(170, 180, 240, 255)); // deeps
+            imageRendererNoise.AddGradientPoint(0.0000, new SharpNoise.Utilities.Imaging.Color(170, 180, 240, 255));
+            imageRendererNoise.AddGradientPoint(1.000, new SharpNoise.Utilities.Imaging.Color(170, 180, 240, 255));
 
-            //testRenderer.AddGradientPoint(0.0000, new SharpNoise.Utilities.Imaging.Color(188, 195, 243, 255)); // deeps
-            //testRenderer.AddGradientPoint(-0.2500, new SharpNoise.Utilities.Imaging.Color(0, 0, 255, 255)); // shallow
-            //testRenderer.AddGradientPoint(0.0000, new SharpNoise.Utilities.Imaging.Color(0, 128, 255, 255)); // shore
-            //testRenderer.AddGradientPoint(0.0625, new SharpNoise.Utilities.Imaging.Color(240, 240, 64, 255)); // sand
-            //testRenderer.AddGradientPoint(0.1250, new SharpNoise.Utilities.Imaging.Color(32, 160, 0, 255)); // grass
-            //testRenderer.AddGradientPoint(0.3750, new SharpNoise.Utilities.Imaging.Color(224, 224, 0, 255)); // dirt
-            //testRenderer.AddGradientPoint(0.5, new SharpNoise.Utilities.Imaging.Color(171, 180, 240, 255)); // dirt
-            //testRenderer.AddGradientPoint(0.7500, new SharpNoise.Utilities.Imaging.Color(125, 140, 232, 255)); // rock
-            //testRenderer.AddGradientPoint(0.9000, new SharpNoise.Utilities.Imaging.Color(103, 120, 228, 255)); // rock
-            //testRenderer.AddGradientPoint(1.0000, new SharpNoise.Utilities.Imaging.Color(91, 110, 225, 255)); // snow
+            imageRendererNoise.Render();
 
-            testRenderer.Render();
-
-            renderedmap = createTexture(testRenderer);
-
-            /*
-            GraphicsDevice.SetRenderTarget(renderedmap);
-
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null);
-            //priteBatch.Draw(Content.Load<Texture2D>("bouleRouge"), new Vector2(500, 500));
-            spriteBatch.End();
-
-            GraphicsDevice.SetRenderTarget(null);
-            */
+            renderedmap = createTexture(imageRendererNoise);
         }
 
         
@@ -520,7 +497,11 @@ namespace Bloodbender
             resolutionIndependence.BeginDraw();
 
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.GetView());
-            spriteBatch.Draw(renderedmap, new Vector2(-300, -300), Microsoft.Xna.Framework.Color.White);
+            
+            for (int i = 0; i < 10; ++i)
+                for (int j = 0; j < 5; ++j)
+                    spriteBatch.Draw(renderedmap, new Vector2(j * textureImageNoise.Width, i * textureImageNoise.Height), Microsoft.Xna.Framework.Color.White);
+            
             spriteBatch.End();
 
 
@@ -529,8 +510,6 @@ namespace Bloodbender
             spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null, null, camera.GetView());
-
-            //spriteBatch.Draw(renderedmap, new Vector2(100, 100), Microsoft.Xna.Framework.Color.White);
 
             foreach (GraphicObj obj in listGraphicObj)
                 obj.Draw(spriteBatch);
@@ -557,12 +536,12 @@ namespace Bloodbender
             return new Vector2(mouse.X, mouse.Y);
         }
 
-        private RenderTarget2D createTexture(ImageRenderer Renderer)
+        private Texture2D createTexture(ImageRenderer Renderer)
         {
-            RenderTarget2D texture = new RenderTarget2D(GraphicsDevice, Renderer.DestinationImage.Width, Renderer.DestinationImage.Height);
+            Texture2D texture = new Texture2D(GraphicsDevice, Renderer.DestinationImage.Width, Renderer.DestinationImage.Height);
             Microsoft.Xna.Framework.Color[] imageColorData = new Microsoft.Xna.Framework.Color[Renderer.DestinationImage.Width * Renderer.DestinationImage.Height];
 
-            for (int i = 0; i < Renderer.DestinationImage.Height * Renderer.DestinationImage.Width; ++i)
+            for (int i = 0; i < imageColorData.Length; ++i)
                 imageColorData[i] = new Microsoft.Xna.Framework.Color(Renderer.DestinationImage.Data[i].Red, Renderer.DestinationImage.Data[i].Green, Renderer.DestinationImage.Data[i].Blue);
 
             texture.SetData(imageColorData);
