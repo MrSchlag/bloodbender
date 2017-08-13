@@ -53,18 +53,34 @@ namespace Bloodbender
             }
         }
 
-        private bool IsPointOutside(float x, float y)
+        public static bool IsPointOutside(float x, float y)
         {
             var pt1 = new Vector2(x, y);
             int intersectionCount = 0;
             Bloodbender.ptr.world.RayCast((fixture, point, normal, fraction) =>
             {
-                intersectionCount++;
+                if (fixture.UserData == null)
+                    return -1;
+                if (((AdditionalFixtureData)fixture.UserData).physicParent is MapBound)
+                    intersectionCount++;
                 return -1;
-            }, pt1, new Vector2(500, 0));
+            }, pt1, new Vector2(4000, pt1.Y));
 
             if (intersectionCount % 2 == 0)
                 return true;
+            intersectionCount = 0;
+            Bloodbender.ptr.world.RayCast((fixture, point, normal, fraction) =>
+            {
+                if (fixture.UserData == null)
+                    return -1;
+                if (((AdditionalFixtureData)fixture.UserData).physicParent is MapBound)
+                    intersectionCount++;
+                return -1;
+            }, pt1, new Vector2(pt1.X, 4000));
+
+            if (intersectionCount % 2 == 0)
+                return true;
+
             return false;
         }
 

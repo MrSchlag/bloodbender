@@ -7,6 +7,12 @@ namespace Bloodbender.Enemies.Scenario2
     {
         bool _master;
 
+        /// <summary>
+        /// Add a partner in the game
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="target"></param>
+        /// <param name="partner">null if fist of two partners</param>
         public Partner(Vector2 position, PhysicObj target, Partner partner) : base(position, target)
         {
             height = 0;
