@@ -10,10 +10,22 @@ namespace MapGenerator
     public class Entity
     {
         public Vector2 position { get; set; }
+        public string type { get; set; }
+        public int chiefId { get; set; }
+        public int numberMinion { get; set; }
 
-        public Entity(Vector2 position)
+        public Entity(Vector2 position, string type)
         {
             this.position = position;
+            this.type = type;
+        }
+
+        public Entity(Vector2 position, string type, int chiefId, int numberMinion)
+        {
+            this.position = position;
+            this.type = type;
+            this.chiefId = chiefId;
+            this.numberMinion = numberMinion;
         }
     }
 }

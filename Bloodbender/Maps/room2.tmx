@@ -1,49 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" nextobjectid="94">
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" nextobjectid="110">
  <objectgroup color="#00ff00" name="entry">
-  <object id="9" type="top" x="768" y="160">
-   <polyline points="0,0 -160,0"/>
+  <object id="9" type="top" x="736" y="160">
+   <polyline points="0,0 -128,0"/>
   </object>
-  <object id="10" type="bot" x="768" y="1440">
-   <polyline points="0,0 -160,0"/>
+  <object id="10" type="bot" x="736" y="1440">
+   <polyline points="0,0 -128,0"/>
   </object>
  </objectgroup>
  <objectgroup color="#aa0000" name="wall">
   <object id="92" x="608" y="1440">
    <polyline points="0,0 -256,-96 -544,-448 -544,-896 -224,-1184 0,-1280"/>
   </object>
-  <object id="93" x="1312" y="1440">
+  <object id="93" x="1280" y="1440">
    <polyline points="-544,0 -288,-96 0,-448 0,-896 -320,-1184 -544,-1280"/>
   </object>
  </objectgroup>
  <objectgroup color="#0055ff" name="entity">
-  <object id="61" x="512" y="320"/>
-  <object id="62" x="576" y="320"/>
-  <object id="63" x="640" y="320"/>
-  <object id="64" x="704" y="320"/>
-  <object id="65" x="768" y="320"/>
-  <object id="66" x="832" y="320"/>
-  <object id="67" x="896" y="320"/>
-  <object id="70" x="96" y="736"/>
-  <object id="72" x="96" y="672"/>
-  <object id="73" x="96" y="608"/>
-  <object id="74" x="96" y="800"/>
-  <object id="75" x="96" y="864"/>
-  <object id="76" x="1280" y="608"/>
-  <object id="77" x="1280" y="672"/>
-  <object id="78" x="1280" y="736"/>
-  <object id="79" x="1280" y="800"/>
-  <object id="80" x="1280" y="864"/>
-  <object id="81" x="1280" y="928"/>
-  <object id="82" x="96" y="928"/>
-  <object id="83" x="448" y="320"/>
-  <object id="84" x="512" y="256"/>
-  <object id="85" x="576" y="256"/>
-  <object id="86" x="640" y="256"/>
-  <object id="87" x="704" y="256"/>
-  <object id="88" x="768" y="256"/>
-  <object id="89" x="832" y="256"/>
-  <object id="90" x="896" y="256"/>
-  <object id="91" x="960" y="320"/>
+  <object id="94" x="672" y="768">
+   <properties>
+    <property name="id" type="int" value="0"/>
+    <property name="numberMinion" type="int" value="5"/>
+    <property name="type" value="chief"/>
+   </properties>
+  </object>
+  <object id="102" x="352" y="1024">
+   <properties>
+    <property name="type" value="totem"/>
+   </properties>
+  </object>
+  <object id="107" x="352" y="544">
+   <properties>
+    <property name="type" value="totem"/>
+   </properties>
+  </object>
+  <object id="108" x="992" y="544">
+   <properties>
+    <property name="type" value="totem"/>
+   </properties>
+  </object>
+  <object id="109" x="992" y="1024">
+   <properties>
+    <property name="type" value="totem"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

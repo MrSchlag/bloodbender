@@ -120,7 +120,7 @@ namespace MapGenerator
             }
             return entries;
         }
-
+        
         public List<Entity> loadEntities()
         {
             TmxList<TmxObject> elist = tmxmap.ObjectGroups["entity"].Objects;
@@ -128,8 +128,23 @@ namespace MapGenerator
 
             foreach (var entity_obj in elist)
             {
+                string type = "bat";
+                int chiefId = 0;
+                int numberMinion = 0;
                 Vector2 entposition = new Vector2((float)entity_obj.X, (float)entity_obj.Y);
-                entities.Add(new Entity(entposition));
+                if (entity_obj.Properties.Count > 0 && entity_obj.Properties["type"] != null)
+                {
+                    type = entity_obj.Properties["type"];
+                    if (type == "chief")
+                    {
+                        chiefId = Int32.Parse(entity_obj.Properties["id"]);
+                        numberMinion = Int32.Parse(entity_obj.Properties["numberMinion"]);
+                    }
+                }
+                if (type == "chief")
+                    entities.Add(new Entity(entposition, type, chiefId, numberMinion));
+                else
+                    entities.Add(new Entity(entposition, type));
             }
             return entities;
         }

@@ -103,6 +103,7 @@ namespace Bloodbender
             {
                 foreach (Entity entity in room.entityList)
                 {
+                    Debug.WriteLine("{0} {1} {2}", entity.type, entity.chiefId, entity.numberMinion);
                     Bat enemy = new Bat(entity.position, player);
                     listGraphicObj.Add(enemy);
                 }
