@@ -100,13 +100,19 @@ namespace Bloodbender
 
         public void loadEntities(List<GraphicObj> listGraphicObj)
         {
+            int i = 0;
             foreach (Room room in mGen.rooms)
             {
                 foreach (Entity entity in room.entityList)
                 {
-                    Debug.WriteLine("{0} {1} {2}", entity.type, entity.chiefId, entity.numberMinion);
-                    Bat enemy = new Bat(entity.position, player);
-                    listGraphicObj.Add(enemy);
+                    if (i < 20)
+                    {
+                        Debug.WriteLine("{0} {1} {2}", entity.type, entity.chiefId, entity.numberMinion);
+                        Bat enemy = new Bat(entity.position, player);
+                        listGraphicObj.Add(enemy);
+                    }
+
+                    i++;
                 }
             }
         }

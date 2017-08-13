@@ -41,8 +41,8 @@ namespace MapGenerator
             {
                 "./Maps/room1.tmx",
                 "./Maps/room2.tmx",
-                "./Maps/room3.tmx",
-                "./Maps/room4.tmx",
+                //"./Maps/room3.tmx",
+                //"./Maps/room4.tmx",
             });
             // rooms that goes from top to bot (or opposite)
             roomFilesWithLeftRightEntries = new List<String>(new string[]
@@ -63,8 +63,8 @@ namespace MapGenerator
             int seed = Guid.NewGuid().GetHashCode();
             rand = new Random(seed);
             rloader = new RoomLoader();
-            numberOfRooms = rand.Next(6, 10);
-            // numberOfRooms = 3;
+            // numberOfRooms = rand.Next(6, 10);
+            numberOfRooms = 3;
             rooms = new List<Room>();
             roomLinkers = new List<RoomLinker>(); 
             this.addRoomToMap(selectRandomSpawn(), 0, 0);
