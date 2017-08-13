@@ -45,7 +45,7 @@ namespace Bloodbender
         public void addVertex(Vector2 pt1, Vector2 pt2)
         {
             var dist = pt2 - pt1;
-            if (dist.Length() > 300)
+            if (dist.Length() > 100)
             {
                 var midPoint = (pt1 + pt2) / 2;
                 addVertex(pt1, midPoint);

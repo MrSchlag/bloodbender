@@ -39,7 +39,7 @@ namespace MapGenerator
             // rooms that goes from bot to top (or opposite)
             roomFilesWithTopBotEntries = new List<String>(new string[]
             {
-                "./Maps/room1.tmx",
+                //"./Maps/room1.tmx",
                 "./Maps/room2.tmx",
                 //"./Maps/room3.tmx",
                 //"./Maps/room4.tmx",
