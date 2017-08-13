@@ -48,7 +48,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities.cs" />
+    <Compile Include="Entity.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="MapGeneration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

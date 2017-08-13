@@ -303,6 +303,9 @@ namespace Bloodbender
         /// </summary>
         public void Update(float elapsed)
         {
+            if (Bloodbender.ptr.inputHelper.IsNewMouseButtonPress(MouseButtons.MiddleButton))
+                _currentZoom = 1.45f;
+
             if (scrollWheelValue > Mouse.GetState().ScrollWheelValue)
             {
                 Zoom -= zoomStep;

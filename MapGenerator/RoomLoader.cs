@@ -22,7 +22,7 @@ namespace MapGenerator
             {
                 List<Wall> walls = new List<Wall>();
                 List<Entry> entries = new List<Entry>();
-                List<Entities> entities = new List<Entities>();
+                List<Entity> entities = new List<Entity>();
                 Vector2 spawnPoint = new Vector2();
 
                 if (tmxmap.ObjectGroups.Contains("wall"))
@@ -120,10 +120,33 @@ namespace MapGenerator
             }
             return entries;
         }
-
-        public List<Entities> loadEntities()
+        
+        public List<Entity> loadEntities()
         {
-            return new List<Entities>();
+            TmxList<TmxObject> elist = tmxmap.ObjectGroups["entity"].Objects;
+            List<Entity> entities = new List<Entity>();
+
+            foreach (var entity_obj in elist)
+            {
+                string type = "bat";
+                int chiefId = 0;
+                int numberMinion = 0;
+                Vector2 entposition = new Vector2((float)entity_obj.X, (float)entity_obj.Y);
+                if (entity_obj.Properties.Count > 0 && entity_obj.Properties["type"] != null)
+                {
+                    type = entity_obj.Properties["type"];
+                    if (type == "chief")
+                    {
+                        chiefId = Int32.Parse(entity_obj.Properties["id"]);
+                        numberMinion = Int32.Parse(entity_obj.Properties["numberMinion"]);
+                    }
+                }
+                if (type == "chief")
+                    entities.Add(new Entity(entposition, type, chiefId, numberMinion));
+                else
+                    entities.Add(new Entity(entposition, type));
+            }
+            return entities;
         }
 
         public Vector2 loadSpawnPoint() {

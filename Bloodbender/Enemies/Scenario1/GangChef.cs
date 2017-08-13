@@ -13,7 +13,7 @@ namespace Bloodbender.Enemies.Scenario1
         float currentAngleWithTarget = 0;
         float distanceMinions = 80;
         public PhysicObj node;
-        public GangChef(Vector2 position, PhysicObj target) : base(position, target)
+        public GangChef(int numberMinion, Vector2 position, PhysicObj target) : base(position, target)
         {
             height = 0;
 
