@@ -100,6 +100,7 @@
     <Compile Include="ParticuleEngine\Particule.cs" />
     <Compile Include="ParticuleEngine\ParticuleSpawner.cs" />
     <Compile Include="ParticuleEngine\ParticuleSpawners\DashSpawner.cs" />
+    <Compile Include="ParticuleEngine\ParticuleSpawners\SnowMarkSpawner.cs" />
     <Compile Include="ParticuleEngine\ParticuleSpawners\SnowSpawner.cs" />
     <Compile Include="ParticuleEngine\ParticuleSpawnerTTL.cs" />
     <Compile Include="ParticuleEngine\ParticuleSystem.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="ParticuleEngine\Particules\GreenCercle.cs" />
     <Compile Include="ParticuleEngine\ParticuleDTL.cs" />
     <Compile Include="ParticuleEngine\ParticuleSpawnerDTL.cs" />
+    <Compile Include="ParticuleEngine\Particules\SnowMarkParticule.cs" />
     <Compile Include="ParticuleEngine\Particules\SnowParticule.cs" />
     <Compile Include="ParticuleEngine\ParticuleTTL.cs" />
     <Compile Include="PathFinding\NavMesh.cs" />

@@ -93,7 +93,7 @@ namespace Bloodbender
             rectangleSource.X = frameWidth * currentFrame + frameWidth * column;
 
             if (!isDepthForce)
-                depth = ((Bloodbender.ptr.camera.ConvertWorldToScreen(position).Y) / 10000.0f) + 0.1f;
+                depth = ((Bloodbender.ptr.camera.ConvertWorldToScreen(position).Y) / 10000.0f) + 0.01f; //minimum value of 0.0101
 
             position.Y -= height;// peut pose des problemes?
 

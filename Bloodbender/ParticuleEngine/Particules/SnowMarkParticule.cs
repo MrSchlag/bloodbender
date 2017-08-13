@@ -8,22 +8,23 @@ using System.Threading.Tasks;
 
 namespace Bloodbender.ParticuleEngine.Particules
 {
-    class DashParticule : ParticuleTTL
+    public class SnowMarkParticule : ParticuleTTL
     {
         Animation anim;
-        public DashParticule() : this(Vector2.Zero, 0, 0, 0) { }
-        public DashParticule(Vector2 position, float speed, float distanceMax, RadianAngle angle) : base(position, speed, distanceMax, angle)
+        public SnowMarkParticule() : this(Vector2.Zero, 0, 0, 0) { }
+        public SnowMarkParticule(Vector2 position, float speed, float distanceMax, RadianAngle angle) : base(position, speed, distanceMax, angle)
         {
             offSet = OffSet.BottomCenterHorizontal;
-            anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("Soldat/course"), 64, 64, 0, 0);
+            anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("snowMark"));
             addAnimation(anim);
+            anim.forceDepth(0);
         }
 
         public override bool Update(float elapsed)
         {
             //intermediatePosition.X += speed * elapsed;
 
-            color = new Color(color, (0.6f * (lifeTime - timer)) / lifeTime);
+            color = new Color(color, (0.80f * (lifeTime - timer)) / lifeTime);
 
             return base.Update(elapsed);
         }

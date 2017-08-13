@@ -109,6 +109,13 @@ namespace Bloodbender
 
             height = MathHelper.Clamp(height, 0.0f, 10000.0f);
 
+            Vector2 blAbs = MathUtils.Abs(body.LinearVelocity);
+
+            if (blAbs.X + blAbs.Y >= 6.25f)
+                Bloodbender.ptr.snowMarkSpawner.canSpawn = true;
+            else
+                Bloodbender.ptr.snowMarkSpawner.canSpawn = false;
+
             return base.Update(elapsed);
         }
 
