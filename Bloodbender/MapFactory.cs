@@ -7,6 +7,7 @@ using System.Diagnostics;
 using MapGenerator;
 using Microsoft.Xna.Framework;
 using Bloodbender.Enemies.Scenario3;
+using Bloodbender.Enemies.Scenario1;
 
 namespace Bloodbender
 {
@@ -104,9 +105,15 @@ namespace Bloodbender
             {
                 foreach (Entity entity in room.entityList)
                 {
-                        Debug.WriteLine("{0} {1} {2}", entity.type, entity.chiefId, entity.numberMinion);
-                        Bat enemy = new Bat(entity.position, player);
-                        listGraphicObj.Add(enemy);
+                    Debug.WriteLine("{0} {1} {2}", entity.type, entity.chiefId, entity.numberMinion);
+                    if (entity.type == "totem")
+                    {
+                        listGraphicObj.Add(new Totem(entity.position));
+                    } else if (entity.type == "chief") {
+                        listGraphicObj.Add(new GangChef(entity.numberMinion, entity.position, player));
+                    } else {
+                        listGraphicObj.Add(new Bat(entity.position, player));
+                    } 
                 }
             }
         }
