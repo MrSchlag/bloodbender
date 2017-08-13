@@ -63,7 +63,7 @@ namespace MapGenerator
             int seed = Guid.NewGuid().GetHashCode();
             rand = new Random(seed);
             rloader = new RoomLoader();
-            numberOfRooms = rand.Next(3, 5);
+            numberOfRooms = rand.Next(6, 10);
             // numberOfRooms = 3;
             rooms = new List<Room>();
             roomLinkers = new List<RoomLinker>(); 
@@ -186,10 +186,9 @@ namespace MapGenerator
                         entry.ptA = Vector2.Transform(entry.ptA, Matrix.CreateTranslation(xTrans, yTrans, 0));
                         entry.ptB = Vector2.Transform(entry.ptB, Matrix.CreateTranslation(xTrans, yTrans, 0));
                     }
-                    foreach (Entities entity in room.entityList)
+                    foreach (Entity entity in room.entityList)
                     {
-                        entity.ptA = Vector2.Transform(entity.ptA, Matrix.CreateTranslation(xTrans, yTrans, 0));
-                        entity.ptB = Vector2.Transform(entity.ptB, Matrix.CreateTranslation(xTrans, yTrans, 0));
+                        entity.position = Vector2.Transform(entity.position, Matrix.CreateTranslation(xTrans, yTrans, 0));
                     }
                     if (room.spawnPoint.X != 0 && room.spawnPoint.Y != 0)
                         room.spawnPoint = Vector2.Transform(room.spawnPoint, Matrix.CreateTranslation(xTrans, yTrans, 0));

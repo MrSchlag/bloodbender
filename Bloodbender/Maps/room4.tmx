@@ -16,7 +16,7 @@
    <polyline points="480,0 480,128 352,128 352,256 224,256 224,384 96,384 96,512 0,512 0,640 96,640 96,768 224,768 224,896 352,896 352,1024 480,1024 480,1248 480,1280"/>
   </object>
  </objectgroup>
- <objectgroup color="#0055ff" name="entities">
+ <objectgroup color="#0055ff" name="entity">
   <object id="21" x="192" y="736"/>
   <object id="50" x="288" y="608"/>
   <object id="51" x="416" y="480"/>
