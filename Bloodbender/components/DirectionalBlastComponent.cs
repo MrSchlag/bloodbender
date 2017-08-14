@@ -92,7 +92,6 @@ namespace Bloodbender
                     decorationProj.addAnimation(new Animation(Bloodbender.ptr.blood3));
                 decorationProj.setRotation(shootAngle + (float)Math.PI / 2.0f);
                 decorationProj.body.IgnoreCollisionWith(owner.body);
-                decorationProj.addComponent(new TextureHeadingToDirectionComponent(decorationProj));
                 Bloodbender.ptr.listGraphicObj.Add(decorationProj);
             }
         }

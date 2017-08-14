@@ -50,7 +50,7 @@ namespace Bloodbender.ParticuleEngine.ParticuleSpawners
         {
             particuleToCook.inWait = false;
             particuleToCook.speed = Bloodbender.ptr.rdn.Next(100, 301);
-            particuleToCook.distanceMax = 800;
+            particuleToCook.distanceMax = 1000;
             particuleToCook.angle = angle + (Bloodbender.ptr.rdn.Next(-2000, 2001) / 10000.0f);
 
             particuleToCook.position = position;

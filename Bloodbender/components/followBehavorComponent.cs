@@ -60,8 +60,8 @@ namespace Bloodbender
         {
             path = Bloodbender.ptr.pFinder.pathRequest(owner, target);
 
-            if (path == null)
-                Console.WriteLine("Triangle hangler : {0} with {1}", DateTime.Now, target.position);
+            //if (path == null)
+                //Console.WriteLine("Triangle hangler : {0} with {1}", DateTime.Now, target.position);
         }
 
         bool IComponent.Update(float elapsed)

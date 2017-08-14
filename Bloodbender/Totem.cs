@@ -49,7 +49,6 @@ namespace Bloodbender
         {
             //System.Diagnostics.Debug.WriteLine("Totem touched by playerattacksensor");
             Projectile proj = new Projectile(body.Position * Bloodbender.meterToPixel, angle, 400f);
-            proj.addComponent(new TextureHeadingToDirectionComponent(proj));
             body.FixtureList[0].IgnoreCollisionWith(proj.body.FixtureList[0]);
             Bloodbender.ptr.listGraphicObj.Add(proj);
         }

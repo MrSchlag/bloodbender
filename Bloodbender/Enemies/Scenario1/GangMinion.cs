@@ -24,7 +24,7 @@ namespace Bloodbender.Enemies.Scenario1
 
             this.chef = chef;
 
-            velocity = 50;
+            velocity = 25;
             playerBoundsFix = createOctogoneFixture(16f, 16f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
             Radius = 0f;
             //add method to be called on collision, different denpending of fixture
@@ -34,10 +34,18 @@ namespace Bloodbender.Enemies.Scenario1
             addComponent(comp);
 
             canAttack = false;
+            canGenerateProjectile = false;
+            canBeHitByPlayer = false;
+            canBeHitByProjectile = false;
         }
 
         public override bool Update(float elapsed)
         {
+            if (chef.shouldDie)
+            {
+                //go mad
+            }
+
             return base.Update(elapsed);
         }
     }
