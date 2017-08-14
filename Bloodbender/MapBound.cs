@@ -20,28 +20,6 @@ namespace Bloodbender
             length = 100;
         }
 
-        /*
-        public void addVertex(Vector2 vertex)
-        {
-            if (mapVertices.Count == 0)
-            {
-                minX = vertex.X;
-                maxX = vertex.X;
-                minY = vertex.Y;
-                maxY = vertex.Y;
-            }
-            if (minX > vertex.X)
-                minX = vertex.X;
-            if (maxX < vertex.X)
-                maxX = vertex.X;
-            if (minY > vertex.Y)
-                minY = vertex.Y;
-            if (maxY < vertex.Y)
-                maxY = vertex.Y;
-            vertex *= Bloodbender.pixelToMeter;
-            mapVertices.Add(vertex);
-        }*/
-
         public void addVertex(Vector2 pt1, Vector2 pt2)
         {
             var dist = pt2 - pt1;
@@ -53,7 +31,6 @@ namespace Bloodbender
             }
             else
             {
-
                 pt1 = pt1 * Bloodbender.pixelToMeter;
                 pt2 = pt2 * Bloodbender.pixelToMeter;
 
@@ -120,11 +97,17 @@ namespace Bloodbender
 
                 node1.DivergencePoint = vertex;
                 node2.DivergencePoint = vertex;
-                Bloodbender.ptr.pFinder.AddNode(node1);
-                Bloodbender.ptr.pFinder.AddNode(node2);
-
+                //if (!TreePlanter.IsPointOutside(node1.position.X * Bloodbender.pixelToMeter, node1.position.Y * Bloodbender.pixelToMeter))
+                //{
+                    Bloodbender.ptr.pFinder.AddNode(node1);
                     pathFinderNodes.Add(node1);
-                pathFinderNodes.Add(node2);
+                //}
+                //if (!TreePlanter.IsPointOutside(node2.position.X * Bloodbender.pixelToMeter, node2.position.Y * Bloodbender.pixelToMeter))
+                //{
+                    Bloodbender.ptr.pFinder.AddNode(node2);
+                    pathFinderNodes.Add(node2);
+
+                //}
 
                 verticePos++;
             }
