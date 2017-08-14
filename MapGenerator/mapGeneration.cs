@@ -51,6 +51,7 @@ namespace MapGenerator
             // end rooms with entry top or bot
             endRoomFilesWithTopBotEntries = new List<String>(new string[]
             {
+                "./Maps/roomEnd1.tmx",
             });
             // end rooms with entry left or right
             endRoomFilesWithLeftRightEntries = new List<String>(new string[]
@@ -64,7 +65,7 @@ namespace MapGenerator
             rand = new Random(seed);
             rloader = new RoomLoader();
             // numberOfRooms = rand.Next(6, 10);
-            numberOfRooms = 3;
+            numberOfRooms = 2;
             rooms = new List<Room>();
             roomLinkers = new List<RoomLinker>(); 
             this.addRoomToMap(selectRandomSpawn(), 0, 0);
@@ -72,6 +73,7 @@ namespace MapGenerator
             {
                 this.addRandomRoom();
             }
+            this.addEndRoom();
             this.saveMap(seed);
             // this.visualizeMap();
         }
@@ -79,17 +81,33 @@ namespace MapGenerator
         public Room selectRandomSpawn()
         {
             int spawnIndex = rand.Next(0, spawnRoomFilesWithTopBotEntries.Count);
-            // Debug.WriteLine("SPAWN INDEX" + spawnIndex + " " + spawnRoomFilesWithTopBotEntries.Count);
             Room spawn = rloader.load(spawnRoomFilesWithTopBotEntries[spawnIndex]);
             spawn.exitSelected = spawn.entryList[0];
             return spawn;
+        }
+
+        public void addEndRoom()
+        {
+            Room end = this.selectRandomEnd();
+            Room lastRoom = rooms[rooms.Count - 1];
+            int entryIndex = rand.Next(0, lastRoom.entryList.Count);
+            if (this.rooms.Count > 1)
+                lastRoom.selectRandomExit(rand);
+            positionandAddNewRoom(end, this.rooms[this.rooms.Count - 1]);
+        }
+
+        public Room selectRandomEnd()
+        {
+            int endIndex = rand.Next(0, endRoomFilesWithTopBotEntries.Count);
+            Room end = rloader.load(endRoomFilesWithTopBotEntries[endIndex]);
+            end.entrySelected = end.entryList[0];
+            return end;
         }
 
         public void addRandomRoom()
         {
             Room lastRoom = rooms[rooms.Count - 1];
             int entryIndex = rand.Next(0, lastRoom.entryList.Count);
-            // Debug.WriteLine("ROOM INDEX " + entryIndex + " " + lastRoom.entryList.Count);
             entryType opEntryType = entryType.undefined;
             if (this.rooms.Count > 1)
                 lastRoom.selectRandomExit(rand);
@@ -97,7 +115,7 @@ namespace MapGenerator
             Room newRoom = this.findRandomRoomWithEntryType(opEntryType);
             if (newRoom == null)
                 return;
-            this.positionNewRoom(newRoom, lastRoom);
+            this.positionandAddNewRoom(newRoom, lastRoom);
         }
 
         public Room findRandomRoomWithEntryType(entryType type)
@@ -123,7 +141,7 @@ namespace MapGenerator
             return null;
         }
 
-        public void positionNewRoom(Room newRoom, Room lastRoom)
+        public void positionandAddNewRoom(Room newRoom, Room lastRoom)
         {
             // Debug.WriteLine(entry.ptA.X + "/" + entry.ptA.Y + " - " + entry.ptB.X + "/" + entry.ptB.Y);
             // Debug.WriteLine(newRoom.entrySelected.ptA.X + " " + newRoom.entrySelected.ptA.Y);
