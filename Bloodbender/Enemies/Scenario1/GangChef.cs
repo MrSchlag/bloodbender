@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using FarseerPhysics.Dynamics;
+using FarseerPhysics.Dynamics.Contacts;
 
 namespace Bloodbender.Enemies.Scenario1
 {
@@ -38,6 +39,8 @@ namespace Bloodbender.Enemies.Scenario1
             //add method to be called on collision, different denpending of fixture
             addFixtureToCheckedCollision(playerBoundsFix);
 
+            playerBoundsFix.OnCollision += Collision;
+
             node = new PhysicObj(Vector2.Zero, PathFinderNodeType.CENTER);
             node.createOctogoneFixture(10, 10, Vector2.Zero).IsSensor = true;
             node.Radius = 0.0f;
@@ -49,6 +52,13 @@ namespace Bloodbender.Enemies.Scenario1
 
             for (int i = 0; i < numberMinion; ++i)
                 Bloodbender.ptr.listGraphicObj.Add(new GangMinion(new Vector2(position.X += Bloodbender.ptr.rdn.Next(-50, 51), position.Y += Bloodbender.ptr.rdn.Next(-50, 51)), this, target));
+        }
+
+        private bool Collision(Fixture fixtureA, Fixture fixtureB, Contact contact)
+        {
+            //if (((AdditionalFixtureData)fixtureB.UserData).physicParent is ProjectileMinion)
+            return true;
+
         }
 
         public override bool Update(float elapsed)
