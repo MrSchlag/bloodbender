@@ -49,6 +49,7 @@ namespace Bloodbender
                 var tree = new GraphicObj(OffSet.BottomCenterHorizontal);
                 tree.position = new Vector2(x, y) * Bloodbender.meterToPixel;
                 tree.addAnimation(new Animation(Bloodbender.ptr.Content.Load<Texture2D>("tree1")));
+                tree.scale = new Vector2(1.5f, 1.5f);
                 Bloodbender.ptr.listGraphicObj.Add(tree);
             }
         }

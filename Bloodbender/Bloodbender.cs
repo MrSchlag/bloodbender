@@ -343,6 +343,8 @@ namespace Bloodbender
             imageRendererNoise.Render();
 
             renderedmap = createTexture(imageRendererNoise);
+
+            Console.WriteLine(mapFactory.minX + " " + mapFactory.minY + " " + mapFactory.maxX + " " + mapFactory.maxY);
         }
 
         
