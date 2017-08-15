@@ -12,16 +12,25 @@ namespace Bloodbender.Enemies.Scenario1
     class GangChef : Enemy
     {
         float currentAngleWithTarget = 0;
-        float distanceMinions = 150;
+        float distanceMinions = 180;
         public PhysicObj node;
+
         public GangChef(int numberMinion, Vector2 position, PhysicObj target) : base(position, target)
         {
             height = 0;
 
-            Animation anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("carre"), 32, 32);
+            Animation anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("GangChef/chefstand"));
             addAnimation(anim);
 
+            Animation attackAnimation = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("GangChef/chefwork"), 7, 0.1f, 0, 0, 0, 0);
+            attackAnimation.isLooping = false;
+            addAnimation(attackAnimation);
+
+            attackRate = 3.5f;
+
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
+
+            scale = new Vector2(1.5f, 1.5f);
 
             playerBoundsFix = createOctogoneFixture(64f, 64f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
             Radius = 0f;
@@ -33,7 +42,7 @@ namespace Bloodbender.Enemies.Scenario1
             node.createOctogoneFixture(10, 10, Vector2.Zero).IsSensor = true;
             node.Radius = 0.0f;
 
-            canAttack = false;
+            canAttack = true;
             canGenerateProjectile = false;
             canBeHitByPlayer = false;
             canBeHitByProjectile = true;
@@ -48,6 +57,10 @@ namespace Bloodbender.Enemies.Scenario1
 
             node.Update(elapsed);
             node.body.Position = givePosition(0) * Bloodbender.pixelToMeter;
+
+            distanceAttackWithTarget = (float)distanceWith(target.position) + 10;
+
+            Console.WriteLine(currentAngleWithTarget - Math.PI);
 
             return base.Update(elapsed);
         }

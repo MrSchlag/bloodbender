@@ -21,6 +21,7 @@ namespace Bloodbender
     {
         protected Fixture playerBoundsFix;
         protected PhysicObj target;
+        protected float distanceAttackWithTarget = 40;
         protected float attackRate = 1.5f;
         protected float timerAttack = 0;
         protected bool canGenerateProjectile = true;
@@ -41,7 +42,7 @@ namespace Bloodbender
                 if (timerAttack > 0)
                     timerAttack -= elapsed;
 
-                if (distanceWith(target.position) < 40)
+                if (distanceWith(target.position) < distanceAttackWithTarget)
                 {
                     if (timerAttack <= 0)
                     {

@@ -15,17 +15,22 @@ namespace Bloodbender.Enemies.Scenario1
         {
             height = 0;
 
-            Animation anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("carre2"), 32, 32);
+            Animation anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("GangMinion/goblinrun"), 5, 0.1f, 0, 0, 0, 0);
+            anim.reset();
             addAnimation(anim);
+
+            Animation attackAnimation = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("GangMinion/goblinattack"), 7, 0.1f, 0, 0, 0, 0);
+            attackAnimation.isLooping = false;
+            addAnimation(attackAnimation);
 
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
 
-            scale = new Vector2(0.5f, 0.5f);
+            scale = new Vector2(1.35f, 1.35f);
 
             this.chef = chef;
 
-            velocity = 25;
-            playerBoundsFix = createOctogoneFixture(16f, 16f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
+            velocity = 35;
+            playerBoundsFix = createOctogoneFixture(40f, 40f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
             Radius = 0f;
             //add method to be called on collision, different denpending of fixture
             addFixtureToCheckedCollision(playerBoundsFix);
@@ -33,7 +38,7 @@ namespace Bloodbender.Enemies.Scenario1
             IComponent comp = new FollowBehaviorComponent(this, chef.node, 3);
             addComponent(comp);
 
-            canAttack = false;
+            canAttack = true;
             canGenerateProjectile = false;
             canBeHitByPlayer = false;
             canBeHitByProjectile = false;
@@ -41,6 +46,11 @@ namespace Bloodbender.Enemies.Scenario1
 
         public override bool Update(float elapsed)
         {
+            if (body.LinearVelocity.X > 0)
+                spriteEffect = SpriteEffects.None;
+            else if (body.LinearVelocity.X < 0)
+                spriteEffect = SpriteEffects.FlipHorizontally;
+
             if (chef.shouldDie)
             {
                 //go mad
