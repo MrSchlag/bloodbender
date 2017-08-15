@@ -82,7 +82,7 @@ namespace Bloodbender
         SharpNoise.Utilities.Imaging.Image textureImageNoise;
         Texture2D renderedmap;
 
-
+        public MapFactory mapFactory;
 
         public Bloodbender()
         {
@@ -170,7 +170,7 @@ namespace Bloodbender
             pFinder = new PathFinder();
             pFinder.BuildtNavMeshes(6, 10);
 
-            var mapFactory = new MapFactory();
+            mapFactory = new MapFactory();
             mapFactory.newMap(listGraphicObj);
 
 
