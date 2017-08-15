@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" nextobjectid="5">
+ <objectgroup color="#00ff00" name="entry">
+  <object id="3" type="bot" x="416" y="576">
+   <polyline points="0,0 -160,0"/>
+  </object>
+ </objectgroup>
+ <objectgroup color="#aa0000" name="wall">
+  <object id="2" x="256" y="96">
+   <polyline points="0,480 -160,480 -160,0 320,0 320,480 160,480"/>
+  </object>
+ </objectgroup>
+ <objectgroup color="#ff5500" name="player">
+  <object id="4" x="352" y="352"/>
+ </objectgroup>
+</map>

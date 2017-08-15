@@ -217,10 +217,13 @@
     <Content Include="Maps\room4.tmx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Maps\roomSpawn1.tmx">
+    <Content Include="Maps\roomEndTop.tmx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Maps\roomEnd1.tmx">
+    <Content Include="Maps\roomSpawnBot.tmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Maps\roomSpawnTop.tmx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />
