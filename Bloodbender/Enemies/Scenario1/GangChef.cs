@@ -60,7 +60,10 @@ namespace Bloodbender.Enemies.Scenario1
 
             distanceAttackWithTarget = (float)distanceWith(target.position) + 10;
 
-            Console.WriteLine(currentAngleWithTarget - Math.PI);
+
+            RadianAngle tmpangle = currentAngleWithTarget;
+            
+            Console.WriteLine(tmpangle.value + " " + (tmpangle - (float)Math.PI).value);
 
             return base.Update(elapsed);
         }

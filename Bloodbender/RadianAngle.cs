@@ -42,7 +42,7 @@ namespace Bloodbender
         {
             RadianAngle result = new RadianAngle(0);
 
-            result.value = (float)((a.value - b.value + Math.PI) % (2 * Math.PI) - Math.PI);
+            result.value = (float)((a.value - b.value - Math.PI) % (2 * Math.PI) + Math.PI);
 
             return result;
         }
