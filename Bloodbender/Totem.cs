@@ -32,6 +32,7 @@ namespace Bloodbender
             //addComponent(comp);
             length = 10;
             createOutlinePathNodes();
+
             addAnimation(new Animation(Bloodbender.ptr.Content.Load<Texture2D>("Totem")));
         }
 

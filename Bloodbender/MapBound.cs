@@ -51,7 +51,7 @@ namespace Bloodbender
             Fixture chainShapeFix = body.CreateFixture(chainShape);
             chainShapeFix.UserData = new AdditionalFixtureData(this, HitboxType.BOUND);
             addFixtureToCheckedCollision(chainShapeFix);
-            createPathFinderNodes();
+            //createPathFinderNodes();
         }
 
         public void createPathFinderNodes()

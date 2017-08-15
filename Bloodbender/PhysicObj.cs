@@ -266,7 +266,7 @@ namespace Bloodbender
             base.Dispose();
         }
 
-        protected void createOutlinePathNodes()
+        public void createOutlinePathNodes()
         {
             PolygonShape polyShape;
             HitboxType hitboxType;
@@ -302,8 +302,6 @@ namespace Bloodbender
             Vector2 centerToVertex = new Vector2(vertex.X - centroid.X, vertex.Y - centroid.Y);
             centerToVertex *= new Vector2(1) + new Vector2((PathFinder.PathStep * Bloodbender.pixelToMeter) / centerToVertex.Length());
             PathFinderNode node1 = new PathFinderNode(body.Position * Bloodbender.meterToPixel, centerToVertex, this);
-            //Bloodbender.ptr.pathFinder.addNode(node1);
-            //pathFinderNodes.Add(node1);
 
             node1.DivergencePoint = centroid + body.Position;
             Bloodbender.ptr.pFinder.AddNode(node1);

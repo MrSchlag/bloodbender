@@ -13,7 +13,9 @@ namespace Bloodbender
 {
     public class MapFactory
     {
-        MapGeneration mGen = new MapGeneration();
+        public MapGeneration mGen = new MapGeneration();
+        public List<KeyValuePair<Room, MapBound>> MapBoundDict;
+
 
         public float minX { get; set; }
         public float minY { get; set; }
@@ -24,6 +26,7 @@ namespace Bloodbender
 
         public void newMap(List<GraphicObj> listGraphicObj)
         {
+            MapBoundDict = new List<KeyValuePair<Room, MapBound>>();
             minX = 0;
             minY = 0;
             maxX = 0;
@@ -43,6 +46,7 @@ namespace Bloodbender
                 int indexWall = 0;
                 int objIndex = 0;
                 MapBound mapBound = new MapBound();
+                MapBoundDict.Add(new KeyValuePair<Room, MapBound>(room, mapBound));
                 foreach (Wall wall in room.wallList)
                 {
                     this.updateMinMaxMap(wall);
@@ -51,8 +55,11 @@ namespace Bloodbender
                     {
                         mapBound.finilizeMap();
                         if (wall.objIndex != objIndex)
+                        {
                             mapBound = new MapBound();
-                        objIndex++;
+                            MapBoundDict.Add(new KeyValuePair<Room, MapBound>(room, mapBound));
+                        }
+                            objIndex++;
                     }
                     mapBound.addVertex(wall.ptA, wall.ptB);
                     indexWall++;
@@ -65,6 +72,7 @@ namespace Bloodbender
 
         public void loadRoomLinkers()
         {
+            
             foreach (RoomLinker roomLinker in mGen.roomLinkers)
             {
                 MapBound botMapBound = new MapBound();
@@ -105,7 +113,7 @@ namespace Bloodbender
             {
                 foreach (Entity entity in room.entityList)
                 {
-                    Debug.WriteLine("{0} {1} {2}", entity.type, entity.chiefId, entity.numberMinion);
+                    //Debug.WriteLine("{0} {1} {2}", entity.type, entity.chiefId, entity.numberMinion);
                     if (entity.type == "totem")
                     {
                         listGraphicObj.Add(new Totem(entity.position));
@@ -168,7 +176,17 @@ namespace Bloodbender
                 if (wall.ptB.Y < room.minY)
                     room.minY = wall.ptB.Y;
             }
+        }
 
+        public void CreateMeshForRoom(Room room)
+        {
+            foreach (var pairRoomBound in MapBoundDict)
+            {
+                if (pairRoomBound.Key == room)
+                {
+                    pairRoomBound.Value.createPathFinderNodes();
+                }
+            }
         }
     }
 }

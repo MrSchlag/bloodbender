@@ -49,6 +49,7 @@ namespace Bloodbender
 
             previousTargetPosition = target.body.Position;
             previousTargetPosition += new Vector2(10,10);
+            timerCheckLenght += Bloodbender.ptr.rdn.Next(-3, 3) / 10f;
         }
 
         public void Remove()
@@ -60,8 +61,10 @@ namespace Bloodbender
         {
             path = Bloodbender.ptr.pFinder.pathRequest(owner, target);
 
+            /*
             if (path == null)
                 Console.WriteLine("Triangle hangler : {0} with {1}", DateTime.Now, target.position);
+    */    
         }
 
         bool IComponent.Update(float elapsed)

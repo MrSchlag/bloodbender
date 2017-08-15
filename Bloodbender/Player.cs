@@ -43,6 +43,8 @@ namespace Bloodbender
 
         DashSpawner dashSpawner;
 
+        private int roomOccupied;
+
         public Player(Vector2 position) : base(position, PathFinderNodeType.CENTER)
         {
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
@@ -116,7 +118,36 @@ namespace Bloodbender
             else
                 Bloodbender.ptr.snowMarkSpawner.canSpawn = false;
 
+            CheckRoomOccupied();
+
             return base.Update(elapsed);
+        }
+
+        private void CheckRoomOccupied()
+        {
+            var rooms = Bloodbender.ptr.mapFactory.mGen.rooms;
+
+            int i = 1;
+            foreach (var room in rooms)
+            {
+                if (room.maxY > position.Y && room.minY < position.Y)
+                {
+                    if (roomOccupied != i)
+                    {
+                        Bloodbender.ptr.pFinder.Clear();
+                        Bloodbender.ptr.mapFactory.CreateMeshForRoom(room);
+                        foreach (var obj in Bloodbender.ptr.listGraphicObj)
+                        {
+                            if (obj is PhysicObj && obj.position.Y < room.maxY && obj.position.Y > room.minY)
+                                ((PhysicObj)obj).createOutlinePathNodes();
+                        }
+                        Bloodbender.ptr.pFinder.GeneratesMeshes();
+                        roomOccupied = i;
+                        Console.WriteLine("you changed to room {0}", i);
+                    }
+                }
+                i++;
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)

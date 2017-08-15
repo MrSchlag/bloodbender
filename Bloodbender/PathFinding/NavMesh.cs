@@ -9,7 +9,7 @@ namespace Bloodbender.PathFinding
     {
         public List<PathFinderNode> Nodes { get; set; }
         public float RadiusOffset { get; set; }
-        private List<NodeTriangle> allTriangle { get; set; }
+        public List<NodeTriangle> allTriangle { get; set; }
         public UndirectedGraph<PathFinderNode, Edge<PathFinderNode>> graph;
         public Func<Edge<PathFinderNode>, double> verticesDistance;
 
