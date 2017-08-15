@@ -23,6 +23,8 @@ namespace Bloodbender.Enemies.Scenario1
             attackAnimation.isLooping = false;
             addAnimation(attackAnimation);
 
+            distanceAttackWithTarget = 50;
+
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
 
             scale = new Vector2(1.35f, 1.35f);
