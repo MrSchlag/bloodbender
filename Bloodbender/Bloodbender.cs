@@ -83,6 +83,10 @@ namespace Bloodbender
         Texture2D renderedmap;
 
         public MapFactory mapFactory;
+        int minNoiseX;
+        int maxNoiseX;
+        int minNoiseY;
+        int maxNoiseY;
 
         public Bloodbender()
         {
@@ -172,7 +176,6 @@ namespace Bloodbender
 
             mapFactory = new MapFactory();
             mapFactory.newMap(listGraphicObj);
-
 
             /*mapBounds.addVertex(new Vector2(0, 0));
             mapBounds.addVertex(new Vector2(120, -50));
@@ -344,7 +347,10 @@ namespace Bloodbender
 
             renderedmap = createTexture(imageRendererNoise);
 
-            Console.WriteLine(mapFactory.minX + " " + mapFactory.minY + " " + mapFactory.maxX + " " + mapFactory.maxY);
+            minNoiseX = (int)mapFactory.minX - textureImageNoise.Width * 2;
+            maxNoiseX = (int)mapFactory.maxX + textureImageNoise.Width * 2;
+            minNoiseY = (int)mapFactory.minY - textureImageNoise.Height * 2;
+            maxNoiseY = (int)mapFactory.maxY + textureImageNoise.Height * 2;
         }
 
         
@@ -499,10 +505,10 @@ namespace Bloodbender
             resolutionIndependence.BeginDraw();
 
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.GetView());
-            
-            for (int i = 0; i < 10; ++i)
-                for (int j = 0; j < 5; ++j)
-                    spriteBatch.Draw(renderedmap, new Vector2(j * textureImageNoise.Width, i * textureImageNoise.Height), Microsoft.Xna.Framework.Color.White);
+
+            for (int i = minNoiseY; i < maxNoiseY; i += textureImageNoise.Height)
+                for (int j = minNoiseX; j < maxNoiseX; j += textureImageNoise.Width)
+                    spriteBatch.Draw(renderedmap, new Vector2(j, i), Microsoft.Xna.Framework.Color.White);
             
             spriteBatch.End();
 
