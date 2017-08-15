@@ -30,6 +30,7 @@ namespace Bloodbender
             Animation anim = new Animation(Bloodbender.ptr.bouleRouge, 4, 0.05f, 32, 0, 0, 0);
             anim.reset();
             addAnimation(anim);
+            addComponent(new TextureHeadingToDirectionComponent(this));
         }
 
         public Projectile(Vector2 position, float angle, float speed) : this(position)

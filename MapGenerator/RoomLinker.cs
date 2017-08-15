@@ -17,16 +17,12 @@ namespace MapGenerator
         {
             botWallList = new List<Wall>();
             topWallList = new List<Wall>();
-            // this.straightLinker(exit, entry);
-            // this.smoothLinker(exit, entry);
             if (exit.type == entryType.top || exit.type == entryType.bot)
             {
                 if (exit.ptA.X == entry.ptA.X && exit.ptB.X == entry.ptB.X)
                     this.straightLinker(exit, entry);
                 else
-                {
                     this.smoothLinker(exit, entry);
-                }
             }
         }
 
@@ -49,8 +45,6 @@ namespace MapGenerator
             float distance = Math.Abs(entry.ptA.Y - exit.ptA.Y);
             float entryLength = Math.Abs(entry.ptA.X - entry.ptB.X);
             float diffPath = (distance - entryLength) / 2;
-            //Debug.WriteLine(distance + " " + entryLength + " " + diffPath);
-            //Debug.WriteLine(exit.ptA.X + " " + entry.ptB.X + " " + entry.ptA.X);
             this.smoothLinkerFirstStep(exit, entry, diffPath, entryLength);
             this.smoothLinkerMidStep(exit, entry, diffPath, entryLength);
             this.smoothLinkerLastStep(exit, entry, diffPath, entryLength);
@@ -60,16 +54,18 @@ namespace MapGenerator
         {
             if (exit.ptA.X < entry.ptB.X || exit.ptA.X < entry.ptA.X)
             {
+                //DROITE
                 Vector2 fInVec = exit.ptA;
-                Vector2 lInVec = new Vector2(exit.ptA.X, exit.ptA.Y - diffPath);
                 Vector2 fOutVec = exit.ptB;
+                Vector2 lInVec = new Vector2(exit.ptA.X, exit.ptA.Y - diffPath);
                 Vector2 lOutVec = new Vector2(exit.ptB.X, exit.ptB.Y - entryLength - diffPath);
                 botWallList.Add(new Wall(fInVec, lInVec));
                 topWallList.Add(new Wall(fOutVec, lOutVec));
             } else {
+                //GAUCHE
                 Vector2 fInVec = exit.ptB;
-                Vector2 lInVec = new Vector2(exit.ptB.X, exit.ptB.Y - diffPath);
                 Vector2 fOutVec = exit.ptA;
+                Vector2 lInVec = new Vector2(exit.ptB.X, exit.ptB.Y - diffPath);
                 Vector2 lOutVec = new Vector2(exit.ptA.X, exit.ptA.Y - entryLength - diffPath);
                 botWallList.Add(new Wall(fInVec, lInVec));
                 topWallList.Add(new Wall(fOutVec, lOutVec));

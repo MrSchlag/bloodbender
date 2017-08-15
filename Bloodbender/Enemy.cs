@@ -73,7 +73,8 @@ namespace Bloodbender
 
         public void takeHit(float angle)
         {
-            lifePoints -= 1;
+            if (canBeHitByPlayer)
+                lifePoints -= 1;
             if (canGenerateProjectile)
             {
                 //System.Diagnostics.Debug.WriteLine("Totem touched by playerattacksensor");

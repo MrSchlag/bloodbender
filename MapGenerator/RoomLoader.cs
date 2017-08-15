@@ -16,7 +16,6 @@ namespace MapGenerator
         TmxMap tmxmap;
 
         public Room load(string path) {
-
             loadFile(path);
             if (tmxmap != null)
             {
@@ -24,18 +23,19 @@ namespace MapGenerator
                 List<Entry> entries = new List<Entry>();
                 List<Entity> entities = new List<Entity>();
                 Vector2 spawnPoint = new Vector2();
-
-                if (tmxmap.ObjectGroups.Contains("wall"))
+                if (tmxmap.ObjectGroups.Contains("wall") && tmxmap.ObjectGroups["wall"].Objects.Count > 0)
                     walls = this.loadWalls();
-                if (tmxmap.ObjectGroups.Contains("entry"))
+                if (tmxmap.ObjectGroups.Contains("entry") && tmxmap.ObjectGroups["entry"].Objects.Count > 0)
                     entries = this.loadEntries();
-                if (tmxmap.ObjectGroups.Contains("entity"))
+                if (tmxmap.ObjectGroups.Contains("entity") && tmxmap.ObjectGroups["entity"].Objects.Count > 0)
                     entities = this.loadEntities();
-                if (tmxmap.ObjectGroups.Contains("player"))
+                if (tmxmap.ObjectGroups.Contains("player") && tmxmap.ObjectGroups["player"].Objects.Count == 1)
+                    
+                    
                     spawnPoint = this.loadSpawnPoint();
                 if (walls.Count > 3 && entries.Count >= 1)
                 {
-                    if (tmxmap.ObjectGroups.Contains("player"))
+                    if (tmxmap.ObjectGroups.Contains("player") && tmxmap.ObjectGroups["player"].Objects.Count > 0)
                         return new Room(tmxmap.TileWidth, tmxmap.Width, tmxmap.Height, walls, entries, entities, spawnPoint);
                     else
                         return new Room(tmxmap.TileWidth, tmxmap.Width, tmxmap.Height, walls, entries, entities);
@@ -53,6 +53,7 @@ namespace MapGenerator
         {
             try
             {
+                this.tmxmap = null;
                 this.tmxmap = new TmxMap(path);
             }
             catch (Exception e)
@@ -110,7 +111,7 @@ namespace MapGenerator
                         if (evpoint1.X > evpoint2.X || evpoint1.Y > evpoint2.Y)
                             entry = new Entry(evpoint1, evpoint2, type);
                         else
-                            entry = new Entry(evpoint1, evpoint2, type);
+                            entry = new Entry(evpoint2, evpoint1, type);
                         entries.Add(entry);
                     } else
                     {

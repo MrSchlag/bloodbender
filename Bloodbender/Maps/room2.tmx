@@ -20,7 +20,7 @@
   <object id="94" x="672" y="768">
    <properties>
     <property name="id" type="int" value="0"/>
-    <property name="numberMinion" type="int" value="5"/>
+    <property name="numberMinion" type="int" value="30"/>
     <property name="type" value="chief"/>
    </properties>
   </object>

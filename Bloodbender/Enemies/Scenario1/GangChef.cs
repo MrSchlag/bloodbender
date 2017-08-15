@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using FarseerPhysics.Dynamics;
 
 namespace Bloodbender.Enemies.Scenario1
 {
     class GangChef : Enemy
     {
         float currentAngleWithTarget = 0;
-        float distanceMinions = 80;
+        float distanceMinions = 150;
         public PhysicObj node;
         public GangChef(int numberMinion, Vector2 position, PhysicObj target) : base(position, target)
         {
@@ -22,11 +23,23 @@ namespace Bloodbender.Enemies.Scenario1
 
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
 
+            playerBoundsFix = createOctogoneFixture(64f, 64f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
+            Radius = 0f;
+            body.BodyType = BodyType.Static;
+            //add method to be called on collision, different denpending of fixture
+            addFixtureToCheckedCollision(playerBoundsFix);
+
             node = new PhysicObj(Vector2.Zero, PathFinderNodeType.CENTER);
             node.createOctogoneFixture(10, 10, Vector2.Zero).IsSensor = true;
             node.Radius = 0.0f;
 
             canAttack = false;
+            canGenerateProjectile = false;
+            canBeHitByPlayer = false;
+            canBeHitByProjectile = true;
+
+            for (int i = 0; i < numberMinion; ++i)
+                Bloodbender.ptr.listGraphicObj.Add(new GangMinion(new Vector2(position.X += Bloodbender.ptr.rdn.Next(-50, 51), position.Y += Bloodbender.ptr.rdn.Next(-50, 51)), this, target));
         }
 
         public override bool Update(float elapsed)

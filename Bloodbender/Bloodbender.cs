@@ -300,7 +300,7 @@ namespace Bloodbender
 
 
 
-            particuleSystem.addParticuleSpawner(new SnowSpawner(new Vector2(100, 100), 0, player, new Vector2(150,-350)));
+            particuleSystem.addParticuleSpawner(new SnowSpawner(new Vector2(100, 100), 0, player, new Vector2(350,-350)));
 
             snowMarkSpawner = new SnowMarkSpawner(new Vector2(0, 0), 0, player, new Vector2(0, 0));
 
