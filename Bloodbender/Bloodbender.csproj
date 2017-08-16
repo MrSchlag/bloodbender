@@ -125,6 +125,8 @@
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Projectile.cs" />
+    <Compile Include="Projectiles\Blood.cs" />
+    <Compile Include="Projectiles\LanceGobelin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RadianAngle.cs" />
     <Compile Include="ResolutionIndependentRenderer.cs" />
