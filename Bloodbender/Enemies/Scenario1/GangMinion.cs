@@ -34,7 +34,7 @@ namespace Bloodbender.Enemies.Scenario1
 
             velocity = 35;
             fixture = createOctogoneFixture(40f, 40f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
-            Radius = 0f;
+            Radius = 50f;
             //add method to be called on collision, different denpending of fixture
             addFixtureToCheckedCollision(fixture);
 
