@@ -34,22 +34,25 @@ namespace Bloodbender
             player = null;
             mGen.newMap();
             this.loadRoomWalls();
-            this.loadRoomLinkers();
+            //this.loadRoomLinkers();
             this.loadPlayer(listGraphicObj);
             this.loadEntities(listGraphicObj);
         }
 
         public void loadRoomWalls()
         {
+            int i = 0;
             foreach (Room room in mGen.rooms)
             {
                 int indexWall = 0;
                 int objIndex = 0;
                 MapBound mapBound = new MapBound();
+                
                 MapBoundDict.Add(new KeyValuePair<Room, MapBound>(room, mapBound));
                 foreach (Wall wall in room.wallList)
                 {
-                    // Debug.WriteLine("{0}/{1} - {2}/{3} => {4} {5}", wall.ptA.X, wall.ptA.Y, wall.ptB.X, wall.ptB.Y, objIndex, i);
+                    i++;
+                    Debug.WriteLine("{0}/{1} - {2}/{3} => {4} {5}", wall.ptA.X, wall.ptA.Y, wall.ptB.X, wall.ptB.Y, objIndex, i);
                     this.updateMinMaxMap(wall);
                     this.updateMinMaxRoom(room, wall, indexWall == 0);
                     if (wall.objIndex != objIndex)

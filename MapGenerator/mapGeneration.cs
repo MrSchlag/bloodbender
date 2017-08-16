@@ -33,10 +33,12 @@ namespace MapGenerator
         {
             spawnRoomFileTop = "./Maps/roomSpawnTop.tmx";
             spawnRoomFileBot = "./Maps/roomSpawnBot.tmx";
+            spawnRoomFileLeft = "./Maps/roomSpawnLeft.tmx";
+            spawnRoomFileRight = "./Maps/roomSpawnRight.tmx";
             roomFilesWithTopBotEntries = new List<String>(new string[]
             {
                 "./Maps/room1.tmx",
-                "./Maps/room2.tmx",
+                //"./Maps/room2.tmx",
                 //"./Maps/room3.tmx",
                 //"./Maps/room4.tmx",
             });
@@ -45,6 +47,8 @@ namespace MapGenerator
             });
             endRoomFileTop = "./Maps/roomEndTop.tmx";
             endRoomFileBot = "./Maps/roomEndBot.tmx";
+            endRoomFileLeft = "./Maps/roomEndLeft.tmx";
+            endRoomFileRight = "./Maps/roomEndRight.tmx";
         }
 
         public void newMap()
@@ -52,8 +56,8 @@ namespace MapGenerator
             int seed = Guid.NewGuid().GetHashCode();
             rand = new Random(seed);
             rloader = new RoomLoader();
-            numberOfRooms = rand.Next(10, 11);
-            // numberOfRooms = 2;
+            //numberOfRooms = rand.Next(10, 11);
+            numberOfRooms = 3;
             rooms = new List<Room>();
             roomLinkers = new List<RoomLinker>(); 
             this.addRoomToMap(selectSpawn(), 0, 0);
