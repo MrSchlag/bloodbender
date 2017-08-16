@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Dynamics.Contacts;
+using Bloodbender.Projectiles;
 
 namespace Bloodbender.Enemies.Scenario1
 {
@@ -56,7 +57,9 @@ namespace Bloodbender.Enemies.Scenario1
 
         private bool Collision(Fixture fixtureA, Fixture fixtureB, Contact contact)
         {
-            //if (((AdditionalFixtureData)fixtureB.UserData).physicParent is ProjectileMinion)
+            if (((AdditionalFixtureData)fixtureB.UserData).physicParent is LanceGobelin)
+                return false;
+            //else if
             return true;
 
         }
