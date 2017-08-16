@@ -25,11 +25,6 @@ namespace Bloodbender
 
         public Projectile(Vector2 position) : base(position)
         {
-            offSet = OffSet.Center;
-
-            Animation anim = new Animation(Bloodbender.ptr.bouleRouge, 4, 0.05f, 32, 0, 0, 0);
-            anim.reset();
-            addAnimation(anim);
             addComponent(new TextureHeadingToDirectionComponent(this));
         }
 
@@ -74,9 +69,13 @@ namespace Bloodbender
 
         public override bool Update(float elapsed)
         {
-            lifeTime += elapsed;
-            if (lifeTime > lifeTimeMax)
-                shouldDie = true;
+            if (lifeTimeMax != 0)
+            {
+                lifeTime += elapsed;
+                if (lifeTime > lifeTimeMax)
+                    shouldDie = true;
+            }
+            
             return base.Update(elapsed);
         }
 

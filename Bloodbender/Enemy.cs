@@ -19,8 +19,8 @@ namespace Bloodbender
 {
     public class Enemy : PhysicObj
     {
-        protected Fixture playerBoundsFix;
-        protected PhysicObj target;
+        protected Fixture fixture;
+        public PhysicObj target;
         protected float distanceAttackWithTarget = 40;
         protected float attackRate = 1.5f;
         protected float timerAttack = 0;
@@ -46,8 +46,7 @@ namespace Bloodbender
                 {
                     if (timerAttack <= 0)
                     {
-                        runAnimation(1);
-                        timerAttack = attackRate;
+                        Attack();
                     }
                     else
                     {
@@ -72,6 +71,11 @@ namespace Bloodbender
             base.Draw(spriteBatch);
         }
 
+        protected virtual void Attack()
+        {
+            runAnimation(1);
+            timerAttack = attackRate;
+        }
         public void takeHit(float angle)
         {
             if (canBeHitByPlayer)

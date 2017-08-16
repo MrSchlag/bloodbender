@@ -37,8 +37,8 @@ namespace MapGenerator
             {
                 "./Maps/room1.tmx",
                 "./Maps/room2.tmx",
-                "./Maps/room3.tmx",
-                "./Maps/room4.tmx",
+                //"./Maps/room3.tmx",
+                //"./Maps/room4.tmx",
             });
             roomFilesWithLeftRightEntries = new List<String>(new string[]
             {

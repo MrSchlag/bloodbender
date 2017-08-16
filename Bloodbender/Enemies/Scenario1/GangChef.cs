@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Dynamics.Contacts;
+using Bloodbender.Projectiles;
 
 namespace Bloodbender.Enemies.Scenario1
 {
@@ -33,17 +34,20 @@ namespace Bloodbender.Enemies.Scenario1
 
             scale = new Vector2(1.5f, 1.5f);
 
-            playerBoundsFix = createOctogoneFixture(64f, 64f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
-            Radius = 0f;
+            fixture = createOctogoneFixture(64f, 64f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
+            Radius = 50f;
             body.BodyType = BodyType.Static;
             //add method to be called on collision, different denpending of fixture
-            addFixtureToCheckedCollision(playerBoundsFix);
+            addFixtureToCheckedCollision(fixture);
 
-            playerBoundsFix.OnCollision += Collision;
+            fixture.OnCollision += Collision;
+
+            pathNodeType = PathFinderNodeType.OUTLINE;
+            createOutlinePathNodes();
 
             node = new PhysicObj(Vector2.Zero, PathFinderNodeType.CENTER);
-            node.createOctogoneFixture(10, 10, Vector2.Zero).IsSensor = true;
-            node.Radius = 0.0f;
+            node.createOctogoneFixture(10, 10, Vector2.Zero, new AdditionalFixtureData(node, HitboxType.BOUND)).IsSensor = true;
+            node.Radius = 10.0f;
 
             canAttack = true;
             canGenerateProjectile = false;
@@ -56,7 +60,9 @@ namespace Bloodbender.Enemies.Scenario1
 
         private bool Collision(Fixture fixtureA, Fixture fixtureB, Contact contact)
         {
-            //if (((AdditionalFixtureData)fixtureB.UserData).physicParent is ProjectileMinion)
+            if (((AdditionalFixtureData)fixtureB.UserData).physicParent is LanceGobelin)
+                return false;
+            //else if
             return true;
 
         }

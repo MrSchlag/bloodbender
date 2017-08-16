@@ -280,8 +280,6 @@ namespace Bloodbender
                 height += 50 * elapsed;
             else if (Keyboard.GetState().IsKeyDown(Keys.Down))
                 height -= 50 * elapsed;
-
-            Console.WriteLine();
         }
 
         private void StartDash(Vector2 direction, bool checkDashReset = true)

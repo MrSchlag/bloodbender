@@ -22,12 +22,12 @@ namespace Bloodbender.Enemies.Scenario2
 
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
 
-            playerBoundsFix = createOctogoneFixture(50f, 50f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
+            fixture = createOctogoneFixture(50f, 50f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
             Radius = 50f;
             velocity = 50;
 
 
-            addFixtureToCheckedCollision(playerBoundsFix);
+            addFixtureToCheckedCollision(fixture);
 
             //IComponent comp = new FollowBehaviorComponent(this, target, 100f);
             //addComponent(comp);
