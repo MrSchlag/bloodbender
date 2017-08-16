@@ -33,13 +33,13 @@ namespace Bloodbender.Enemies.Scenario1
 
             scale = new Vector2(1.5f, 1.5f);
 
-            playerBoundsFix = createOctogoneFixture(64f, 64f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
+            fixture = createOctogoneFixture(64f, 64f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
             Radius = 0f;
             body.BodyType = BodyType.Static;
             //add method to be called on collision, different denpending of fixture
-            addFixtureToCheckedCollision(playerBoundsFix);
+            addFixtureToCheckedCollision(fixture);
 
-            playerBoundsFix.OnCollision += Collision;
+            fixture.OnCollision += Collision;
 
             node = new PhysicObj(Vector2.Zero, PathFinderNodeType.CENTER);
             node.createOctogoneFixture(10, 10, Vector2.Zero).IsSensor = true;

@@ -19,7 +19,7 @@ namespace Bloodbender
 {
     public class Enemy : PhysicObj
     {
-        protected Fixture playerBoundsFix;
+        protected Fixture fixture;
         protected PhysicObj target;
         protected float distanceAttackWithTarget = 40;
         protected float attackRate = 1.5f;

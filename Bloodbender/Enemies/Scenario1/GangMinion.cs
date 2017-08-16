@@ -32,10 +32,10 @@ namespace Bloodbender.Enemies.Scenario1
             this.chef = chef;
 
             velocity = 35;
-            playerBoundsFix = createOctogoneFixture(40f, 40f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
+            fixture = createOctogoneFixture(40f, 40f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
             Radius = 0f;
             //add method to be called on collision, different denpending of fixture
-            addFixtureToCheckedCollision(playerBoundsFix);
+            addFixtureToCheckedCollision(fixture);
 
             IComponent comp = new FollowBehaviorComponent(this, chef.node, 3);
             addComponent(comp);
