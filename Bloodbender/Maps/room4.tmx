@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" nextobjectid="66">
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" nextobjectid="66">
  <objectgroup color="#00ff00" name="entry">
   <object id="9" type="top" x="768" y="160">
    <polyline points="0,0 -160,0"/>
@@ -10,10 +10,10 @@
  </objectgroup>
  <objectgroup color="#aa0000" name="wall">
   <object id="45" x="768" y="160">
-   <polyline points="0,0 0,128 128,128 128,256 256,256 256,384 384,384 384,512 480,512 480,640 384,640 384,768 256,768 256,896 128,896 128,1024 0,1024 0,1248 0,1280"/>
+   <polyline points="0,1280 0,1152 128,1152 128,1024 256,1024 256,896 384,896 384,768 480,768 480,640 384,640 384,512 256,512 256,384 128,384 128,256 0,256 0,32 0,0"/>
   </object>
   <object id="46" x="128" y="160">
-   <polyline points="480,0 480,128 352,128 352,256 224,256 224,384 96,384 96,512 0,512 0,640 96,640 96,768 224,768 224,896 352,896 352,1024 480,1024 480,1248 480,1280"/>
+   <polyline points="480,1280 480,1152 352,1152 352,1024 224,1024 224,896 96,896 96,768 0,768 0,640 96,640 96,512 224,512 224,384 352,384 352,256 480,256 480,32 480,0"/>
   </object>
  </objectgroup>
  <objectgroup color="#0055ff" name="entity">

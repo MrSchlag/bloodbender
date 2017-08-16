@@ -49,6 +49,7 @@ namespace Bloodbender
                 MapBoundDict.Add(new KeyValuePair<Room, MapBound>(room, mapBound));
                 foreach (Wall wall in room.wallList)
                 {
+                    // Debug.WriteLine("{0}/{1} - {2}/{3} => {4} {5}", wall.ptA.X, wall.ptA.Y, wall.ptB.X, wall.ptB.Y, objIndex, i);
                     this.updateMinMaxMap(wall);
                     this.updateMinMaxRoom(room, wall, indexWall == 0);
                     if (wall.objIndex != objIndex)
