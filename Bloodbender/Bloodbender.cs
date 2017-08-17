@@ -280,7 +280,7 @@ namespace Bloodbender
             frameRateCounter = new FrameRateCounter(font);
 
             //pathFinder.pathRequest(new Vector2(41, 42), new Vector2(300, 300));
-            pFinder.GeneratesMeshes();
+            //pFinder.GeneratesMeshes();
 
 
             //PhysicObj arbre = new PhysicObj(BodyFactory.CreateCircle(world, 16 * pixelToMeter, 1), new Vector2(400, 200));

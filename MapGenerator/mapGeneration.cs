@@ -37,8 +37,8 @@ namespace MapGenerator
             spawnRoomFileRight = "./Maps/roomSpawnRight.tmx";
             roomFilesWithTopBotEntries = new List<String>(new string[]
             {
-                "./Maps/room1.tmx",
-                //"./Maps/room2.tmx",
+                //"./Maps/room1.tmx",
+                "./Maps/room2.tmx",
                 //"./Maps/room3.tmx",
                 //"./Maps/room4.tmx",
             });
@@ -57,14 +57,13 @@ namespace MapGenerator
             rand = new Random(seed);
             rloader = new RoomLoader();
             //numberOfRooms = rand.Next(10, 11);
-            numberOfRooms = 3;
+            //MINIMUM 2
+            numberOfRooms = 2;
             rooms = new List<Room>();
             roomLinkers = new List<RoomLinker>(); 
             this.addRoomToMap(selectSpawn(), 0, 0);
-            for (int i = 2; i <= numberOfRooms; i++)
-            {
+            for (int i = 0; i < numberOfRooms - 2; i++)
                 this.addRandomRoom();
-            }
             this.addEndRoom();
             this.saveMap(seed);
             // this.visualizeMap();
@@ -74,9 +73,8 @@ namespace MapGenerator
         {
             Room spawn;
             int i = rand.Next(0, 2);
-            Debug.WriteLine(i);
             if (i == 0)
-                spawn = rloader.load(spawnRoomFileBot);
+                spawn = rloader.load(spawnRoomFileTop);
             else
                 spawn = rloader.load(spawnRoomFileBot);
             spawn.exitSelected = spawn.entryList[0];
@@ -87,15 +85,19 @@ namespace MapGenerator
         {
             Room end = this.selectEnd();
             Room lastRoom = rooms[rooms.Count - 1];
-            int entryIndex = rand.Next(0, lastRoom.entryList.Count);
             if (this.rooms.Count > 1)
                 lastRoom.selectRandomExit(rand);
-            positionandAddNewRoom(end, this.rooms[this.rooms.Count - 1]);
+            positionAndAddNewRoom(end, this.rooms[this.rooms.Count - 1]);
         }
 
         public Room selectEnd()
         {
-            Room end = rloader.load(endRoomFileTop);
+            rooms[rooms.Count - 1].exitSelected = rooms[rooms.Count - 1].entryList[0];
+            Room end;
+            if (this.rooms[this.rooms.Count - 1].exitSelected.type == entryType.top)
+                end = rloader.load(endRoomFileTop);
+            else
+                end = rloader.load(endRoomFileBot);
             end.entrySelected = end.entryList[0];
             return end;
         }
@@ -111,7 +113,7 @@ namespace MapGenerator
             Room newRoom = this.findRandomRoomWithEntryType(opEntryType);
             if (newRoom == null)
                 return;
-            this.positionandAddNewRoom(newRoom, lastRoom);
+            this.positionAndAddNewRoom(newRoom, lastRoom);
         }
 
         public Room findRandomRoomWithEntryType(entryType type)
@@ -124,6 +126,7 @@ namespace MapGenerator
             if (roomsFilesSelected != null)
             {
                 int roomIndex = rand.Next(0, roomsFilesSelected.Count);
+                // Debug.WriteLine(roomsFilesSelected[roomIndex]);
                 Room room = rloader.load(roomsFilesSelected[roomIndex]);
                 if (room == null)
                     return null;
@@ -136,11 +139,12 @@ namespace MapGenerator
             return null;
         }
 
-        public void positionandAddNewRoom(Room newRoom, Room lastRoom)
+        public void positionAndAddNewRoom(Room newRoom, Room lastRoom)
         {
             float randomTranslate = rand.Next(-40, 40);
             int i = 0;
-            if (lastRoom.exitSelected.type == entryType.top || newRoom.entrySelected.type == entryType.bot)
+            if (lastRoom.exitSelected.type == entryType.top || newRoom.entrySelected.type == entryType.bot ||
+                lastRoom.exitSelected.type == entryType.bot || newRoom.entrySelected.type == entryType.top)
             {
                 float translateY = 0;
                 float translateX = 0;
@@ -156,24 +160,13 @@ namespace MapGenerator
                 if (lastRoom.exitSelected.type == entryType.top)
                    this.addRoomToMap(newRoom, translateX, -translateY, lastRoom.exitSelected);
                 else if (lastRoom.exitSelected.type == entryType.bot)
-                   this.addRoomToMap(newRoom, translateX, translateY, lastRoom.exitSelected);
+                {
+                    if (this.rooms.Count < numberOfRooms - 1)
+                        translateY -= this.rooms[0].Y * this.rooms[0].tileSize;
+                    this.addRoomToMap(newRoom, translateX, translateY, lastRoom.exitSelected);
+                }
+                   
             }
-            //else if (lastRoom.exitSelected.type == entryType.left || lastRoom.exitSelected.type == entryType.right)
-            //{
-            //    float translateY = 0;
-            //    float translateX = 0;
-            //    translateY = lastRoom.exitSelected.ptA.Y - newRoom.entrySelected.ptA.Y;
-            //    foreach (Room room in this.rooms)
-            //    {
-            //        if (i > 0)
-            //            translateX += room.X * room.tileSize;
-            //        i++;
-            //    }
-            //    if (lastRoom.exitSelected.type == entryType.left)
-            //        this.addRoomToMap(newRoom, -translateX, translateY, lastRoom.exitSelected);
-            //    else if (lastRoom.exitSelected.type == entryType.right)
-            //        this.addRoomToMap(newRoom, translateX, translateY, lastRoom.exitSelected);
-            //}
         }
 
         public void addRoomToMap(Room room, float xTrans, float yTrans, Entry exit = null)

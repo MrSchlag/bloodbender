@@ -53,10 +53,7 @@ namespace MapGenerator
             foreach (Entry entry in entryList)
             {
                 if (entry.type == type)
-                {
-                    // Debug.WriteLine("TYPE TO FIND {0} - INDEX FOUND/TYPE {0}/{1}", type, entryList.IndexOf(entry), entry.type); ;
                     entriesFound.Add(entry);
-                }  
             }
             if (entriesFound.Count == 0)
                 return null;
@@ -73,7 +70,7 @@ namespace MapGenerator
                     exitsFound.Add(entry);
             }
             int exitIndex = rand.Next(0, exitsFound.Count);
-            this.exitSelected = this.entryList[exitIndex];
+            this.exitSelected = exitsFound[exitIndex];
         }
     }
 }
