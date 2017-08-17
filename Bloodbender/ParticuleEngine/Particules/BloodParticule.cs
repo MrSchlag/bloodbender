@@ -8,22 +8,25 @@ using System.Threading.Tasks;
 
 namespace Bloodbender.ParticuleEngine.Particules
 {
-    class DashParticule : ParticuleTTL
+    class BloodParticule : ParticuleTTL
     {
         Animation anim;
-        public DashParticule() : this(Vector2.Zero, 0, 0, 0) { }
-        public DashParticule(Vector2 position, float speed, float lifeTime, RadianAngle angle) : base(position, speed, lifeTime, angle)
+        public BloodParticule() : this(Vector2.Zero, 0, 0, 0) { }
+        public BloodParticule(Vector2 position, float speed, float lifeTime, RadianAngle angle) : base(position, speed, lifeTime, angle)
         {
             offSet = OffSet.BottomCenterHorizontal;
-            anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("Soldat/course"), 64, 64, 0, 0);
+            anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("blood1hit"), 6, 0.06f, 32, 0, 0, 0);
+            anim.isLooping = false;
+            anim.reset();
             addAnimation(anim);
+            scale = new Vector2(1.25f,1.25f);
         }
 
         public override bool Update(float elapsed)
         {
             //intermediatePosition.X += speed * elapsed;
 
-            color = new Color(color, (0.6f * (lifeTime - timer)) / lifeTime);
+            //color = new Color(color, (0.6f * (lifeTime - timer)) / lifeTime);
 
             return base.Update(elapsed);
         }

@@ -14,6 +14,7 @@ using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Bloodbender.Projectiles;
 
 namespace Bloodbender
 {
@@ -49,7 +50,7 @@ namespace Bloodbender
         public void generateProjectile(float angle)
         {
             //System.Diagnostics.Debug.WriteLine("Totem touched by playerattacksensor");
-            Projectile proj = new Projectile(body.Position * Bloodbender.meterToPixel, angle, 400f);
+            Projectile proj = new Blood(body.Position * Bloodbender.meterToPixel, 10, angle, 400f);
             body.FixtureList[0].IgnoreCollisionWith(proj.body.FixtureList[0]);
             Bloodbender.ptr.listGraphicObj.Add(proj);
         }

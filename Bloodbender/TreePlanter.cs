@@ -37,7 +37,7 @@ namespace Bloodbender
             {
                 for (float x = _minX; x < _maxX; x += step)
                 {
-                    AddTree(x + rnd.Next(-30, 30) / 10f, y + rnd.Next(-50, 50) / 10f);
+                    AddTree(x + rnd.Next(-300000, 300000) / 100000f, y + rnd.Next(-500000, 500000) / 100000f);
                 }
             }
         }

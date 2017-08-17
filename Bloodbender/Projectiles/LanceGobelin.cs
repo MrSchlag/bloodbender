@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FarseerPhysics.Dynamics;
+using FarseerPhysics.Dynamics.Contacts;
+using Bloodbender.Enemies.Scenario1;
 
 namespace Bloodbender.Projectiles
 {
@@ -17,6 +20,36 @@ namespace Bloodbender.Projectiles
             Animation anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("GangMinion/spear"));
             anim.reset();
             addAnimation(anim);
+
+            body.FixtureList[0].OnCollision += Collision;
+        }
+
+        private bool Collision(Fixture fixtureA, Fixture fixtureB, Contact contact)
+        {
+            AdditionalFixtureData additionalFixtureData = (AdditionalFixtureData)fixtureB.UserData;
+            if (additionalFixtureData != null)
+            {
+                if (shouldDie)
+                    return true;
+                shouldDie = true;
+                if (additionalFixtureData.physicParent is Projectile)
+                {
+                    shouldDie = false;
+                }
+                else if (additionalFixtureData.physicParent is GangChef)
+                {
+                    shouldDie = false;
+                }
+                else if (additionalFixtureData.physicParent is GangMinion)
+                {
+                    shouldDie = false;
+                }
+                else if (additionalFixtureData.type == HitboxType.ATTACK)
+                {
+                    shouldDie = false;
+                }
+            }
+            return true;
         }
     }
 }

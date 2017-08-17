@@ -99,11 +99,13 @@
     <Compile Include="MapFactory.cs" />
     <Compile Include="ParticuleEngine\Particule.cs" />
     <Compile Include="ParticuleEngine\ParticuleSpawner.cs" />
+    <Compile Include="ParticuleEngine\ParticuleSpawners\BloodSpawner.cs" />
     <Compile Include="ParticuleEngine\ParticuleSpawners\DashSpawner.cs" />
     <Compile Include="ParticuleEngine\ParticuleSpawners\SnowMarkSpawner.cs" />
     <Compile Include="ParticuleEngine\ParticuleSpawners\SnowSpawner.cs" />
     <Compile Include="ParticuleEngine\ParticuleSpawnerTTL.cs" />
     <Compile Include="ParticuleEngine\ParticuleSystem.cs" />
+    <Compile Include="ParticuleEngine\Particules\BloodParticule.cs" />
     <Compile Include="ParticuleEngine\Particules\DashParticule.cs" />
     <Compile Include="ParticuleEngine\Particules\GreenCercle.cs" />
     <Compile Include="ParticuleEngine\ParticuleDTL.cs" />
