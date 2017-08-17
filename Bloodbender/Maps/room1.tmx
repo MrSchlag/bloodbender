@@ -10,10 +10,10 @@
  </objectgroup>
  <objectgroup color="#aa0000" name="wall">
   <object id="45" x="608" y="160">
-   <polyline points="0,0 -128,416 -480,416 -480,832 -128,832 0,1280"/>
+   <polyline points="0,1280 -128,864 -480,864 -480,448 -128,448 0,0"/>
   </object>
   <object id="46" x="768" y="1440">
-   <polyline points="0,-1280 192,-832 192,-416 0,0"/>
+   <polyline points="0,0 192,-448 192,-864 0,-1280"/>
   </object>
  </objectgroup>
  <objectgroup color="#0055ff" name="entity">
