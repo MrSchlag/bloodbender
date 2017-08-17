@@ -29,6 +29,8 @@ namespace Bloodbender.Projectiles
             AdditionalFixtureData additionalFixtureData = (AdditionalFixtureData)fixtureB.UserData;
             if (additionalFixtureData != null)
             {
+                if (shouldDie)
+                    return true;
                 shouldDie = true;
                 if (additionalFixtureData.physicParent is Projectile)
                 {

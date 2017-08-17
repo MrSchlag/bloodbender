@@ -34,7 +34,7 @@ namespace Bloodbender
             player = null;
             mGen.newMap();
             this.loadRoomWalls();
-            //this.loadRoomLinkers();
+            this.loadRoomLinkers();
             this.loadPlayer(listGraphicObj);
             this.loadEntities(listGraphicObj);
         }

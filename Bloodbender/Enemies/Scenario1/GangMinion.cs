@@ -43,7 +43,7 @@ namespace Bloodbender.Enemies.Scenario1
             IComponent comp = new FollowBehaviorComponent(this, chef.node, 3);
             addComponent(comp);
 
-            distanceAttackWithTarget = 200;
+            distanceAttackWithTarget = 250;
 
             canAttack = true;
             canGenerateProjectile = false;
