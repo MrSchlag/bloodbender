@@ -57,8 +57,12 @@ namespace Bloodbender.Enemies.Scenario1
 
         private bool Collision(Fixture fixtureA, Fixture fixtureB, Contact contact)
         {
-            if (((AdditionalFixtureData)fixtureB.UserData).physicParent is LanceGobelin)
-                return false;
+            AdditionalFixtureData additionalFixtureData = (AdditionalFixtureData)fixtureB.UserData;
+            if (additionalFixtureData != null)
+            {
+                if (additionalFixtureData.physicParent is LanceGobelin)
+                    return false;
+            }
             //else if
             return true;
 

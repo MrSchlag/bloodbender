@@ -14,7 +14,7 @@ namespace Bloodbender.ParticuleEngine
 
         public bool followCamera = false;
 
-        protected int numberParticuleToPop = 1;
+        public int numberParticuleToPop = 1;
         protected int tryToPopParticule = 0;
         protected float timer;
         protected float timeSpawn = 1f;

@@ -18,7 +18,7 @@ using Microsoft.Xna.Framework.Input;
 namespace Bloodbender
 {
 
-    public class Projectile : PhysicObj
+    public abstract class Projectile : PhysicObj
     {
         private float lifeTimeMax = 4.0f;
         private float lifeTime = 0.0f;

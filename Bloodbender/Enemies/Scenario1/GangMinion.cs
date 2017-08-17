@@ -56,7 +56,7 @@ namespace Bloodbender.Enemies.Scenario1
             AdditionalFixtureData additionalFixtureData = (AdditionalFixtureData)fixtureB.UserData;
             if (additionalFixtureData != null)
             {
-                if (((AdditionalFixtureData)fixtureB.UserData).physicParent is LanceGobelin)
+                if (additionalFixtureData.physicParent is LanceGobelin)
                     return false;
             }
             
@@ -75,9 +75,20 @@ namespace Bloodbender.Enemies.Scenario1
 
         public override bool Update(float elapsed)
         {
+            /*
             if (body.LinearVelocity.X > 0)
                 spriteEffect = SpriteEffects.None;
             else if (body.LinearVelocity.X < 0)
+                spriteEffect = SpriteEffects.FlipHorizontally;
+                */
+
+            
+            RadianAngle tmpangle = angleWith(chef.target);
+            tmpangle -= (float)Math.PI / 2;
+
+            if (tmpangle < 0)
+                spriteEffect = SpriteEffects.None;
+            else if (tmpangle > 0)
                 spriteEffect = SpriteEffects.FlipHorizontally;
 
             if (chef.shouldDie)

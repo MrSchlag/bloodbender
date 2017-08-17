@@ -42,6 +42,7 @@ namespace Bloodbender
         private Vector2 dashLinearVelocity = Vector2.Zero;
 
         DashSpawner dashSpawner;
+        BloodSpawner bloodSpawner;
 
         private int roomOccupied;
 
@@ -65,6 +66,7 @@ namespace Bloodbender
             addFixtureToCheckedCollision(playerHitSensorFix); 
             addFixtureToCheckedCollision(playerBoundsFix);
 
+            playerBoundsFix.OnCollision += CollisionCheck;
             //height = 10;
 
             Texture2D texture1 = Bloodbender.ptr.Content.Load<Texture2D>("Soldat/soldat-bas");
@@ -82,6 +84,24 @@ namespace Bloodbender
             dashSpawner = new DashSpawner(new Vector2(0, 0), 0, this, new Vector2(0, 0));
             Bloodbender.ptr.particuleSystem.addParticuleSpawner(dashSpawner);
             dashSpawner.canSpawn = false;
+
+            bloodSpawner = new BloodSpawner(new Vector2(0, 0), 0, this, new Vector2(0, 0));
+            Bloodbender.ptr.particuleSystem.addParticuleSpawner(bloodSpawner);
+            bloodSpawner.canSpawn = false;
+        }
+
+        private bool CollisionCheck(Fixture fixtureA, Fixture fixtureB, Contact contact)
+        {
+            AdditionalFixtureData additionalFixtureData = (AdditionalFixtureData)fixtureB.UserData;
+            if (additionalFixtureData != null)
+            {
+                if (additionalFixtureData.physicParent is Projectile)
+                {
+                    bloodSpawner.numberParticuleToPop += 1;
+                    bloodSpawner.canSpawn = true;
+                }
+            }
+            return true;
         }
 
         public override bool Update(float elapsed)
@@ -381,7 +401,7 @@ namespace Bloodbender
                     fixInContactData = (AdditionalFixtureData)fixInContact.UserData;
                     if (fixInContactData.physicParent is Totem)
                         ((Totem)fixInContactData.physicParent).generateProjectile(angleWithMouse());
-                    if (fixInContactData.physicParent is Enemy)
+                    else if (fixInContactData.physicParent is Enemy)
                         ((Enemy)fixInContactData.physicParent).takeHit(angleWithMouse());
                 }
             }

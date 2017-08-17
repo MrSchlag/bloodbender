@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bloodbender.Projectiles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,7 +38,7 @@ namespace Bloodbender
         {
             float precisionOffset = rnd.Next(-300, 301) / 1000.0f;
 
-            Projectile proj = new Projectile(owner.position, 3, shootAngle + precisionOffset, 60f);
+            Projectile proj = new Blood(owner.position, 3, shootAngle + precisionOffset, 60f);
             int bloodRand = rnd.Next(0, 3);
             if (bloodRand == 0)
                 proj.addAnimation(new Animation(Bloodbender.ptr.blood1));

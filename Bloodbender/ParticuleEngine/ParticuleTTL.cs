@@ -41,7 +41,7 @@ namespace Bloodbender.ParticuleEngine
 
             position = RadianAngle.rotate(referencePosition, position, angle);
 
-            return true;
+            return base.Update(elapsed);
         }
     }
 }

@@ -14,7 +14,7 @@ using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+using Bloodbender.Projectiles;
 
 namespace Bloodbender
 {
@@ -68,7 +68,7 @@ namespace Bloodbender
         {
             Vector2 mainProjPosition = spawnPositionOffset.Rotate(shootAngle) + owner.position;
 
-            Projectile mainProj = new Projectile(mainProjPosition, mainProjRadius, shootAngle, projSpeed);
+            Projectile mainProj = new Blood(mainProjPosition, mainProjRadius, shootAngle, projSpeed);
             mainProj.body.IgnoreCollisionWith(owner.body);
             Bloodbender.ptr.listGraphicObj.Add(mainProj);
 
@@ -82,7 +82,7 @@ namespace Bloodbender
                 Vector2 decorationProjPositionOffset = new Vector2(0 + spawnPositionOffset.X - mainProjRadius + rnd.Next(-15, 6), spawnPositionInLineRand + spawnPositionOffset.Y);
                 Vector2 decorationProjPosition = decorationProjPositionOffset.Rotate(shootAngle) + owner.position;
 
-                Projectile decorationProj = new Projectile(decorationProjPosition, decorationProjRadius, shootAngle, projSpeed);
+                Projectile decorationProj = new Blood(decorationProjPosition, decorationProjRadius, shootAngle, projSpeed);
                 
                 if (bloodTexRand == 0)
                     decorationProj.addAnimation(new Animation(Bloodbender.ptr.blood1));
