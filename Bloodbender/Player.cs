@@ -158,7 +158,9 @@ namespace Bloodbender
                         Bloodbender.ptr.mapFactory.CreateMeshForRoom(room);
                         foreach (var obj in Bloodbender.ptr.listGraphicObj)
                         {
-                            if (obj is PhysicObj && obj.position.Y < room.maxY && obj.position.Y > room.minY)
+                            if (obj is PhysicObj &&
+                                obj.position.Y < room.maxY && obj.position.Y > room.minY &&
+                                obj.position.X < room.maxX && obj.position.X > room.minX)
                                 ((PhysicObj)obj).createOutlinePathNodes();
                         }
                         Bloodbender.ptr.pFinder.GeneratesMeshes();
