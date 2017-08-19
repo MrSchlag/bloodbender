@@ -3,21 +3,15 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Bloodbender.Enemies.Scenario2
 {
-    public class Partner : Enemy
+    public class PartnerFar : Enemy
     {
-        bool _master;
+        public PartnerClose Partner { get; set; }
 
-        /// <summary>
-        /// Add a partner in the game
-        /// </summary>
-        /// <param name="position"></param>
-        /// <param name="target"></param>
-        /// <param name="partner">null if fist of two partners</param>
-        public Partner(Vector2 position, PhysicObj target, Partner partner) : base(position, target)
+        public PartnerFar(Vector2 position, PhysicObj target) : base(position, target)
         {
             height = 0;
-
-            Animation anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("carre"));
+            
+            Animation anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("bouleRouge"));
             addAnimation(anim);
 
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
@@ -26,15 +20,16 @@ namespace Bloodbender.Enemies.Scenario2
             Radius = 50f;
             velocity = 50;
 
-
             addFixtureToCheckedCollision(fixture);
 
             //IComponent comp = new FollowBehaviorComponent(this, target, 100f);
             //addComponent(comp);
             //IComponent comp = new
+        }
 
-            if (partner == null)
-                _master = true;
+        public override bool Update(float elapsed)
+        {
+            return base.Update(elapsed);
         }
     }
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" nextobjectid="116">
+ <objectgroup color="#00ff00" name="entry">
+  <object id="9" type="top" x="736" y="160">
+   <polyline points="0,0 -128,0"/>
+  </object>
+  <object id="10" type="bot" x="736" y="1440">
+   <polyline points="0,0 -128,0"/>
+  </object>
+ </objectgroup>
+ <objectgroup color="#aa0000" name="wall">
+  <object id="92" x="608" y="1440">
+   <polyline points="0,0 -256,-96 -544,-448 -544,-896 -224,-1184 0,-1280"/>
+  </object>
+  <object id="93" x="1280" y="1440">
+   <polyline points="-544,0 -288,-96 0,-448 0,-896 -320,-1184 -544,-1280"/>
+  </object>
+ </objectgroup>
+ <objectgroup color="#0055ff" name="entity">
+  <object id="112" x="416" y="544">
+   <properties>
+    <property name="type" value="PartnerClose"/>
+   </properties>
+  </object>
+  <object id="113" x="832" y="672"/>
+  <object id="114" x="832" y="672">
+   <properties>
+    <property name="type" value="PartnerFar"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

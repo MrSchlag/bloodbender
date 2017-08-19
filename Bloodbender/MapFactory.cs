@@ -8,6 +8,7 @@ using MapGenerator;
 using Microsoft.Xna.Framework;
 using Bloodbender.Enemies.Scenario3;
 using Bloodbender.Enemies.Scenario1;
+using Bloodbender.Enemies.Scenario2;
 
 namespace Bloodbender
 {
@@ -119,9 +120,21 @@ namespace Bloodbender
                     if (entity.type == "totem")
                     {
                         listGraphicObj.Add(new Totem(entity.position));
-                    } else if (entity.type == "chief") {
+                    }
+                    else if (entity.type == "chief")
+                    {
                         listGraphicObj.Add(new GangChef(entity.numberMinion, entity.position, player));
-                    } else {
+                    }
+                    else if (entity.type == "PartnerFar")
+                    {
+                        listGraphicObj.Add(new PartnerFar(entity.position, player));
+                    }
+                    else if (entity.type == "PartnerClose")
+                    {
+                        listGraphicObj.Add(new PartnerClose(entity.position, player));
+                    }
+                    else
+                    {
                         listGraphicObj.Add(new Bat(entity.position, player));
                     } 
                 }
