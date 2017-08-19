@@ -58,7 +58,7 @@ namespace MapGenerator
             rloader = new RoomLoader();
             //numberOfRooms = rand.Next(10, 11);
             //MINIMUM 2
-            numberOfRooms = 2;
+            numberOfRooms = 3;
             rooms = new List<Room>();
             roomLinkers = new List<RoomLinker>(); 
             this.addRoomToMap(selectSpawn(), 0, 0);
@@ -92,9 +92,10 @@ namespace MapGenerator
 
         public Room selectEnd()
         {
-            rooms[rooms.Count - 1].exitSelected = rooms[rooms.Count - 1].entryList[0];
+            rooms[rooms.Count - 1].selectRandomExit(rand);
             Room end;
-            if (this.rooms[this.rooms.Count - 1].exitSelected.type == entryType.top)
+            Debug.WriteLine(rooms[rooms.Count - 1].exitSelected.type);
+            if (this.rooms[rooms.Count - 1].exitSelected.type == entryType.top)
                 end = rloader.load(endRoomFileTop);
             else
                 end = rloader.load(endRoomFileBot);
