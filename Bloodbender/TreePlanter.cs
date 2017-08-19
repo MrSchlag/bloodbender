@@ -17,9 +17,9 @@ namespace Bloodbender
 
         private Random rnd;
 
-        public TreePlanter(float minX, float maxX, float minY, float maxY)
+        public TreePlanter(float minX, float maxX, float minY, float maxY, Random rand)
         {
-            rnd = new Random();
+            rnd = rand;
 
             _minX = minX - 5;
             _maxX = maxX + 5;
@@ -28,7 +28,7 @@ namespace Bloodbender
 
             _center.X = _maxX - _minX;
             _center.Y = _maxY - _minY;
-            SetInitialSeedPosition(1.3f);
+            SetInitialSeedPosition(1f);
         }
 
         private void SetInitialSeedPosition(float step)
@@ -49,7 +49,7 @@ namespace Bloodbender
                 var tree = new GraphicObj(OffSet.BottomCenterHorizontal);
                 tree.position = new Vector2(x, y) * Bloodbender.meterToPixel;
                 tree.addAnimation(new Animation(Bloodbender.ptr.Content.Load<Texture2D>("tree1")));
-                int treeScale = Bloodbender.ptr.rdn.Next(600, 1800);
+                int treeScale = rnd.Next(600, 1800);
                 tree.scale = new Vector2(treeScale / 1000.0f, treeScale / 1000.0f);
                 Bloodbender.ptr.listGraphicObj.Add(tree);
             }
