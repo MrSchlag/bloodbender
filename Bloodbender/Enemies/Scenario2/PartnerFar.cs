@@ -34,7 +34,7 @@ namespace Bloodbender.Enemies.Scenario2
             _node.createOctogoneFixture(10, 10, Vector2.Zero, new AdditionalFixtureData(_node, HitboxType.BOUND)).IsSensor = true;
             _node.Radius = 10.0f;
 
-            IComponent comp = new KeepDistanceComponent(300, Bloodbender.ptr.player, _node);
+            IComponent comp = new KeepDistanceComponent(300, Bloodbender.ptr.player, _node, this);
             _node.addComponent(comp);
 
             IComponent comp2 = new FollowBehaviorComponent(this, _node, 0);

@@ -11,18 +11,20 @@ namespace Bloodbender.components
     {
         private PhysicObj _owner;
         private PhysicObj _target;
+        private PhysicObj _guarded;
         private float _distance;
 
-        public KeepDistanceComponent(float distance, PhysicObj target, PhysicObj owner)
+        public KeepDistanceComponent(float distance, PhysicObj target, PhysicObj owner, PhysicObj guarded)
         {
             _owner = owner;
             _distance = distance * Bloodbender.pixelToMeter;
             _target = target;
+            _guarded = guarded;
         }
         
         public bool Update(float elapsed)
         {
-            if ((_target.body.Position - _owner.body.Position).Length() < _distance)
+            if ((_guarded.body.Position - _target.body.Position).Length() < _distance)
             {
                 var closestEscapePoint = FindClosestEscapePoint();
                 _owner.body.Position = closestEscapePoint;
@@ -42,32 +44,66 @@ namespace Bloodbender.components
             for (int i = 0; i <= 360; i += step)
             {
                 vectorToRotate = vectorToRotate.Rotate(i * (float)Math.PI / 180f);
-                vec = vectorToRotate + _target.body.Position;
+                vec = vectorToRotate + _owner.body.Position;
 
-                if (!TreePlanter.IsPointOutside(vec.X, vec.Y))
+                if (!TreePlanter.IsPointOutside(vec.X, vec.Y) && !IsPointBetweenRooms(vec))
                     pointsAround.Add(vec);
             }
 
-            return FarthestPointFromTarget(pointsAround); 
+            return FarthestPointFromTarget(pointsAround);
+            //return ClosestPointInList(pointsAround); 
         }
 
         private Vector2 FarthestPointFromTarget(List<Vector2> pointsAround)
         {
-            Vector2 farthest = _owner.body.Position;
-            float farthestDistance = -1f;
+            Vector2 closest = _owner.body.Position;
+            float closestDistance = -1f;
 
             foreach (var vec in pointsAround)
             {
                 var distance = (vec - _target.body.Position).LengthSquared();
-                if (farthestDistance == -1f || distance > farthestDistance)
+                if (closestDistance == -1f || distance > closestDistance)
                 {
-                    farthest = vec;
-                    farthestDistance = distance;
+                    closest = vec;
+                    closestDistance = distance;
                 }
             }
 
-            return farthest;
+            return closest;
         }
+
+        private bool IsPointBetweenRooms(Vector2 point)
+        {
+            var pt = point * Bloodbender.meterToPixel;
+            var rooms = Bloodbender.ptr.mapFactory.mGen.rooms;
+            
+            foreach (var room in rooms)
+            {
+                if (pt.Y > room.minY && pt.Y < room.maxY)
+                    return false;
+            }
+
+            return true;
+        }
+
+        /*
+        private Vector2 ClosestPointInList(List<Vector2> pointsAround)
+        {
+            Vector2 closest = _owner.body.Position;
+            float closestDistance = -1f;
+
+            foreach (var vec in pointsAround)
+            {
+                var distance = (vec - _owner.body.Position).LengthSquared();
+                if (closestDistance == -1f || distance < closestDistance)
+                {
+                    closest = vec;
+                    closestDistance = distance;
+                }
+            }
+
+            return closest;
+        }*/
 
         public void Remove()
         {
