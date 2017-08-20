@@ -56,6 +56,8 @@ namespace Bloodbender
             {
                 if (counterOption == 0)
                     Bloodbender.ptr.Exit();
+                else if (counterOption == 1)
+                    Bloodbender.ptr.reload = true;
             }
 
 

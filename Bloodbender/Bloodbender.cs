@@ -90,6 +90,8 @@ namespace Bloodbender
 
         Menu menu;
 
+        public bool reload = false;
+
         public Bloodbender()
         {
             ptr = this;
@@ -123,19 +125,8 @@ namespace Bloodbender
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            world = new World(new Vector2(0, 0));
 
             ConvertUnits.SetDisplayUnitToSimUnitRatio(meterToPixel);
-
-            debugView = new DebugView();
-            debugView.LoadContent(GraphicsDevice, Content);
-
-            inputHelper = new InputHelper(resolutionIndependence);
-            inputHelper.ShowCursor = true;
-
-            shadowsRendering = new ShadowsRenderer();
-
-            listGraphicObj = new List<GraphicObj>();
 
             InitializeResolutionIndependence(graphics.GraphicsDevice.Viewport.Width, graphics.GraphicsDevice.Viewport.Height);
 
@@ -156,6 +147,18 @@ namespace Bloodbender
         /// </summary>
         protected override void LoadContent()
         {
+            world = new World(new Vector2(0, 0));
+
+            debugView = new DebugView();
+            debugView.LoadContent(GraphicsDevice, Content);
+
+            inputHelper = new InputHelper(resolutionIndependence);
+            inputHelper.ShowCursor = true;
+
+            shadowsRendering = new ShadowsRenderer();
+
+            listGraphicObj = new List<GraphicObj>();
+
             inputHelper.LoadContent();
 
             font = Content.Load<SpriteFont>("pixelSpriteFont");
@@ -291,7 +294,15 @@ namespace Bloodbender
                 menu.showing = !menu.showing ;
 
             if (menu.Update(elapsed))
+            {
+                if (reload)
+                {
+                    LoadContent();
+                    reload = false;
+                }
+
                 return;
+            }
 
             world.Step(1f / 30f);
 
