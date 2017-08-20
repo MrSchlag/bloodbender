@@ -98,6 +98,7 @@
     <Compile Include="MapBound.cs" />
     <Compile Include="components\IComponent.cs" />
     <Compile Include="MapFactory.cs" />
+    <Compile Include="Menu.cs" />
     <Compile Include="ParticuleEngine\Particule.cs" />
     <Compile Include="ParticuleEngine\ParticuleSpawner.cs" />
     <Compile Include="ParticuleEngine\ParticuleSpawners\BloodSpawner.cs" />

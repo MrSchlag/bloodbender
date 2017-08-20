@@ -48,6 +48,10 @@ namespace Bloodbender.Projectiles
                 {
                     shouldDie = false;
                 }
+                else if (additionalFixtureData.physicParent is Totem)
+                {
+                    shouldDie = false;
+                }
             }
             return true;
         }

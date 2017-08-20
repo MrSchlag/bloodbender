@@ -46,6 +46,8 @@ namespace Bloodbender
 
         private int roomOccupied;
 
+        protected float lifePoints = 30;
+
         public Player(Vector2 position) : base(position, PathFinderNodeType.CENTER)
         {
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
@@ -88,6 +90,7 @@ namespace Bloodbender
             bloodSpawner = new BloodSpawner(new Vector2(0, 0), 0, this, new Vector2(0, 0));
             Bloodbender.ptr.particuleSystem.addParticuleSpawner(bloodSpawner);
             bloodSpawner.canSpawn = false;
+            bloodSpawner.scaleRef = 1.25f;
         }
 
         private bool CollisionCheck(Fixture fixtureA, Fixture fixtureB, Contact contact)
@@ -97,6 +100,7 @@ namespace Bloodbender
             {
                 if (additionalFixtureData.physicParent is Projectile)
                 {
+                    lifePoints -= 1;
                     bloodSpawner.numberParticuleToPop += 1;
                     bloodSpawner.canSpawn = true;
                 }
@@ -106,6 +110,8 @@ namespace Bloodbender
 
         public override bool Update(float elapsed)
         {
+            if (lifePoints <= 0)
+                ;//gameover
 
             ContinueDash(elapsed);
 

@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Dynamics.Contacts;
 using Bloodbender.Projectiles;
+using Bloodbender.ParticuleEngine.ParticuleSpawners;
 
 namespace Bloodbender.Enemies.Scenario1
 {
@@ -17,9 +18,12 @@ namespace Bloodbender.Enemies.Scenario1
         float distanceMinions = 180;
         public PhysicObj node;
 
+
         public GangChef(int numberMinion, Vector2 position, PhysicObj target) : base(position, target)
         {
             height = 0;
+
+            lifePoints = 1;
 
             Animation anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("GangChef/chefstand"));
             addAnimation(anim);
@@ -56,6 +60,8 @@ namespace Bloodbender.Enemies.Scenario1
 
             for (int i = 0; i < numberMinion; ++i)
                 Bloodbender.ptr.listGraphicObj.Add(new GangMinion(new Vector2(position.X += Bloodbender.ptr.rdn.Next(-50, 51), position.Y += Bloodbender.ptr.rdn.Next(-50, 51)), this, target));
+
+            bloodSpawner.scaleRef = 2;
         }
 
         private bool Collision(Fixture fixtureA, Fixture fixtureB, Contact contact)
@@ -63,7 +69,14 @@ namespace Bloodbender.Enemies.Scenario1
             AdditionalFixtureData additionalFixtureData = (AdditionalFixtureData)fixtureB.UserData;
             if (additionalFixtureData != null)
             {
-                if (additionalFixtureData.physicParent is LanceGobelin)
+                if (additionalFixtureData.physicParent is Blood)
+                {
+                    lifePoints -= 1;
+                    bloodSpawner.numberParticuleToPop += 1;
+                    bloodSpawner.canSpawn = true;
+                    //prendre degat
+                }
+                else if (additionalFixtureData.physicParent is LanceGobelin)
                     return false;
             }
             //else if

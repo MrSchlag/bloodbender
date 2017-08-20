@@ -14,9 +14,17 @@ namespace Bloodbender.Enemies.Scenario1
     class GangMinion : Enemy
     {
         GangChef chef;
+        FollowBehaviorComponent followBehavior;
+
+        bool goneMad = false;
+
+        static float refTimeRdnRun = 1;
+        float timerRdnRun = refTimeRdnRun;
+
         public GangMinion(Vector2 position, GangChef chef, PhysicObj target) : base(position, target)
         {
             height = 0;
+            lifePoints = 2;
 
             Animation anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("GangMinion/goblinrun"), 5, 0.1f, 0, 0, 0, 0);
             anim.reset();
@@ -25,6 +33,10 @@ namespace Bloodbender.Enemies.Scenario1
             Animation attackAnimation = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("GangMinion/goblinattack"), 7, 0.1f, 0, 0, 0, 0);
             attackAnimation.isLooping = false;
             addAnimation(attackAnimation);
+
+            Animation scaredAnimation = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("GangMinion/goblinrunscream"), 5, 0.1f, 0, 0, 0, 0);
+            //scaredAnimation.isLooping = false;
+            addAnimation(scaredAnimation);
 
             Bloodbender.ptr.shadowsRendering.addShadow(new Shadow(this));
 
@@ -40,8 +52,8 @@ namespace Bloodbender.Enemies.Scenario1
 
             fixture.OnCollision += Collision;
 
-            IComponent comp = new FollowBehaviorComponent(this, chef.node, 3);
-            addComponent(comp);
+            followBehavior = new FollowBehaviorComponent(this, chef.node, 3);
+            addComponent(followBehavior);
 
             distanceAttackWithTarget = 250;
 
@@ -49,6 +61,8 @@ namespace Bloodbender.Enemies.Scenario1
             canGenerateProjectile = false;
             canBeHitByPlayer = false;
             canBeHitByProjectile = false;
+
+            bloodSpawner.scaleRef = 1.25f;
         }
 
         private bool Collision(Fixture fixtureA, Fixture fixtureB, Contact contact)
@@ -82,18 +96,47 @@ namespace Bloodbender.Enemies.Scenario1
                 spriteEffect = SpriteEffects.FlipHorizontally;
                 */
 
-            
-            RadianAngle tmpangle = angleWith(chef.target);
-            tmpangle -= (float)Math.PI / 2;
-
-            if (tmpangle < 0)
-                spriteEffect = SpriteEffects.None;
-            else if (tmpangle > 0)
-                spriteEffect = SpriteEffects.FlipHorizontally;
-
-            if (chef.shouldDie)
+            if (goneMad)
             {
-                //go mad
+                if (timerRdnRun > refTimeRdnRun)
+                {
+                    timerRdnRun = 0;
+                    float runSpeedX = Bloodbender.ptr.rdn.Next(0, 50) * Bloodbender.pixelToMeter;
+                    float runSpeedY = Bloodbender.ptr.rdn.Next(0, 50) * Bloodbender.pixelToMeter;
+
+                    if (Bloodbender.ptr.rdn.Next(0, 2) == 0)
+                        runSpeedX *= -1;
+                    if (Bloodbender.ptr.rdn.Next(0, 2) == 0)
+                        runSpeedY *= -1;
+                    body.LinearVelocity = new Vector2(runSpeedX, runSpeedY);
+                    if (runSpeedY > 0)
+                        spriteEffect = SpriteEffects.None;
+                    else if (runSpeedY < 0)
+                        spriteEffect = SpriteEffects.FlipHorizontally;
+                }
+                else
+                    timerRdnRun += elapsed;
+                return base.Update(elapsed);
+            }
+
+            if (!chef.shouldDie)
+            {
+                RadianAngle tmpangle = angleWith(chef.target);
+                tmpangle -= (float)Math.PI / 2;
+
+                if (tmpangle < 0)
+                    spriteEffect = SpriteEffects.None;
+                else if (tmpangle > 0)
+                    spriteEffect = SpriteEffects.FlipHorizontally;
+            }
+            else
+            {
+                followBehavior.paused = true;
+                canAttack = false;
+                runAnimation(2);
+                goneMad = true;
+                runDefaultAnim = false;
+                canBeHitByPlayer = true;
             }
 
             return base.Update(elapsed);
