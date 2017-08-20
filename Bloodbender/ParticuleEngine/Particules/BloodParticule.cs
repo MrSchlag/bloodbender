@@ -11,15 +11,15 @@ namespace Bloodbender.ParticuleEngine.Particules
     class BloodParticule : ParticuleTTL
     {
         Animation anim;
-        public BloodParticule() : this(Vector2.Zero, 0, 0, 0) { }
-        public BloodParticule(Vector2 position, float speed, float lifeTime, RadianAngle angle) : base(position, speed, lifeTime, angle)
+        public BloodParticule() : this(Vector2.Zero, 0, 0, 0, 1) { }
+        public BloodParticule(Vector2 position, float speed, float lifeTime, RadianAngle angle, float scaleIN) : base(position, speed, lifeTime, angle)
         {
             offSet = OffSet.BottomCenterHorizontal;
             anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("blood1hit"), 6, 0.06f, 32, 0, 0, 0);
             anim.isLooping = false;
             anim.reset();
             addAnimation(anim);
-            scale = new Vector2(1.25f,1.25f);
+            scale = new Vector2(scaleIN, scaleIN);
         }
 
         public override bool Update(float elapsed)

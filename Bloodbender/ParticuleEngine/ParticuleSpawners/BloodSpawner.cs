@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace Bloodbender.ParticuleEngine.ParticuleSpawners
 {
-    class BloodSpawner : ParticuleSpawnerTTL
+    public class BloodSpawner : ParticuleSpawnerTTL
     {
+        public float scaleRef = 1;
         public BloodSpawner(Vector2 position) : this(position, 0, null, Vector2.Zero) { }
         public BloodSpawner(Vector2 position, RadianAngle angle) : this(position, angle, null, Vector2.Zero) { }
         public BloodSpawner(Vector2 position, RadianAngle angle, GraphicObj target, Vector2 offSetPosition) : base(position, angle, target, offSetPosition)
@@ -76,6 +77,8 @@ namespace Bloodbender.ParticuleEngine.ParticuleSpawners
 
             particuleToCook.referencePosition = particuleToCook.position;
             particuleToCook.intermediatePosition = Vector2.Zero;
+
+            particuleToCook.scale = new Vector2(scaleRef, scaleRef);
 
             //particuleToCook.spriteEffect = Bloodbender.ptr.player.spriteEffect;
 

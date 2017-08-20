@@ -38,6 +38,8 @@ namespace Bloodbender
         float timerCheck = 0;
         float timerCheckLenght = 0.5f;
 
+        public bool paused = false;
+
         public FollowBehaviorComponent(PhysicObj obj, PhysicObj target, float escapeZoneRadius)
         {
             this.owner = obj;
@@ -66,6 +68,9 @@ namespace Bloodbender
 
         bool IComponent.Update(float elapsed)
         {
+            if (paused)
+                return true;
+
             timerCheck += elapsed;
 
             if (timerCheck >= timerCheckLenght)
