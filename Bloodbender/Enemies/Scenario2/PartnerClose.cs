@@ -14,10 +14,11 @@ namespace Bloodbender.Enemies.Scenario2
         {
             height = 0;
             
-            Animation anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("carre"));
+            Animation anim = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("Pair/coursePair1"), 7, 0.1f, 0, 0, 0, 0);
+            anim.reset();
             addAnimation(anim);
 
-            Animation attackAnimation = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("GangMinion/goblinattack"), 7, 0.1f, 0, 0, 0, 0);
+            Animation attackAnimation = new Animation(Bloodbender.ptr.Content.Load<Texture2D>("Pair/attackPair1"), 9, 0.075f, 0, 0, 0, 0);
             attackAnimation.isLooping = false;
             addAnimation(attackAnimation);
 
