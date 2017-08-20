@@ -26,7 +26,7 @@ namespace Bloodbender
         private Vector2 _targetPosition;
         private float _targetRotation;
         private Body _trackingBody;
-        private Vector2 _translateCenter;
+        public Vector2 _translateCenter;
 
         public Matrix SimProjection;
         public Matrix SimView;

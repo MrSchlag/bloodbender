@@ -23,6 +23,7 @@ namespace Bloodbender
         public enum OffSet { Center, BottomCenterHorizontal, None };
 
         public bool shouldDie = false;
+        public bool checkIsInView = true;
 
         private List<IComponent> components;
 
@@ -45,8 +46,13 @@ namespace Bloodbender
         }
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            if (Bloodbender.ptr.camera.isInView(position) && animations.Count > 0) // Permet de draw que les elements present ds la vue
-                animations[currentAnimation].Draw(spriteBatch, position, rotation, spriteEffect, scale, color, height);
+            if (checkIsInView)
+            {
+                if (Bloodbender.ptr.camera.isInView(position) && animations.Count > 0) // Permet de draw que les elements present ds la vue
+                    animations[currentAnimation].Draw(spriteBatch, position, rotation, spriteEffect, scale, color, height);
+            }
+            else
+                    animations[currentAnimation].Draw(spriteBatch, position, rotation, spriteEffect, scale, color, height);
         }
 
         public void addComponent(IComponent component)

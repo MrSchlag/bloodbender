@@ -88,6 +88,8 @@ namespace Bloodbender
         int minNoiseY;
         int maxNoiseY;
 
+        Menu menu;
+
         public Bloodbender()
         {
             ptr = this;
@@ -228,6 +230,8 @@ namespace Bloodbender
             maxNoiseX = (int)mapFactory.maxX + textureImageNoise.Width * 2;
             minNoiseY = (int)mapFactory.minY - textureImageNoise.Height * 2;
             maxNoiseY = (int)mapFactory.maxY + textureImageNoise.Height * 2;
+
+            menu = new Menu(font);
         }
 
         
@@ -281,9 +285,13 @@ namespace Bloodbender
 
             inputHelper.Update(elapsed);
 
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
 
+
+            if (inputHelper.IsNewButtonPress(Buttons.Back) || inputHelper.IsNewKeyPress(Keys.Escape))
+                menu.showing = !menu.showing ;
+
+            if (menu.Update(elapsed))
+                return;
 
             world.Step(1f / 30f);
 
@@ -406,9 +414,13 @@ namespace Bloodbender
 
             debugView.RenderDebugData(ref camera.SimProjection, ref camera.SimView);
 
-
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.GetViewWithoutZoom());
             inputHelper.Draw();
+            spriteBatch.End();
+
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.GetViewWithoutZoom());
+            //spriteBatch.Begin(samplerState:SamplerState.PointClamp);
+            menu.Draw(spriteBatch);
             spriteBatch.End();
 
             resolutionIndependence.SetupFullViewport();
