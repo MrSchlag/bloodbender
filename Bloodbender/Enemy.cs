@@ -101,6 +101,10 @@ namespace Bloodbender
                 body.FixtureList[0].IgnoreCollisionWith(proj.body.FixtureList[0]);
                 Bloodbender.ptr.listGraphicObj.Add(proj);
             }
+            if (canBeHitByProjectile)
+            {
+                lifePoints -= 1;
+            }
         }
     }
 }

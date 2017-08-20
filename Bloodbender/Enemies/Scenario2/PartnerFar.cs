@@ -43,7 +43,7 @@ namespace Bloodbender.Enemies.Scenario2
             distanceAttackWithTarget = 400;
 
             canAttack = true;
-            canGenerateProjectile = false;
+            canGenerateProjectile = true;
             canBeHitByPlayer = false;
             canBeHitByProjectile = false;
         }

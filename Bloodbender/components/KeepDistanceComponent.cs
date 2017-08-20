@@ -1,9 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bloodbender.components
 {
@@ -51,7 +48,6 @@ namespace Bloodbender.components
             }
 
             return FarthestPointFromTarget(pointsAround);
-            //return ClosestPointInList(pointsAround); 
         }
 
         private Vector2 FarthestPointFromTarget(List<Vector2> pointsAround)
@@ -85,26 +81,7 @@ namespace Bloodbender.components
 
             return true;
         }
-
-        /*
-        private Vector2 ClosestPointInList(List<Vector2> pointsAround)
-        {
-            Vector2 closest = _owner.body.Position;
-            float closestDistance = -1f;
-
-            foreach (var vec in pointsAround)
-            {
-                var distance = (vec - _owner.body.Position).LengthSquared();
-                if (closestDistance == -1f || distance < closestDistance)
-                {
-                    closest = vec;
-                    closestDistance = distance;
-                }
-            }
-
-            return closest;
-        }*/
-
+      
         public void Remove()
         {
                
