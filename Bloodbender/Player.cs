@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Bloodbender.ParticuleEngine.ParticuleSpawners;
+using Bloodbender.Projectiles;
 
 namespace Bloodbender
 {

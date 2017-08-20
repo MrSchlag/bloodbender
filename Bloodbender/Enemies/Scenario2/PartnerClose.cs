@@ -3,6 +3,7 @@ using FarseerPhysics.Dynamics;
 using FarseerPhysics.Dynamics.Contacts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Bloodbender.Projectiles;
 
 namespace Bloodbender.Enemies.Scenario2
 {
@@ -26,7 +27,9 @@ namespace Bloodbender.Enemies.Scenario2
             fixture = createOctogoneFixture(50f, 50f, Vector2.Zero, new AdditionalFixtureData(this, HitboxType.BOUND));
             Radius = 50f;
             velocity = 30;
-            
+
+            fixture.OnCollision += Collision;
+
             addFixtureToCheckedCollision(fixture);
 
             IComponent comp = new FollowBehaviorComponent(this, target, 40f);
@@ -43,6 +46,24 @@ namespace Bloodbender.Enemies.Scenario2
         public override bool Update(float elapsed)
         {
             return base.Update(elapsed);
+        }
+
+        private bool Collision(Fixture fixtureA, Fixture fixtureB, Contact contact)
+        {
+            AdditionalFixtureData additionalFixtureData = (AdditionalFixtureData)fixtureB.UserData;
+            if (additionalFixtureData != null)
+            {
+                if (additionalFixtureData.physicParent is Blood)
+                {
+                    lifePoints -= 1;
+                    bloodSpawner.numberParticuleToPop += 1;
+                    bloodSpawner.canSpawn = true;
+                }
+                else if (additionalFixtureData.physicParent is LanceGobelin)
+                    return false;
+            }
+            return true;
+
         }
     }
 }
