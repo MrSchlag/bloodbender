@@ -157,7 +157,8 @@ namespace Bloodbender
             int i = 1;
             foreach (var room in rooms)
             {
-                if (room.maxY > position.Y && room.minY < position.Y)
+                if (room.maxY > position.Y && room.minY < position.Y &&
+                    room.maxX > position.X && room.minX < position.X)
                 {
                     if (roomOccupied != i)
                     {

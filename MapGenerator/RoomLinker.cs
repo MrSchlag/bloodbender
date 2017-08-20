@@ -42,150 +42,130 @@ namespace MapGenerator
 
         public void smoothLinker(Entry exit, Entry entry)
         {
+            if (entry.ptA.Y < exit.ptA.Y)
+                this.smoothTopLinker(exit, entry);
+            else if (entry.ptA.Y > exit.ptA.Y)
+                this.smoothBotLinker(exit, entry);
+            else if (entry.ptA.X < exit.ptA.X)
+                this.smoothRightLinker(exit, entry);
+            else if (entry.ptA.X > exit.ptA.X)
+                this.smoothLeftLinker(exit, entry);
+        }
+
+        public void smoothTopLinker(Entry exit, Entry entry)
+        {
             float distance = Math.Abs(entry.ptA.Y - exit.ptA.Y);
             float entryLength = Math.Abs(entry.ptA.X - entry.ptB.X);
             float diffPath = (distance - entryLength) / 2;
-            this.smoothLinkerFirstStep(exit, entry, diffPath, entryLength);
-            this.smoothLinkerMidStep(exit, entry, diffPath, entryLength);
-            this.smoothLinkerLastStep(exit, entry, diffPath, entryLength);
-        }
-
-        public void smoothLinkerFirstStep(Entry exit, Entry entry, float diffPath, float entryLength)
-        {
-            //DE BAS EN HAUT
-            if (entry.ptA.Y < exit.ptA.Y)
+            if (exit.ptA.X < entry.ptB.X || exit.ptA.X < entry.ptA.X)
             {
-                if (exit.ptA.X < entry.ptB.X || exit.ptA.X < entry.ptA.X)
-                {
-                    //DROITE
-                    Vector2 fInVec = exit.ptA;
-                    Vector2 fOutVec = exit.ptB;
-                    Vector2 lInVec = new Vector2(exit.ptA.X, exit.ptA.Y - diffPath);
-                    Vector2 lOutVec = new Vector2(exit.ptB.X, exit.ptB.Y - entryLength - diffPath);
-                    botWallList.Add(new Wall(fInVec, lInVec));
-                    topWallList.Add(new Wall(fOutVec, lOutVec));
-                }
-                else
-                {
-                    //GAUCHE
-                    Vector2 fInVec = exit.ptB;
-                    Vector2 fOutVec = exit.ptA;
-                    Vector2 lInVec = new Vector2(exit.ptB.X, exit.ptB.Y - diffPath);
-                    Vector2 lOutVec = new Vector2(exit.ptA.X, exit.ptA.Y - entryLength - diffPath);
-                    botWallList.Add(new Wall(fInVec, lInVec));
-                    topWallList.Add(new Wall(fOutVec, lOutVec));
-                }
-            //DE HAUT EN BAS
-            } else if (entry.ptA.Y > exit.ptA.Y) {
-                if (exit.ptA.X < entry.ptB.X || exit.ptA.X < entry.ptA.X)
-                {
-                    //DROITE
-                    Vector2 fInVec = exit.ptA;
-                    Vector2 fOutVec = exit.ptB;
-                    Vector2 lInVec = new Vector2(exit.ptA.X, exit.ptA.Y + diffPath);
-                    Vector2 lOutVec = new Vector2(exit.ptB.X, exit.ptB.Y + entryLength + diffPath);
-                    botWallList.Add(new Wall(fInVec, lInVec));
-                    topWallList.Add(new Wall(fOutVec, lOutVec));
-                }
-                else
-                {
-                    //GAUCHE
-                    Vector2 fInVec = exit.ptB;
-                    Vector2 fOutVec = exit.ptA;
-                    Vector2 lInVec = new Vector2(exit.ptB.X, exit.ptB.Y + diffPath);
-                    Vector2 lOutVec = new Vector2(exit.ptA.X, exit.ptA.Y + entryLength + diffPath);
-                    botWallList.Add(new Wall(fInVec, lInVec));
-                    topWallList.Add(new Wall(fOutVec, lOutVec));
-                }
+                //DROITE
+                Vector2 fInVec = exit.ptA;
+                Vector2 fOutVec = exit.ptB;
+                Vector2 lInVec = new Vector2(exit.ptA.X, exit.ptA.Y - diffPath);
+                Vector2 lOutVec = new Vector2(exit.ptB.X, exit.ptB.Y - entryLength - diffPath);
+                botWallList.Add(new Wall(fInVec, lInVec));
+                topWallList.Add(new Wall(fOutVec, lOutVec));
+                fInVec = new Vector2(exit.ptA.X, exit.ptA.Y - diffPath);
+                lInVec = new Vector2(entry.ptA.X, exit.ptA.Y - diffPath);
+                fOutVec = new Vector2(exit.ptB.X, exit.ptB.Y - entryLength - diffPath);
+                lOutVec = new Vector2(entry.ptB.X, exit.ptB.Y - entryLength - diffPath);
+                botWallList.Add(new Wall(fInVec, lInVec));
+                topWallList.Add(new Wall(fOutVec, lOutVec));
+                fInVec = new Vector2(entry.ptA.X, exit.ptA.Y - diffPath);
+                lInVec = entry.ptA;
+                fOutVec = new Vector2(entry.ptB.X, exit.ptB.Y - entryLength - diffPath);
+                lOutVec = entry.ptB;
+                botWallList.Add(new Wall(fInVec, lInVec));
+                topWallList.Add(new Wall(fOutVec, lOutVec));
+            }
+            else
+            {
+                //GAUCHE
+                Vector2 fInVec = exit.ptB;
+                Vector2 fOutVec = exit.ptA;
+                Vector2 lInVec = new Vector2(exit.ptB.X, exit.ptB.Y - diffPath);
+                Vector2 lOutVec = new Vector2(exit.ptA.X, exit.ptA.Y - entryLength - diffPath);
+                botWallList.Add(new Wall(fInVec, lInVec));
+                topWallList.Add(new Wall(fOutVec, lOutVec));
+                fInVec = new Vector2(exit.ptB.X, exit.ptB.Y - diffPath);
+                lInVec = new Vector2(entry.ptB.X, exit.ptB.Y - diffPath);
+                fOutVec = new Vector2(exit.ptA.X, exit.ptA.Y - entryLength - diffPath);
+                lOutVec = new Vector2(entry.ptA.X, exit.ptA.Y - entryLength - diffPath);
+                botWallList.Add(new Wall(fInVec, lInVec));
+                topWallList.Add(new Wall(fOutVec, lOutVec));
+                fInVec = new Vector2(entry.ptB.X, exit.ptB.Y - diffPath);
+                lInVec = entry.ptB;
+                fOutVec = new Vector2(entry.ptA.X, exit.ptA.Y - entryLength - diffPath);
+                lOutVec = entry.ptA;
+                botWallList.Add(new Wall(fInVec, lInVec));
+                topWallList.Add(new Wall(fOutVec, lOutVec));
             }
         }
 
-        public void smoothLinkerMidStep(Entry exit, Entry entry, float diffPath, float entryLength)
+        public void smoothBotLinker(Entry exit, Entry entry)
         {
-            if (entry.ptA.Y < exit.ptA.Y)
+            float distance = Math.Abs(entry.ptA.Y - exit.ptA.Y);
+            float entryLength = Math.Abs(entry.ptA.X - entry.ptB.X);
+            float diffPath = (distance - entryLength) / 2;
+            if (exit.ptA.X < entry.ptB.X || exit.ptA.X < entry.ptA.X)
             {
-                if (exit.ptA.X < entry.ptB.X || exit.ptA.X < entry.ptA.X)
-                {
-                    Vector2 fInVec = new Vector2(exit.ptA.X, exit.ptA.Y - diffPath);
-                    Vector2 lInVec = new Vector2(entry.ptA.X, exit.ptA.Y - diffPath);
-                    Vector2 fOutVec = new Vector2(exit.ptB.X, exit.ptB.Y - entryLength - diffPath);
-                    Vector2 lOutVec = new Vector2(entry.ptB.X, exit.ptB.Y - entryLength - diffPath);
-                    botWallList.Add(new Wall(fInVec, lInVec));
-                    topWallList.Add(new Wall(fOutVec, lOutVec));
-                }
-                else
-                {
-                    Vector2 fInVec = new Vector2(exit.ptB.X, exit.ptB.Y - diffPath);
-                    Vector2 lInVec = new Vector2(entry.ptB.X, exit.ptB.Y - diffPath);
-                    Vector2 fOutVec = new Vector2(exit.ptA.X, exit.ptA.Y - entryLength - diffPath);
-                    Vector2 lOutVec = new Vector2(entry.ptA.X, exit.ptA.Y - entryLength - diffPath);
-                    botWallList.Add(new Wall(fInVec, lInVec));
-                    topWallList.Add(new Wall(fOutVec, lOutVec));
-                }
-            } else if (entry.ptA.Y > exit.ptA.Y) {
-                if (exit.ptA.X < entry.ptB.X || exit.ptA.X < entry.ptA.X)
-                {
-                    Vector2 fInVec = new Vector2(exit.ptA.X, exit.ptA.Y + diffPath);
-                    Vector2 lInVec = new Vector2(entry.ptA.X, exit.ptA.Y + diffPath);
-                    Vector2 fOutVec = new Vector2(exit.ptB.X, exit.ptB.Y + entryLength + diffPath);
-                    Vector2 lOutVec = new Vector2(entry.ptB.X, exit.ptB.Y + entryLength + diffPath);
-                    botWallList.Add(new Wall(fInVec, lInVec));
-                    topWallList.Add(new Wall(fOutVec, lOutVec));
-                }
-                else
-                {
-                    Vector2 fInVec = new Vector2(exit.ptB.X, exit.ptB.Y + diffPath);
-                    Vector2 lInVec = new Vector2(entry.ptB.X, exit.ptB.Y + diffPath);
-                    Vector2 fOutVec = new Vector2(exit.ptA.X, exit.ptA.Y + entryLength + diffPath);
-                    Vector2 lOutVec = new Vector2(entry.ptA.X, exit.ptA.Y + entryLength + diffPath);
-                    botWallList.Add(new Wall(fInVec, lInVec));
-                    topWallList.Add(new Wall(fOutVec, lOutVec));
-                }
+                //DROITE
+                Vector2 fInVec = exit.ptA;
+                Vector2 fOutVec = exit.ptB;
+                Vector2 lInVec = new Vector2(exit.ptA.X, exit.ptA.Y + diffPath);
+                Vector2 lOutVec = new Vector2(exit.ptB.X, exit.ptB.Y + entryLength + diffPath);
+                botWallList.Add(new Wall(fInVec, lInVec));
+                topWallList.Add(new Wall(fOutVec, lOutVec));
+                fInVec = new Vector2(exit.ptA.X, exit.ptA.Y + diffPath);
+                lInVec = new Vector2(entry.ptA.X, exit.ptA.Y + diffPath);
+                fOutVec = new Vector2(exit.ptB.X, exit.ptB.Y + entryLength + diffPath);
+                lOutVec = new Vector2(entry.ptB.X, exit.ptB.Y + entryLength + diffPath);
+                botWallList.Add(new Wall(fInVec, lInVec));
+                topWallList.Add(new Wall(fOutVec, lOutVec));
+                fInVec = new Vector2(entry.ptA.X, exit.ptA.Y + diffPath);
+                lInVec = entry.ptA;
+                fOutVec = new Vector2(entry.ptB.X, exit.ptB.Y + entryLength + diffPath);
+                lOutVec = entry.ptB;
+                botWallList.Add(new Wall(fInVec, lInVec));
+                topWallList.Add(new Wall(fOutVec, lOutVec));
+            }
+            else
+            {
+                //GAUCHE
+                Vector2 fInVec = exit.ptB;
+                Vector2 fOutVec = exit.ptA;
+                Vector2 lInVec = new Vector2(exit.ptB.X, exit.ptB.Y + diffPath);
+                Vector2 lOutVec = new Vector2(exit.ptA.X, exit.ptA.Y + entryLength + diffPath);
+                botWallList.Add(new Wall(fInVec, lInVec));
+                topWallList.Add(new Wall(fOutVec, lOutVec));
+                fInVec = new Vector2(exit.ptB.X, exit.ptB.Y + diffPath);
+                lInVec = new Vector2(entry.ptB.X, exit.ptB.Y + diffPath);
+                fOutVec = new Vector2(exit.ptA.X, exit.ptA.Y + entryLength + diffPath);
+                lOutVec = new Vector2(entry.ptA.X, exit.ptA.Y + entryLength + diffPath);
+                botWallList.Add(new Wall(fInVec, lInVec));
+                topWallList.Add(new Wall(fOutVec, lOutVec));
+                fInVec = new Vector2(entry.ptB.X, exit.ptB.Y + diffPath);
+                lInVec = entry.ptB;
+                fOutVec = new Vector2(entry.ptA.X, exit.ptA.Y + entryLength + diffPath);
+                lOutVec = entry.ptA;
+                botWallList.Add(new Wall(fInVec, lInVec));
+                topWallList.Add(new Wall(fOutVec, lOutVec));
             }
         }
 
-        public void smoothLinkerLastStep(Entry exit, Entry entry, float diffPath, float entryLength)
+        public void smoothLeftLinker(Entry exit, Entry entry)
         {
-            if (entry.ptA.Y < exit.ptA.Y)
-            {
-                if (exit.ptA.X < entry.ptB.X || exit.ptA.X < entry.ptA.X)
-                {
-                    Vector2 fInVec = new Vector2(entry.ptA.X, exit.ptA.Y - diffPath);
-                    Vector2 lInVec = entry.ptA;
-                    Vector2 fOutVec = new Vector2(entry.ptB.X, exit.ptB.Y - entryLength - diffPath);
-                    Vector2 lOutVec = entry.ptB;
-                    botWallList.Add(new Wall(fInVec, lInVec));
-                    topWallList.Add(new Wall(fOutVec, lOutVec));
-                }
-                else
-                {
-                    Vector2 fInVec = new Vector2(entry.ptB.X, exit.ptB.Y - diffPath);
-                    Vector2 lInVec = entry.ptB;
-                    Vector2 fOutVec = new Vector2(entry.ptA.X, exit.ptA.Y - entryLength - diffPath);
-                    Vector2 lOutVec = entry.ptA;
-                    botWallList.Add(new Wall(fInVec, lInVec));
-                    topWallList.Add(new Wall(fOutVec, lOutVec));
-                }
-            } else if (entry.ptA.Y > exit.ptA.Y) {
-                if (exit.ptA.X < entry.ptB.X || exit.ptA.X < entry.ptA.X)
-                {
-                    Vector2 fInVec = new Vector2(entry.ptA.X, exit.ptA.Y + diffPath);
-                    Vector2 lInVec = entry.ptA;
-                    Vector2 fOutVec = new Vector2(entry.ptB.X, exit.ptB.Y + entryLength + diffPath);
-                    Vector2 lOutVec = entry.ptB;
-                    botWallList.Add(new Wall(fInVec, lInVec));
-                    topWallList.Add(new Wall(fOutVec, lOutVec));
-                }
-                else
-                {
-                    Vector2 fInVec = new Vector2(entry.ptB.X, exit.ptB.Y + diffPath);
-                    Vector2 lInVec = entry.ptB;
-                    Vector2 fOutVec = new Vector2(entry.ptA.X, exit.ptA.Y + entryLength + diffPath);
-                    Vector2 lOutVec = entry.ptA;
-                    botWallList.Add(new Wall(fInVec, lInVec));
-                    topWallList.Add(new Wall(fOutVec, lOutVec));
-                }
-            }
+            float distance = Math.Abs(entry.ptA.X - exit.ptA.X);
+            float entryLength = Math.Abs(entry.ptA.Y - entry.ptB.Y);
+            float diffPath = (distance - entryLength) / 2;
+        }
+
+        public void smoothRightLinker(Entry exit, Entry entry)
+        {
+            float distance = Math.Abs(entry.ptA.X - exit.ptA.X);
+            float entryLength = Math.Abs(entry.ptA.Y - entry.ptB.Y);
+            float diffPath = (distance - entryLength) / 2;
         }
     }
 }
