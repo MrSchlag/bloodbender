@@ -32,6 +32,10 @@ namespace Bloodbender.Projectiles
                 if (shouldDie)
                     return true;
                 shouldDie = true;
+                if (additionalFixtureData.physicParent is Enemy)
+                {
+                    shouldDie = false;
+                }
                 if (additionalFixtureData.physicParent is Projectile)
                 {
                     shouldDie = false;

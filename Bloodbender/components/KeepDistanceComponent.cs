@@ -29,10 +29,7 @@ namespace Bloodbender.components
                 _owner.position = closestEscapePoint * Bloodbender.meterToPixel;
                 return false;
             }
-            else
-            {
-
-            }
+            
             return true;
         }
 
@@ -51,25 +48,25 @@ namespace Bloodbender.components
                     pointsAround.Add(vec);
             }
 
-            return ClosestPointInList(pointsAround);
+            return FarthestPointFromTarget(pointsAround); 
         }
 
-        private Vector2 ClosestPointInList(List<Vector2> pointsAround)
+        private Vector2 FarthestPointFromTarget(List<Vector2> pointsAround)
         {
-            Vector2 closest = _owner.body.Position;
-            float closestDistance = -1f;
+            Vector2 farthest = _owner.body.Position;
+            float farthestDistance = -1f;
 
             foreach (var vec in pointsAround)
             {
-                var distance = (vec - _owner.body.Position).LengthSquared();
-                if (closestDistance == -1f || distance < closestDistance)
+                var distance = (vec - _target.body.Position).LengthSquared();
+                if (farthestDistance == -1f || distance > farthestDistance)
                 {
-                    closest = vec;
-                    closestDistance = distance;
+                    farthest = vec;
+                    farthestDistance = distance;
                 }
-             }
+            }
 
-            return closest;
+            return farthest;
         }
 
         public void Remove()

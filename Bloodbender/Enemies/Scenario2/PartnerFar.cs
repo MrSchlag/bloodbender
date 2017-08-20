@@ -1,4 +1,5 @@
 ﻿using Bloodbender.components;
+using Bloodbender.Projectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -39,6 +40,8 @@ namespace Bloodbender.Enemies.Scenario2
             IComponent comp2 = new FollowBehaviorComponent(this, _node, 0);
             addComponent(comp2);
 
+            distanceAttackWithTarget = 400;
+
             canAttack = true;
             canGenerateProjectile = false;
             canBeHitByPlayer = false;
@@ -48,8 +51,18 @@ namespace Bloodbender.Enemies.Scenario2
         public override bool Update(float elapsed)
         {
             _node.Update(elapsed);
+
+
             return base.Update(elapsed);
         }
-        
+
+        protected override void Attack()
+        {
+            Projectile proj = new LanceGobelin(position, 10, angleWith(target), 400f);
+            Bloodbender.ptr.listGraphicObj.Add(proj);
+
+            base.Attack();
+        }
+
     }
 }
