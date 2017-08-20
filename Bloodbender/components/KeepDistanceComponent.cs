@@ -44,7 +44,7 @@ namespace Bloodbender.components
             for (int i = 0; i <= 360; i += step)
             {
                 vectorToRotate = vectorToRotate.Rotate(i * (float)Math.PI / 180f);
-                vec = vectorToRotate + _owner.body.Position;
+                vec = vectorToRotate + _guarded.body.Position;
 
                 if (!TreePlanter.IsPointOutside(vec.X, vec.Y) && !IsPointBetweenRooms(vec))
                     pointsAround.Add(vec);
@@ -56,7 +56,7 @@ namespace Bloodbender.components
 
         private Vector2 FarthestPointFromTarget(List<Vector2> pointsAround)
         {
-            Vector2 closest = _owner.body.Position;
+            Vector2 closest = _guarded.body.Position;
             float closestDistance = -1f;
 
             foreach (var vec in pointsAround)
