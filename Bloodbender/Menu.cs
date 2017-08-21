@@ -38,7 +38,7 @@ namespace Bloodbender
             options = new List<string>();
 
             options.Add("Quit");
-            options.Add("New map");
+            options.Add("Restart");
         }
         public bool Update(float elapsed)
         {

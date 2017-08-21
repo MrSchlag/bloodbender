@@ -33,6 +33,8 @@ namespace Bloodbender.Enemies.Scenario3
 
             IComponent comp = new FollowBehaviorComponent(this, target, 32);
             addComponent(comp);
+
+            cacAttack = true;
         }
 
         public override bool Update(float elapsed)
