@@ -139,7 +139,7 @@ namespace Bloodbender
                     }
                     else if (entity.type == "BatSpawner")
                     {
-                        listGraphicObj.Add(new BadBatSpawner(entity.position, 10, 15));
+                        listGraphicObj.Add(new BadBatSpawner(entity.position, 10, 15, 5));
                     }
                     else
                     {
