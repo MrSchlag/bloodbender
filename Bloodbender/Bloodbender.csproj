@@ -89,6 +89,8 @@
     <Compile Include="Enemies\Scenario1\GangMinion.cs" />
     <Compile Include="Enemies\Scenario2\PartnerFar.cs" />
     <Compile Include="Enemies\Scenario2\PartnerClose.cs" />
+    <Compile Include="Enemies\Scenario3\BadBat.cs" />
+    <Compile Include="Enemies\Scenario3\BadBatSpawner.cs" />
     <Compile Include="Enemies\Scenario3\Bat.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="FrameRateCounter.cs" />
@@ -248,6 +250,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Maps\roomSpawnRight.tmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Maps\room6.tmx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />

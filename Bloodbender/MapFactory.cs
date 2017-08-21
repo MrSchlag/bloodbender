@@ -137,6 +137,10 @@ namespace Bloodbender
                         partnerClose = new PartnerClose(entity.position, player);
                         listGraphicObj.Add(partnerClose);
                     }
+                    else if (entity.type == "BatSpawner")
+                    {
+                        listGraphicObj.Add(new BadBatSpawner(entity.position, 10, 15));
+                    }
                     else
                     {
                         listGraphicObj.Add(new Bat(entity.position, player));
