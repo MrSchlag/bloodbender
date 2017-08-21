@@ -112,7 +112,12 @@ namespace Bloodbender
         public override bool Update(float elapsed)
         {
             if (lifePoints <= 0)
-                ;//gameover
+            {
+                Bloodbender.ptr.gameover = true;//gameover
+                Bloodbender.ptr.menu.showing = true;
+                Bloodbender.ptr.menu.bigMessage = "DEAD";
+                Bloodbender.ptr.menu.bigMessageColor = Color.Red;
+            }
 
             ContinueDash(elapsed);
 

@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 
 namespace Bloodbender
 {
-    class Menu
+    public class Menu
     {
         public bool showing = false;
         public string bigMessage = "PAUSED";
+        public Color bigMessageColor = Color.Black;
 
         GraphicObj arrow;
 
@@ -57,7 +58,11 @@ namespace Bloodbender
                 if (counterOption == 0)
                     Bloodbender.ptr.Exit();
                 else if (counterOption == 1)
+                {
+                    bigMessage = "PAUSED";
+                    bigMessageColor = Color.Black;
                     Bloodbender.ptr.reload = true;
+                }
             }
 
 
@@ -77,12 +82,13 @@ namespace Bloodbender
             {
                 Vector2 resRelative = new Vector2(Bloodbender.ptr.resolutionIndependence.VirtualWidth / 2, Bloodbender.ptr.resolutionIndependence.VirtualHeight / 2);
 
-                Vector2 position = new Vector2(250, 150) + Bloodbender.ptr.camera.Position - resRelative;
-                spriteBatch.DrawString(spriteFont, bigMessage, position, Color.Black, 0, spriteFont.MeasureString(bigMessage) / 2, 5, SpriteEffects.None, 1);
+                Vector2 position = new Vector2(100, 150) + Bloodbender.ptr.camera.Position - resRelative;
+                spriteBatch.DrawString(spriteFont, bigMessage, position, bigMessageColor, 0, Vector2.Zero, 5, SpriteEffects.None, 1);
+                //spriteBatch.DrawString(spriteFont, bigMessage, position, bigMessageColor, 0, spriteFont.MeasureString(bigMessage) / 2, 5, SpriteEffects.None, 1);
                 //spriteBatch.DrawString(spriteFont, bigMessage, new Vector2(72, 72), Color.White, 0, Vector2.Zero, 7, SpriteEffects.None, 1);
 
-                position.X -= 100;
-                position.Y += 100;
+                position.X += 50;
+                position.Y += 125;
 
                 arrow.position = position;
                 arrow.position.X -= 50;

@@ -37,7 +37,7 @@ namespace MapGenerator
             spawnRoomFileRight = "./Maps/roomSpawnRight.tmx";
             roomFilesWithTopBotEntries = new List<String>(new string[]
             {
-                //"./Maps/room2.tmx",
+                "./Maps/room2.tmx",
                 "./Maps/room5.tmx",
                 //"./Maps/room3.tmx",
                 //"./Maps/room4.tmx",

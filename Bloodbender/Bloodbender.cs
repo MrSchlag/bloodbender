@@ -88,9 +88,10 @@ namespace Bloodbender
         int minNoiseY;
         int maxNoiseY;
 
-        Menu menu;
+        public Menu menu;
 
         public bool reload = false;
+        public bool gameover = false;
 
         public Bloodbender()
         {
@@ -147,6 +148,8 @@ namespace Bloodbender
         /// </summary>
         protected override void LoadContent()
         {
+            gameover = false;
+
             world = new World(new Vector2(0, 0));
 
             debugView = new DebugView();
@@ -290,7 +293,7 @@ namespace Bloodbender
 
 
 
-            if (inputHelper.IsNewButtonPress(Buttons.Back) || inputHelper.IsNewKeyPress(Keys.Escape))
+            if ((inputHelper.IsNewButtonPress(Buttons.Back) || inputHelper.IsNewKeyPress(Keys.Escape)) && !gameover)
                 menu.showing = !menu.showing ;
 
             if (menu.Update(elapsed))
