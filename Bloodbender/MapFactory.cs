@@ -114,6 +114,8 @@ namespace Bloodbender
         {
             foreach (Room room in mGen.rooms)
             {
+                PartnerClose partnerClose = null;
+                PartnerFar partnerFar = null; 
                 foreach (Entity entity in room.entityList)
                 {
                     //Debug.WriteLine("{0} {1} {2}", entity.type, entity.chiefId, entity.numberMinion);
@@ -127,18 +129,29 @@ namespace Bloodbender
                     }
                     else if (entity.type == "PartnerFar")
                     {
-                        listGraphicObj.Add(new PartnerFar(entity.position, player));
+                        partnerFar = new PartnerFar(entity.position, player);
+                        listGraphicObj.Add(partnerFar);
                     }
                     else if (entity.type == "PartnerClose")
                     {
-                        listGraphicObj.Add(new PartnerClose(entity.position, player));
+                        partnerClose = new PartnerClose(entity.position, player);
+                        listGraphicObj.Add(partnerClose);
                     }
                     else
                     {
                         listGraphicObj.Add(new Bat(entity.position, player));
-                    } 
+                    }
                 }
+                PartnersManagement(partnerClose, partnerFar);
             }
+        }
+
+        private void PartnersManagement(PartnerClose partnerClose, PartnerFar partnerFar)
+        {
+            if (partnerFar == null || partnerClose == null)
+                return;
+            partnerClose.Partner = partnerFar;
+            partnerFar.Partner = partnerClose;
         }
 
         public void updateMinMaxMap(Wall wall)

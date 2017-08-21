@@ -1,5 +1,8 @@
-﻿using Bloodbender.components;
+﻿using System;
+using Bloodbender.components;
 using Bloodbender.Projectiles;
+using FarseerPhysics.Dynamics;
+using FarseerPhysics.Dynamics.Contacts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -49,10 +52,10 @@ namespace Bloodbender.Enemies.Scenario2
             canBeHitByProjectile = false;
         }
 
+
         public override bool Update(float elapsed)
         {
             _node.Update(elapsed);
-
 
             return base.Update(elapsed);
         }

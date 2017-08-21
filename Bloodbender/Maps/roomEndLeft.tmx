@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" nextobjectid="10">
+ <objectgroup color="#00ff00" name="entry">
+  <object id="9" type="right" x="544" y="384">
+   <polyline points="0,0 0,-128"/>
+  </object>
+ </objectgroup>
+ <objectgroup color="#aa0000" name="wall">
+  <object id="7" x="544" y="256">
+   <polyline points="0,0 0,-160 -448,-160 -448,288 0,288 0,128"/>
+  </object>
+ </objectgroup>
+</map>

@@ -33,6 +33,8 @@ namespace Bloodbender.Enemies.Scenario2
 
             addFixtureToCheckedCollision(fixture);
 
+            Partner = null;
+
             IComponent comp = new FollowBehaviorComponent(this, target, 40f);
             addComponent(comp);
 
@@ -46,6 +48,8 @@ namespace Bloodbender.Enemies.Scenario2
 
         public override bool Update(float elapsed)
         {
+            if (lifePoints <= 0 && Partner != null)
+                Partner.shouldDie = true;
             return base.Update(elapsed);
         }
 
@@ -56,6 +60,12 @@ namespace Bloodbender.Enemies.Scenario2
             {
                 if (additionalFixtureData.physicParent is Blood)
                 {
+                    if (Partner != null)
+                    {
+                        var oldpos = new Vector2(body.Position.X, body.Position.Y);
+                        body.Position = Partner.body.Position;
+                        Partner.body.Position = oldpos;
+                    }
                     lifePoints -= 1;
                     bloodSpawner.numberParticuleToPop += 1;
                     bloodSpawner.canSpawn = true;
