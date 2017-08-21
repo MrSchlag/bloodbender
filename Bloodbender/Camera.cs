@@ -246,7 +246,7 @@ namespace Bloodbender
             _positionTracking = false;
             _rotationTracking = false;
 
-            _currentZoom = 1.45f;
+            _currentZoom = 1f;
 
             SetView();
         }
@@ -303,8 +303,9 @@ namespace Bloodbender
         /// </summary>
         public void Update(float elapsed)
         {
+            //Console.WriteLine(_currentZoom);
             if (Bloodbender.ptr.inputHelper.IsNewMouseButtonPress(MouseButtons.MiddleButton))
-                _currentZoom = 1.45f;
+                _currentZoom = 1f;
 
             if (scrollWheelValue > Mouse.GetState().ScrollWheelValue)
             {

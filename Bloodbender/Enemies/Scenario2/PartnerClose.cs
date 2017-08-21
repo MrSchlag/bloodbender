@@ -44,6 +44,7 @@ namespace Bloodbender.Enemies.Scenario2
             canGenerateProjectile = false;
             canBeHitByPlayer = false;
             canBeHitByProjectile = true;
+            cacAttack = true;
         }
 
         public override bool Update(float elapsed)

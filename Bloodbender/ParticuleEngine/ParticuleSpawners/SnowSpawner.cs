@@ -50,11 +50,11 @@ namespace Bloodbender.ParticuleEngine.ParticuleSpawners
         {
             particuleToCook.inWait = false;
             particuleToCook.speed = Bloodbender.ptr.rdn.Next(100, 301);
-            particuleToCook.distanceMax = 1000;
+            particuleToCook.distanceMax = 1400;
             particuleToCook.angle = angle + (Bloodbender.ptr.rdn.Next(-2000, 2001) / 10000.0f);
 
             particuleToCook.position = position;
-            particuleToCook.position.X += Bloodbender.ptr.rdn.Next(-550, 551);
+            particuleToCook.position.X += Bloodbender.ptr.rdn.Next(-650, 651);
             particuleToCook.position = RadianAngle.rotate(position, particuleToCook.position, (float)(angle + (Math.PI / 2)));
 
             particuleToCook.referencePosition = particuleToCook.position;

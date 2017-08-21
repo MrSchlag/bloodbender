@@ -32,12 +32,15 @@ namespace Bloodbender
         protected bool canAttack = true;
         protected float lifePoints = 3;
         protected bool runDefaultAnim = true;
+        protected bool cacAttack = false;
 
         protected BloodSpawner bloodSpawner;
 
 
         public Enemy(Vector2 position, PhysicObj player) : base(position, PathFinderNodeType.CENTER)
         {
+            Bloodbender.ptr.nbEnemy++;
+
             target = player;
 
             bloodSpawner = new BloodSpawner(new Vector2(0, 0), 0, this, new Vector2(0, 0));
@@ -85,6 +88,8 @@ namespace Bloodbender
         {
             runAnimation(1);
             timerAttack = attackRate;
+            if (target is Player && cacAttack)
+                ((Player)target).takeHit();
         }
         public void takeHit(float angle)
         {

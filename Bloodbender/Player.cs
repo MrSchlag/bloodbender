@@ -91,7 +91,7 @@ namespace Bloodbender
             bloodSpawner = new BloodSpawner(new Vector2(0, 0), 0, this, new Vector2(0, 0));
             Bloodbender.ptr.particuleSystem.addParticuleSpawner(bloodSpawner);
             bloodSpawner.canSpawn = false;
-            bloodSpawner.scaleRef = 1.25f;
+            bloodSpawner.scaleRef = 2f;
         }
 
         private bool CollisionCheck(Fixture fixtureA, Fixture fixtureB, Contact contact)
@@ -99,11 +99,9 @@ namespace Bloodbender
             AdditionalFixtureData additionalFixtureData = (AdditionalFixtureData)fixtureB.UserData;
             if (additionalFixtureData != null)
             {
-                if (additionalFixtureData.physicParent is Projectile)
+                if (additionalFixtureData.physicParent is LanceGobelin)
                 {
-                    lifePoints -= 1;
-                    bloodSpawner.numberParticuleToPop += 1;
-                    bloodSpawner.canSpawn = true;
+                    takeHit();
                 }
             }
             return true;
@@ -315,6 +313,13 @@ namespace Bloodbender
                 height += 50 * elapsed;
             else if (Keyboard.GetState().IsKeyDown(Keys.Down))
                 height -= 50 * elapsed;
+        }
+
+        public void takeHit()
+        {
+            lifePoints -= 1;
+            bloodSpawner.numberParticuleToPop += 1;
+            bloodSpawner.canSpawn = true;
         }
 
         private void StartDash(Vector2 direction, bool checkDashReset = true)

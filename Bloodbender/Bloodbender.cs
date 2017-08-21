@@ -93,6 +93,8 @@ namespace Bloodbender
         public bool reload = false;
         public bool gameover = false;
 
+        public int nbEnemy = 0;
+
         public Bloodbender()
         {
             ptr = this;
@@ -148,6 +150,8 @@ namespace Bloodbender
         /// </summary>
         protected override void LoadContent()
         {
+            nbEnemy = 0;
+
             gameover = false;
 
             world = new World(new Vector2(0, 0));
@@ -188,7 +192,7 @@ namespace Bloodbender
 
             frameRateCounter = new FrameRateCounter(font);
 
-            particuleSystem.addParticuleSpawner(new SnowSpawner(new Vector2(100, 100), 0, player, new Vector2(350,-350)));
+            particuleSystem.addParticuleSpawner(new SnowSpawner(new Vector2(100, 100), 0, player, new Vector2(475,-475)));
 
             snowMarkSpawner = new SnowMarkSpawner(new Vector2(0, 0), 0, player, new Vector2(0, 0));
 
@@ -291,8 +295,6 @@ namespace Bloodbender
 
             inputHelper.Update(elapsed);
 
-
-
             if ((inputHelper.IsNewButtonPress(Buttons.Back) || inputHelper.IsNewKeyPress(Keys.Escape)) && !gameover)
                 menu.showing = !menu.showing ;
 
@@ -305,6 +307,14 @@ namespace Bloodbender
                 }
 
                 return;
+            }
+
+            if (nbEnemy == 0)
+            {
+                Bloodbender.ptr.gameover = true;
+                Bloodbender.ptr.menu.showing = true;
+                Bloodbender.ptr.menu.bigMessage = "YOU WIN";
+                Bloodbender.ptr.menu.bigMessageColor = Microsoft.Xna.Framework.Color.Green;
             }
 
             world.Step(1f / 30f);
@@ -322,7 +332,8 @@ namespace Bloodbender
             {
                 if (listGraphicObj[i].shouldDie == true)
                 {
-
+                    if (listGraphicObj[i] is Enemy)
+                        nbEnemy--;
                     listGraphicObj[i].Dispose();
                     listGraphicObj.RemoveAt(i);
                     --i;
