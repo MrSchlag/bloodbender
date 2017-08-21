@@ -23,6 +23,7 @@ namespace MapGenerator
             "./Maps/room3.tmx",
             //"./Maps/room4.tmx",
             //"./Maps/room5.tmx",
+            //"./Maps/room6.tmx",
         });
         List<String> roomFilesWithLeftRightEntries = new List<String>(new string[]
         {

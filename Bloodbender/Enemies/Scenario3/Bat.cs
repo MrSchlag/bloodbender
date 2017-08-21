@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Bloodbender.Enemies.Scenario3
 {
-    class Bat : Enemy
+    public class Bat : Enemy
     {
         public Bat(Vector2 position, PhysicObj target) : base(position, target)
         {
