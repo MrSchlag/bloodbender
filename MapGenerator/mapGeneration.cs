@@ -73,16 +73,16 @@ namespace MapGenerator
         public Room selectSpawn()
         {
             Room spawn;
-            //int i = rand.Next(0, 4);
-            //if (i == 0)
-            //    spawn = rloader.load(spawnRoomFileTop);
-            //else if (i == 1)
-            //    spawn = rloader.load(spawnRoomFileBot);
-            //else if (i == 2)
-            //    spawn = rloader.load(spawnRoomFileTop);
-            //else
-            //    spawn = rloader.load(spawnRoomFileBot);
-            spawn = rloader.load(spawnRoomFileTop);
+            //0 to 4 to rand between all type of spawn
+            int i = rand.Next(0, 2);
+            if (i == 0)
+                spawn = rloader.load(spawnRoomFileTop);
+            else if (i == 1)
+                spawn = rloader.load(spawnRoomFileBot);
+            else if (i == 2)
+                spawn = rloader.load(spawnRoomFileLeft);
+            else
+                spawn = rloader.load(spawnRoomFileRight);
             spawn.exitSelected = spawn.entryList[0];
             return spawn;
         }
@@ -101,16 +101,14 @@ namespace MapGenerator
             if (rooms.Count > 1)
                 rooms[rooms.Count - 1].selectRandomExit(rand);
             Room end;
-            Debug.WriteLine(rooms[rooms.Count - 1].exitSelected.type);
             if (rooms[rooms.Count - 1].exitSelected.type == entryType.top)
                 end = rloader.load(endRoomFileTop);
-            else //if (rooms[rooms.Count - 1].exitSelected.type == entryType.bot)
+            else if (rooms[rooms.Count - 1].exitSelected.type == entryType.bot)
                 end = rloader.load(endRoomFileBot);
-            //else if (rooms[rooms.Count - 1].exitSelected.type == entryType.left)
-            //    end = rloader.load(endRoomFileLeft);
-            //else
-            //    end = rloader.load(endRoomFileRight);
-            //end = rloader.load(endRoomFileLeft);
+            else if (rooms[rooms.Count - 1].exitSelected.type == entryType.left)
+                end = rloader.load(endRoomFileLeft);
+            else
+                end = rloader.load(endRoomFileRight);
             end.entrySelected = end.entryList[0];
             return end;
         }
@@ -160,7 +158,7 @@ namespace MapGenerator
             int i = 0;
             if (lastRoom.exitSelected.type == entryType.top || lastRoom.exitSelected.type == entryType.bot)
             {
-                randomTranslate = rand.Next(-40, 40);
+                randomTranslate = rand.Next(-30, 30);
                 translateX = lastRoom.exitSelected.ptA.X + (randomTranslate * lastRoom.tileSize) - newRoom.entrySelected.ptA.X;
                 foreach (Room room in rooms)
                 {

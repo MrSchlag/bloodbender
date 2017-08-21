@@ -181,7 +181,7 @@ namespace Bloodbender
 
             mapFactory = new MapFactory();
             mapFactory.newMap(listGraphicObj);
-            //var treeplanter = new TreePlanter(mapFactory.minX * pixelToMeter, mapFactory.maxX * pixelToMeter, mapFactory.minY * pixelToMeter, mapFactory.maxY * pixelToMeter, mapFactory.mGen.rand);
+            var treeplanter = new TreePlanter(mapFactory.minX * pixelToMeter, mapFactory.maxX * pixelToMeter, mapFactory.minY * pixelToMeter, mapFactory.maxY * pixelToMeter, mapFactory.mGen.rand);
 
             frameRateCounter = new FrameRateCounter(font);
 
