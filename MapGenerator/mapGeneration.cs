@@ -12,54 +12,48 @@ namespace MapGenerator
 {
     public class MapGeneration
     {
-        String spawnRoomFileTop;
-        String spawnRoomFileBot;
-        String spawnRoomFileLeft;
-        String spawnRoomFileRight;
-        List<String> roomFilesWithTopBotEntries;
-        List<String> roomFilesWithLeftRightEntries;
-        String endRoomFileTop;
-        String endRoomFileBot;
-        String endRoomFileLeft;
-        String endRoomFileRight;
-        RoomLoader rloader;
+        String spawnRoomFileTop = "./Maps/roomSpawnTop.tmx";
+        String spawnRoomFileBot = "./Maps/roomSpawnBot.tmx";
+        String spawnRoomFileLeft = "./Maps/roomSpawnLeft.tmx";
+        String spawnRoomFileRight = "./Maps/roomSpawnRight.tmx";
+        List<String> roomFilesWithTopBotEntries = new List<String>(new string[]
+        {
+            //"./Maps/room1.tmx",
+            //"./Maps/room2.tmx",
+            "./Maps/room3.tmx",
+            //"./Maps/room4.tmx",
+            //"./Maps/room5.tmx",
+        });
+        List<String> roomFilesWithLeftRightEntries = new List<String>(new string[]
+        {
+        });
+        String endRoomFileTop = "./Maps/roomEndTop.tmx";
+        String endRoomFileBot = "./Maps/roomEndBot.tmx";
+        String endRoomFileLeft = "./Maps/roomEndLeft.tmx";
+        String endRoomFileRight = "./Maps/roomEndRight.tmx";
+        String saveFile = "./Maps/save.txt";
 
+        RoomLoader rloader;
         public Random rand { get; set; }
         public int numberOfRooms { get; set; }
         public List<Room> rooms { get; set; }
         public List<RoomLinker> roomLinkers { get; set; }
+        public List<int> savedSeeds { get; set; }
 
         public MapGeneration()
         {
-            spawnRoomFileTop = "./Maps/roomSpawnTop.tmx";
-            spawnRoomFileBot = "./Maps/roomSpawnBot.tmx";
-            spawnRoomFileLeft = "./Maps/roomSpawnLeft.tmx";
-            spawnRoomFileRight = "./Maps/roomSpawnRight.tmx";
-            roomFilesWithTopBotEntries = new List<String>(new string[]
-            {
-                "./Maps/room1.tmx",
-                "./Maps/room2.tmx",
-                "./Maps/room3.tmx",
-                "./Maps/room4.tmx",
-                "./Maps/room5.tmx",
-            });
-            roomFilesWithLeftRightEntries = new List<String>(new string[]
-            {
-            });
-            endRoomFileTop = "./Maps/roomEndTop.tmx";
-            endRoomFileBot = "./Maps/roomEndBot.tmx";
-            endRoomFileLeft = "./Maps/roomEndLeft.tmx";
-            endRoomFileRight = "./Maps/roomEndRight.tmx";
+            importSeedsFromSaveFile();
         }
 
         public void newMap()
         {
-            int seed = Guid.NewGuid().GetHashCode();
+            int seed = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+            savedSeeds.Add(seed);
             rand = new Random(seed);
             rloader = new RoomLoader();
             //numberOfRooms = rand.Next(3, 6);
             //MINIMUM 3
-            numberOfRooms = 8;
+            numberOfRooms = 5;
             rooms = new List<Room>();
             roomLinkers = new List<RoomLinker>(); 
             this.addRoomToMap(selectSpawn(), 0, 0);
@@ -158,13 +152,16 @@ namespace MapGenerator
             int i = 0;
             if (lastRoom.exitSelected.type == entryType.top || lastRoom.exitSelected.type == entryType.bot)
             {
-                randomTranslate = rand.Next(-30, 30);
+                if (rand.Next(0, 2) == 0)
+                    randomTranslate = rand.Next(-30, -5);
+                else
+                    randomTranslate = rand.Next(5, 30);
                 translateX = lastRoom.exitSelected.ptA.X + (randomTranslate * lastRoom.tileSize) - newRoom.entrySelected.ptA.X;
                 foreach (Room room in rooms)
                 {
                     if (i > 0)
-                        translateY += ((room.Y + 5) * room.tileSize);
-                    translateY += 5 * room.tileSize;
+                        translateY += ((room.Y + 7) * room.tileSize);
+                    translateY += 7 * room.tileSize;
                     i++;
                 }
                 translateY += (newRoom.Y) * newRoom.tileSize;
@@ -178,13 +175,16 @@ namespace MapGenerator
                 }  
             } else if (lastRoom.exitSelected.type == entryType.left || lastRoom.exitSelected.type == entryType.right)
             {
-                randomTranslate = rand.Next(-20, 20);
+                if (rand.Next(0, 2) == 0)
+                    randomTranslate = rand.Next(-20, -5);
+                else
+                    randomTranslate = rand.Next(5, 20);
                 translateY = lastRoom.exitSelected.ptA.Y + (randomTranslate * lastRoom.tileSize) - newRoom.entrySelected.ptA.Y;
                 foreach (Room room in rooms)
                 {
                     if (i > 0)
-                        translateX += ((room.X + 5) * room.tileSize);
-                    translateX += 5 * room.tileSize;
+                        translateX += ((room.X + 7) * room.tileSize);
+                    translateX += 7 * room.tileSize;
                     i++;
                 }
                 translateX += (newRoom.X) * newRoom.tileSize;
@@ -236,19 +236,33 @@ namespace MapGenerator
 
         public void saveMap(int seed)
         {
-            string path = "./Maps/save.txt";
-            if (!File.Exists(path))
+            if (!File.Exists(saveFile))
             {
-                using (StreamWriter sw = File.CreateText(path))
+                using (StreamWriter sw = File.CreateText(saveFile))
                 {
                     sw.WriteLine("// Map seeds savings");
                     sw.Close();
                 }
             }
-            using (StreamWriter sw = File.AppendText(path))
+            using (StreamWriter sw = File.AppendText(saveFile))
             {
                 sw.WriteLine(seed.ToString());
                 sw.Close();
+            }
+        }
+
+        public void importSeedsFromSaveFile()
+        {
+            if (File.Exists(saveFile))
+            {
+                var lines = File.ReadLines(saveFile);
+                int i = lines.Count() - 1;
+                savedSeeds = new List<int>();
+                while (i > 0 && savedSeeds.Count() <= 7)
+                {
+                    savedSeeds.Add(Int32.Parse(lines.ElementAt(i)));
+                    i--;
+                }
             }
         }
 
@@ -258,9 +272,7 @@ namespace MapGenerator
             foreach (Room room in rooms)
             {
                 foreach (var wall in room.wallList)
-                {
                     wallList.Add(wall);
-                }
             }
             Visualizer visualizer = new Visualizer();
             visualizer.visualizeMap(wallList);

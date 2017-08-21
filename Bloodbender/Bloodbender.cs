@@ -95,6 +95,8 @@ namespace Bloodbender
 
         public int nbEnemy = 0;
 
+        public List<int> savedSeeds;
+
         public Bloodbender()
         {
             ptr = this;
@@ -188,6 +190,7 @@ namespace Bloodbender
 
             mapFactory = new MapFactory();
             mapFactory.newMap(listGraphicObj);
+            savedSeeds = mapFactory.mGen.savedSeeds;
             var treeplanter = new TreePlanter(mapFactory.minX * pixelToMeter, mapFactory.maxX * pixelToMeter, mapFactory.minY * pixelToMeter, mapFactory.maxY * pixelToMeter, mapFactory.mGen.rand);
 
             frameRateCounter = new FrameRateCounter(font);
@@ -296,8 +299,13 @@ namespace Bloodbender
             inputHelper.Update(elapsed);
 
             if ((inputHelper.IsNewButtonPress(Buttons.Back) || inputHelper.IsNewKeyPress(Keys.Escape)) && !gameover)
-                menu.showing = !menu.showing ;
-
+            {
+                menu.loadClicked = false;
+                menu.counterOption = 0;
+                menu.counterSave = 0;
+                menu.showing = !menu.showing;
+            }
+            
             if (menu.Update(elapsed))
             {
                 if (reload)
