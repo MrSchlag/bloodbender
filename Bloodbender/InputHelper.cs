@@ -151,14 +151,21 @@ namespace Bloodbender
 
             // Update cursor
             Vector2 oldCursor = Cursor;
-            if (GamePadState.IsConnected && GamePadState.ThumbSticks.Left != Vector2.Zero)
+            if (GamePadState.IsConnected)
             {
-                Vector2 temp = GamePadState.ThumbSticks.Left;
-                Cursor += temp * new Vector2(300f, -300f) * elapsed;
-                Mouse.SetPosition((int)Cursor.X, (int)Cursor.Y);
+                if (GamePadState.ThumbSticks.Right != Vector2.Zero)
+                {
+                    ShowCursor = true;
+                    Vector2 temp = GamePadState.ThumbSticks.Right;
+                    Cursor = temp * new Vector2(4500f, -4500f) * elapsed + new Vector2(resolutionIndRend.ScreenWidth / 2, resolutionIndRend.ScreenHeight / 2);
+                    Mouse.SetPosition((int)Cursor.X, (int)Cursor.Y);
+                }
+                else
+                    ShowCursor = false;
             }
             else
             {
+                ShowCursor = true;
                 Cursor = resolutionIndRend.ScaleMouseToScreenCoordinates(new Vector2(MouseState.X, MouseState.Y));
                 //Cursor = new Vector2(MouseState.X, MouseState.Y);
             }

@@ -57,6 +57,11 @@ namespace Bloodbender.Enemies.Scenario2
         {
             _node.Update(elapsed);
 
+            if (body.LinearVelocity.X > 0)
+                spriteEffect = SpriteEffects.None;
+            else if (body.LinearVelocity.X < 0)
+                spriteEffect = SpriteEffects.FlipHorizontally;
+
             return base.Update(elapsed);
         }
 

@@ -213,7 +213,7 @@ namespace Bloodbender
                     spriteEffect = SpriteEffects.FlipHorizontally;
                 }
 
-                if (gamePadState.Triggers.Left == 1)
+                if (Bloodbender.ptr.inputHelper.IsNewButtonPress(Buttons.LeftTrigger))
                 {
                     dashSpeed = normalDashSpeed;
                     dashDuration = normalDashDuration;
@@ -221,7 +221,7 @@ namespace Bloodbender
                     StartDash(body.LinearVelocity);
                 }
 
-                if (gamePadState.Triggers.Right == 1)
+                if (Bloodbender.ptr.inputHelper.IsNewButtonPress(Buttons.RightTrigger))
                 {
                     playerHitSensorFixMousePosRotation();
 
@@ -408,7 +408,7 @@ namespace Bloodbender
         private void checkSensorInteractions()
         {
             //if (!Keyboard.GetState().IsKeyDown(Keys.Space))
-            if (!Bloodbender.ptr.inputHelper.IsNewMouseButtonPress(MouseButtons.LeftButton))
+            if (!Bloodbender.ptr.inputHelper.IsNewMouseButtonPress(MouseButtons.LeftButton) && !Bloodbender.ptr.inputHelper.IsNewButtonPress(Buttons.RightTrigger))
                 return;
             AdditionalFixtureData fixInContactData;
             AdditionalFixtureData sensorData = (AdditionalFixtureData)playerHitSensorFix.UserData;

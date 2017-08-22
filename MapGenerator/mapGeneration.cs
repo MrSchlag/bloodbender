@@ -18,12 +18,12 @@ namespace MapGenerator
         String spawnRoomFileRight = "./Maps/roomSpawnRight.tmx";
         List<String> roomFilesWithTopBotEntries = new List<String>(new string[]
         {
-            //"./Maps/room1.tmx",
-            //"./Maps/room2.tmx",
+            "./Maps/room1.tmx",
+            "./Maps/room2.tmx",
             "./Maps/room3.tmx",
-            //"./Maps/room4.tmx",
-            //"./Maps/room5.tmx",
-            //"./Maps/room6.tmx",
+            "./Maps/room4.tmx",
+            "./Maps/room5.tmx",
+            "./Maps/room6.tmx",
         });
         List<String> roomFilesWithLeftRightEntries = new List<String>(new string[]
         {
