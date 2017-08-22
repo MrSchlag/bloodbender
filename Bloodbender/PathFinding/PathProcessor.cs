@@ -99,6 +99,8 @@ namespace Bloodbender.PathFinding
         public static bool isWayClearToNode(PhysicObj startObj, PathFinderNode node)
         {
             Vertices objVertices = ((PolygonShape)startObj.getBoundsFixture()?.Shape)?.Vertices;
+            if (((AdditionalFixtureData)startObj.body.FixtureList[0].UserData).isTouching == true)
+                return false;
             if (objVertices == null)
                 return false;
             bool isVisible = true;
@@ -109,8 +111,8 @@ namespace Bloodbender.PathFinding
                 {
                     if (fixture.UserData == null)
                     {
-                        //isVisible = false;
-                        return -1;
+                        isVisible = false;
+                        return 0;
                     }
                     if (fixture.IsSensor || ((AdditionalFixtureData)fixture.UserData).physicParent.pathNodeType == PathFinderNodeType.CENTER)
                         return -1;

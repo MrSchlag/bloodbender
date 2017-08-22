@@ -84,6 +84,7 @@ namespace Bloodbender.PathFinding
             {
                 //startObj.getPosNode().neighbors.Add(endObj.getPosNode());
                 //endObj.getPosNode().neighbors.Add(startObj.getPosNode());
+                Console.WriteLine("Can see {0}", Bloodbender.ptr.rdn.Next(1, 2000));
                 return new List<PathFinderNode>() { startObj.getPosNode(), endObj.getPosNode() };
                 //GetNavMesh(startObj).graph.AddEdge(new Edge<PathFinderNode>(startObj.getPosNode(), endObj.getPosNode()));
             }
@@ -99,15 +100,21 @@ namespace Bloodbender.PathFinding
                 
                 stopwatch.Start();
                 var res = GetNavMesh(startObj).graph.ShortestPathsDijkstra(GetNavMesh(startObj).verticesDistance, startObj.getPosNode());
+
                 IEnumerable<Edge<PathFinderNode>> path;
                 if (res(endObj.getPosNode(), out path))
                 {
                     var list = path.ToList();
-                    var list2 = new List<PathFinderNode>();
+                    var list2 = new List<PathFinderNode>() { startObj.getPosNode() };
+
                     foreach (var edge in list)
                     {
-                        list2.Add(edge.Source);
+                        if (list2[list2.Count - 1] == edge.Source)
+                            list2.Add(edge.Target);
+                        else
+                            list2.Add(edge.Source);
                     }
+                    
                     stopwatch.Stop();
                     //Console.WriteLine(stopwatch.ElapsedMilliseconds);
                     return list2;
@@ -195,12 +202,6 @@ namespace Bloodbender.PathFinding
             }
 
             return true;
-            /*
-            triangle.p2.neighbors.Add(node);
-            triangle.p3.neighbors.Add(node);
-
-            node.neighbors.Add(triangle.p2);
-            node.neighbors.Add(triangle.p3);*/
         }
 
         private void RemoveNodeFromNavMesh(NavMesh nav, PathFinderNode node)

@@ -54,6 +54,7 @@ namespace Bloodbender.PathFinding
         public void AddNode(PathFinderNode nodePosition)
         {
             Nodes.Add(nodePosition);
+            graph.AddVertex(nodePosition);
         }
 
 
@@ -72,7 +73,6 @@ namespace Bloodbender.PathFinding
                 graph.AddVertex(node2);
                 graph.AddVertex(node3);
 
-
                 node1.neighbors.Add(node2);
                 node1.neighbors.Add(node3);
                 graph.AddEdge(new Edge<PathFinderNode>(node1, node2));
@@ -80,13 +80,10 @@ namespace Bloodbender.PathFinding
 
                 node2.neighbors.Add(node1);
                 node2.neighbors.Add(node3);
-                graph.AddEdge(new Edge<PathFinderNode>(node2, node1));
                 graph.AddEdge(new Edge<PathFinderNode>(node2, node3));
 
                 node3.neighbors.Add(node1);
                 node3.neighbors.Add(node2);
-                graph.AddEdge(new Edge<PathFinderNode>(node3, node1));
-                graph.AddEdge(new Edge<PathFinderNode>(node3, node2));
 
                 NodeTriangle nodeTriangle = new NodeTriangle();
                 nodeTriangle.p1 = node1;
@@ -134,13 +131,14 @@ namespace Bloodbender.PathFinding
                         continue;
                     if (!NodeToNodeRayCast(node, neighboor))
                         neighboorToRemove.Add(neighboor);
+
                 }
                 neighboorToRemove.ForEach(i => 
                 {
                     Edge<PathFinderNode> edge = null;
-                    node.neighbors.Remove(i);
                     if (graph.TryGetEdge(node, i, out edge))
                         graph.RemoveEdge(edge);
+                    node.neighbors.Remove(i);
                 });
             }
         }

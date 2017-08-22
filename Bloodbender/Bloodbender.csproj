@@ -92,6 +92,7 @@
     <Compile Include="Enemies\Scenario3\BadBat.cs" />
     <Compile Include="Enemies\Scenario3\BadBatSpawner.cs" />
     <Compile Include="Enemies\Scenario3\Bat.cs" />
+    <Compile Include="Enemies\Scenario3\HorizontalInsideWall.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="FrameRateCounter.cs" />
     <Compile Include="components\GenerateProjectileComponent.cs" />

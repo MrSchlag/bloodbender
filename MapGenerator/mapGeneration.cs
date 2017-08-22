@@ -54,7 +54,7 @@ namespace MapGenerator
             rloader = new RoomLoader();
             //numberOfRooms = rand.Next(3, 6);
             //MINIMUM 3
-            numberOfRooms = 5;
+            numberOfRooms = 3;
             rooms = new List<Room>();
             roomLinkers = new List<RoomLinker>(); 
             this.addRoomToMap(selectSpawn(), 0, 0);
