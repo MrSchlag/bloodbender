@@ -96,6 +96,7 @@ namespace Bloodbender
         public int nbEnemy = 0;
 
         public List<int> savedSeeds;
+        public int seedIndexToLoad = -1;
 
         public Bloodbender()
         {
@@ -189,9 +190,16 @@ namespace Bloodbender
             pFinder.BuildtNavMeshes(6, 10);
 
             mapFactory = new MapFactory();
-            mapFactory.newMap(listGraphicObj);
+            mapFactory.newMap(listGraphicObj, seedIndexToLoad);
+            seedIndexToLoad = -1;
             savedSeeds = mapFactory.mGen.savedSeeds;
-            var treeplanter = new TreePlanter(mapFactory.minX * pixelToMeter, mapFactory.maxX * pixelToMeter, mapFactory.minY * pixelToMeter, mapFactory.maxY * pixelToMeter, mapFactory.mGen.rand);
+            var treeplanter = new TreePlanter(
+                mapFactory.minX * pixelToMeter,
+                mapFactory.maxX * pixelToMeter,
+                mapFactory.minY * pixelToMeter,
+                mapFactory.maxY * pixelToMeter,
+                mapFactory.mGen.rand
+            );
 
             frameRateCounter = new FrameRateCounter(font);
 
@@ -201,7 +209,7 @@ namespace Bloodbender
 
             var noiseSource = new Perlin
             {
-                Seed = new Random().Next()
+                Seed = mapFactory.mGen.rand.Next()
             };
             var noiseMap = new NoiseMap();
             var noiseMapBuilder = new PlaneNoiseMapBuilder

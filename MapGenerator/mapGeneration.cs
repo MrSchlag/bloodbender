@@ -18,12 +18,12 @@ namespace MapGenerator
         String spawnRoomFileRight = "./Maps/roomSpawnRight.tmx";
         List<String> roomFilesWithTopBotEntries = new List<String>(new string[]
         {
-            //"./Maps/room1.tmx",
-            //"./Maps/room2.tmx",
+            "./Maps/room1.tmx",
+            "./Maps/room2.tmx",
             "./Maps/room3.tmx",
-            //"./Maps/room4.tmx",
-            //"./Maps/room5.tmx",
-            //"./Maps/room6.tmx",
+            "./Maps/room4.tmx",
+            "./Maps/room5.tmx",
+            "./Maps/room6.tmx",
         });
         List<String> roomFilesWithLeftRightEntries = new List<String>(new string[]
         {
@@ -46,22 +46,32 @@ namespace MapGenerator
             importSeedsFromSaveFile();
         }
 
-        public void newMap()
+        public void newMap(int seedIndexToLoad)
         {
-            int seed = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-            savedSeeds.Add(seed);
+            int seed; 
+            if (seedIndexToLoad == -1)
+            {
+                seed = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                if (savedSeeds == null)
+                    savedSeeds = new List<int>();
+                savedSeeds.Add(seed); 
+            }
+            else
+                seed = savedSeeds[seedIndexToLoad];
+            //Debug.WriteLine(savedSeeds);
             rand = new Random(seed);
             rloader = new RoomLoader();
-            //numberOfRooms = rand.Next(3, 6);
+            numberOfRooms = rand.Next(5, 12);
             //MINIMUM 3
-            numberOfRooms = 3;
+            //numberOfRooms = 5;
             rooms = new List<Room>();
             roomLinkers = new List<RoomLinker>(); 
             this.addRoomToMap(selectSpawn(), 0, 0);
             for (int i = 0; i < numberOfRooms - 2; i++)
                 this.addRandomRoom();
             this.addEndRoom();
-            this.saveMap(seed);
+            if (seedIndexToLoad == -1)
+                this.saveMap(seed);
             // this.visualizeMap();
         }
 
