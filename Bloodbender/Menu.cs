@@ -51,7 +51,7 @@ namespace Bloodbender
                 foreach (var savedSeed in Bloodbender.ptr.savedSeeds)
                 {
                     DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(savedSeed).ToLocalTime();
-                    string formattedDate = dt.ToString("HH:mm dd-MM-yyyy");
+                    string formattedDate = dt.ToString("HH:mm:ss - dd-MM-yyyy");
                     saves.Add(formattedDate);
                 }
             }
@@ -93,6 +93,13 @@ namespace Bloodbender
                         loadClicked = true;
                         counterSave = 0;
                     }
+                } else
+                {
+                    //Debug.WriteLine(counterSave + " " + saves[counterSave]);
+                    loadClicked = false;
+                    Bloodbender.ptr.seedIndexToLoad = counterSave;
+                    Bloodbender.ptr.reload = true;
+
                 }
             }
             if (!loadClicked)

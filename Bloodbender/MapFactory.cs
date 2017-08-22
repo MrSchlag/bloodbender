@@ -25,7 +25,7 @@ namespace Bloodbender
 
         public Player player { get; set; }
 
-        public void newMap(List<GraphicObj> listGraphicObj)
+        public void newMap(List<GraphicObj> listGraphicObj, int seedIndexToLoad)
         {
             MapBoundDict = new List<KeyValuePair<Room, MapBound>>();
             minX = 0;
@@ -33,7 +33,7 @@ namespace Bloodbender
             maxX = 0;
             maxY = 0;
             player = null;
-            mGen.newMap();
+            mGen.newMap(seedIndexToLoad);
             this.loadRoomWalls();
             this.loadRoomLinkers();
             this.loadPlayer(listGraphicObj);
