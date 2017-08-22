@@ -51,6 +51,12 @@ namespace Bloodbender.Enemies.Scenario2
         {
             if (lifePoints <= 0 && Partner != null)
                 Partner.shouldDie = true;
+
+            if (body.LinearVelocity.X > 0)
+                spriteEffect = SpriteEffects.None;
+            else if (body.LinearVelocity.X < 0)
+                spriteEffect = SpriteEffects.FlipHorizontally;
+
             return base.Update(elapsed);
         }
 
