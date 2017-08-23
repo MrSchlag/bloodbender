@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using QuickGraph.Algorithms;
 using QuickGraph;
-using System;
 
 namespace Bloodbender.PathFinding
 {
@@ -84,7 +81,6 @@ namespace Bloodbender.PathFinding
             {
                 //startObj.getPosNode().neighbors.Add(endObj.getPosNode());
                 //endObj.getPosNode().neighbors.Add(startObj.getPosNode());
-                Console.WriteLine("Can see {0}", Bloodbender.ptr.rdn.Next(1, 2000));
                 return new List<PathFinderNode>() { startObj.getPosNode(), endObj.getPosNode() };
                 //GetNavMesh(startObj).graph.AddEdge(new Edge<PathFinderNode>(startObj.getPosNode(), endObj.getPosNode()));
             }
