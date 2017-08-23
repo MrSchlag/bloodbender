@@ -141,10 +141,10 @@ namespace Bloodbender
                     {
                         listGraphicObj.Add(new BadBatSpawner(entity.position, 10, 15, 5));
                     }
-                    else if (entity.type == "InsideWall")
-                    {
-                        listGraphicObj.Add(new HorizontalInsideWall(entity.position));
-                    }
+                    //else if (entity.type == "InsideWall")
+                    //{
+                    //    listGraphicObj.Add(new HorizontalInsideWall(entity.position));
+                    //}
                     else if (entity.type == "BadBat")
                     {
                         listGraphicObj.Add(new BadBat(entity.position, player));

@@ -101,13 +101,13 @@ namespace Bloodbender.PathFinding
                 if (res(endObj.getPosNode(), out path))
                 {
                     var list = path.ToList();
-                    var list2 = new List<PathFinderNode>() { startObj.getPosNode() };
+                    var list2 = new List<PathFinderNode>();// { startObj.getPosNode() };
 
                     foreach (var edge in list)
                     {
-                        if (list2[list2.Count - 1] == edge.Source)
-                            list2.Add(edge.Target);
-                        else
+                        //if (list2[list2.Count - 1] == edge.Source)
+                            //list2.Add(edge.Target);
+                        //else
                             list2.Add(edge.Source);
                     }
                     
