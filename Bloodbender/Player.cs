@@ -47,7 +47,7 @@ namespace Bloodbender
 
         private int roomOccupied;
 
-        protected float lifePoints = 30;
+        public float lifePoints = 30;
 
         public Player(Vector2 position) : base(position, PathFinderNodeType.CENTER)
         {
@@ -190,6 +190,9 @@ namespace Bloodbender
 
         private void InputSwitch(float elapsed)
         {
+            if (Bloodbender.ptr.inputHelper.IsNewKeyPress(Keys.H))
+                lifePoints += 100;
+
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
 
             if (isInDash)

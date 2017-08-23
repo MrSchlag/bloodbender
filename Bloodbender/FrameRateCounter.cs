@@ -46,6 +46,7 @@ namespace Bloodbender
 
             spriteBatch.DrawString(spriteFont, fps, new Vector2(6, 6), Color.Black);
             spriteBatch.DrawString(spriteFont, fps, new Vector2(5, 5), Color.White);
+            spriteBatch.DrawString(spriteFont, Bloodbender.ptr.player.lifePoints.ToString(), new Vector2(50, 0), Color.DarkRed, 0, Vector2.Zero, 1.75f, SpriteEffects.None, 1);
 
             spriteBatch.End();
         }
