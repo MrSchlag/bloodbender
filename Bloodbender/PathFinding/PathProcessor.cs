@@ -111,8 +111,8 @@ namespace Bloodbender.PathFinding
                 {
                     if (fixture.UserData == null)
                     {
-                        isVisible = false;
-                        return 0;
+                        //isVisible = false;
+                        return -1;
                     }
                     if (fixture.IsSensor || ((AdditionalFixtureData)fixture.UserData).physicParent.pathNodeType == PathFinderNodeType.CENTER)
                         return -1;
