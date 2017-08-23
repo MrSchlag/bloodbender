@@ -28,7 +28,7 @@ namespace Bloodbender
 
             _center.X = _maxX - _minX;
             _center.Y = _maxY - _minY;
-            SetInitialSeedPosition(1f);
+            SetInitialSeedPosition(1.3f);
         }
 
         private void SetInitialSeedPosition(float step)
